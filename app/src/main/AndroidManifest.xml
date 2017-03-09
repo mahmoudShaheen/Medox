@@ -31,19 +31,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Authentication" />
-        <activity android:name=".Notifications" />
-        <activity android:name=".Schedule" />
-        <activity android:name=".Emergency" />
-        <activity android:name=".Indicators" />
+        <activity android:name=".Authentication"/>
+        <activity android:name=".Notifications"
+            android:parentActivityName="com.solthnull.android.medox.Home"/>
+        <activity android:name=".Schedule"
+            android:parentActivityName="com.solthnull.android.medox.Home"/>
+        <activity android:name=".Emergency"
+            android:parentActivityName="com.solthnull.android.medox.Home"/>
+        <activity android:name=".Indicators"
+            android:parentActivityName="com.solthnull.android.medox.Home"/>
         <activity android:name=".Welcome" />
-        <activity android:name=".Location" />
-        <activity android:name=".Warehouse" />
-        <activity android:name=".Settings" />
+        <activity android:name=".Location"
+            android:parentActivityName="com.solthnull.android.medox.Home"/>
+        <activity android:name=".Warehouse"
+            android:parentActivityName="com.solthnull.android.medox.Home"/>
+        <activity android:name=".Settings"
+            android:parentActivityName="com.solthnull.android.medox.Home"/>
         <activity
             android:name=".Home"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
