@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "462428849747",
+    "firebase_url": "https://medox-f7251.firebaseio.com",
+    "project_id": "medox-f7251",
+    "storage_bucket": "medox-f7251.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:462428849747:android:fba9bacd2d8f37a3",
+        "android_client_info": {
+          "package_name": "com.solthnull.android.medox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "462428849747-p1vkk314u333tiu771pf118liflsrgah.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.solthnull.android.medox",
+            "certificate_hash": "fb9395f684d28bcd86c69284f531fa3dc3fa5501"
+          }
+        },
+        {
+          "client_id": "462428849747-nbsrb4hfbdj2rt8n1eabcc8tu5ar43kn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwmbm1YqvAthcDZX7Qy8s8qPhO_ydtewA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "462428849747-nbsrb4hfbdj2rt8n1eabcc8tu5ar43kn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
