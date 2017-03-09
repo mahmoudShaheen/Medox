@@ -110,7 +110,7 @@ public class SplashActivity extends Activity {
 
 
         //go to next Activity
-        Intent intent = new Intent(this, Authentication.class);
+        Intent intent = new Intent(this, Home.class);
         startActivity(intent);
     }
 

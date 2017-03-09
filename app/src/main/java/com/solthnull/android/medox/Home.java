@@ -1,5 +1,7 @@
 package com.solthnull.android.medox;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,7 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class Home extends AppCompatActivity
+public class Home extends Activity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -21,7 +23,7 @@ public class Home extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +53,7 @@ public class Home extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -73,25 +75,37 @@ public class Home extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
+*/
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_schedule) {
+            Intent i = new Intent (getApplicationContext(), Schedule.class);
+            startActivity(i);
+        } else if (id == R.id.nav_warehouse) {
+            Intent i = new Intent (getApplicationContext(), Warehouse.class);
+            startActivity(i);
+        } else if (id == R.id.nav_notification) {
+            Intent i = new Intent (getApplicationContext(), Notifications.class);
+            startActivity(i);
+        } else if (id == R.id.nav_emergency) {
+            Intent i = new Intent (getApplicationContext(), Emergency.class);
+            startActivity(i);
+        } else if (id == R.id.nav_indicators) {
+            Intent i = new Intent (getApplicationContext(), Indicators.class);
+            startActivity(i);
+        } else if (id == R.id.nav_location) {
+            Intent i = new Intent (getApplicationContext(), Location.class);
+            startActivity(i);
+        } else if (id == R.id.nav_settings) {
+            Intent i = new Intent (getApplicationContext(), Settings.class);
+            startActivity(i);
+        } else if (id == R.id.nav_logout) {
+            //Intent i = new Intent (getApplicationContext(), Schedule.class);
+            //startActivity(i);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
