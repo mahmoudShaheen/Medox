@@ -22,8 +22,7 @@
         <activity android:name=".Notifications" />
         <activity android:name=".Schedule" />
         <activity android:name=".Warehouse" />
-        <activity android:name=".Settings" />
-        <activity android:name=".Emergency"></activity>
+        <activity android:name=".Settings"></activity>
     </application>
 
 </manifest>
