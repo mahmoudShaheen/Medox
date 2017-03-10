@@ -24,7 +24,8 @@
         <activity android:name=".Warehouse" />
         <activity android:name=".Settings" />
         <activity android:name=".Emergency" />
-        <activity android:name=".Authentication"></activity>
+        <activity android:name=".Authentication" />
+        <activity android:name=".Welcome"></activity>
     </application>
 
 </manifest>
