@@ -20,7 +20,8 @@
         <activity android:name=".Location" />
         <activity android:name=".Indicators" />
         <activity android:name=".Notifications" />
-        <activity android:name=".Schedule"></activity>
+        <activity android:name=".Schedule" />
+        <activity android:name=".Warehouse"></activity>
     </application>
 
 </manifest>
