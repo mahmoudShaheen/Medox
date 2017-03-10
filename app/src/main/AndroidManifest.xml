@@ -21,7 +21,8 @@
         <activity android:name=".Indicators" />
         <activity android:name=".Notifications" />
         <activity android:name=".Schedule" />
-        <activity android:name=".Warehouse"></activity>
+        <activity android:name=".Warehouse" />
+        <activity android:name=".Settings"></activity>
     </application>
 
 </manifest>
