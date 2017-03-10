@@ -7,33 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d1a97e39-9f2a-4a1d-b543-78ce7969354b" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/androidTest/java/com/solthnull/android/medox/ExampleInstrumentedTest.java" afterPath="$PROJECT_DIR$/app/src/androidTest/java/com/slothnull/android/medox/ExampleInstrumentedTest.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/solthnull/android/medox/Authentication.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Authentication.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/solthnull/android/medox/Emergency.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Emergency.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/solthnull/android/medox/Home.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Home.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/solthnull/android/medox/Indicators.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Indicators.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/solthnull/android/medox/Location.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Location.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/solthnull/android/medox/Notifications.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Notifications.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/solthnull/android/medox/Schedule.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Schedule.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/solthnull/android/medox/Settings.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Settings.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/solthnull/android/medox/Splash.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Splash.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/solthnull/android/medox/Warehouse.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Warehouse.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/solthnull/android/medox/Welcome.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Welcome.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/test/java/com/solthnull/android/medox/ExampleUnitTest.java" afterPath="$PROJECT_DIR$/app/src/test/java/com/slothnull/android/medox/ExampleUnitTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_authentication.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_authentication.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_emergency.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_emergency.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_indicators.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_indicators.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_location.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_location.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_notifications.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_notifications.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_schedule.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_schedule.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_settings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_settings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_splash.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_splash.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_warehouse.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_warehouse.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_welcome.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_welcome.xml" />
     </list>
     <ignored path="Medox.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -80,8 +55,8 @@
       <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="782">
-              <caret line="46" column="8" selection-start-line="46" selection-start-column="8" selection-end-line="46" selection-end-column="8" />
+            <state relative-caret-position="391">
+              <caret line="23" column="8" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -2603,8 +2578,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="782">
-          <caret line="46" column="8" selection-start-line="46" selection-start-column="8" selection-end-line="46" selection-end-column="8" />
+        <state relative-caret-position="391">
+          <caret line="23" column="8" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="8" />
           <folding />
         </state>
       </provider>
