@@ -1,4 +1,4 @@
-package com.solthnull.android.medox;
+package com.slothnull.android.medox;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.solthnull.android.medox", appContext.getPackageName());
+        assertEquals("com.slothnull.android.medox", appContext.getPackageName());
     }
 }

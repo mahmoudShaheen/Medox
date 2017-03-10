@@ -1,4 +1,4 @@
-package com.solthnull.android.medox;
+package com.slothnull.android.medox;
 
 import org.junit.Test;
 

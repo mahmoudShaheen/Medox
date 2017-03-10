@@ -1,13 +1,13 @@
-package com.solthnull.android.medox;
+package com.slothnull.android.medox;
 
 import android.app.Activity;
 import android.os.Bundle;
 
-public class Emergency extends Activity {
+public class Welcome extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_emergency);
+        setContentView(R.layout.activity_welcome);
     }
 }

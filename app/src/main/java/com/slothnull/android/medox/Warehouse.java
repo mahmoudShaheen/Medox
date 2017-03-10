@@ -1,4 +1,4 @@
-package com.solthnull.android.medox;
+package com.slothnull.android.medox;
 
 import android.app.Activity;
 import android.os.Bundle;

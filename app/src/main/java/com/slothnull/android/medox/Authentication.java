@@ -1,13 +1,13 @@
-package com.solthnull.android.medox;
+package com.slothnull.android.medox;
 
 import android.app.Activity;
 import android.os.Bundle;
 
-public class Location extends Activity {
+public class Authentication extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location);
+        setContentView(R.layout.activity_authentication);
     }
 }

@@ -1,13 +1,13 @@
-package com.solthnull.android.medox;
+package com.slothnull.android.medox;
 
 import android.app.Activity;
 import android.os.Bundle;
 
-public class Schedule extends Activity {
+public class Settings extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule);
+        setContentView(R.layout.activity_settings);
     }
 }
