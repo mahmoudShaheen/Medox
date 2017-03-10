@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.solthnull.android.medox">
+    package="com.slothnull.android.medox">
 
     <application
         android:allowBackup="true"
@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,16 +17,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".Home" />
-        <activity android:name=".Location" />
-        <activity android:name=".Indicators" />
-        <activity android:name=".Notifications" />
-        <activity android:name=".Schedule" />
-        <activity android:name=".Warehouse" />
-        <activity android:name=".Settings" />
-        <activity android:name=".Emergency" />
         <activity android:name=".Authentication" />
-        <activity android:name=".Welcome"></activity>
+        <activity android:name=".Welcome" />
+
+        <activity
+            android:name=".Location"
+            android:parentActivityName=".Home" />
+        <activity
+            android:name=".Indicators"
+            android:parentActivityName=".Home"/>
+        <activity
+            android:name=".Notifications"
+            android:parentActivityName=".Home"/>
+        <activity
+            android:name=".Schedule"
+            android:parentActivityName=".Home"/>
+        <activity
+            android:name=".Warehouse"
+            android:parentActivityName=".Home"/>
+        <activity
+            android:name=".Settings"
+            android:parentActivityName=".Home"/>
+        <activity
+            android:name=".Emergency"
+            android:parentActivityName=".Home">
+        </activity>
+        
     </application>
 
 </manifest>
