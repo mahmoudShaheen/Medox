@@ -19,7 +19,8 @@
         <activity android:name=".Home" />
         <activity android:name=".Location" />
         <activity android:name=".Indicators" />
-        <activity android:name=".Notifications"></activity>
+        <activity android:name=".Notifications" />
+        <activity android:name=".Schedule"></activity>
     </application>
 
 </manifest>
