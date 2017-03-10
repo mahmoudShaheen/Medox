@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".Home" />
         <activity android:name=".Location" />
-        <activity android:name=".Indicators"></activity>
+        <activity android:name=".Indicators" />
+        <activity android:name=".Notifications"></activity>
     </application>
 
 </manifest>
