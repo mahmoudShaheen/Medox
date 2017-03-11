@@ -49,23 +49,34 @@ public class Notifications extends Activity {
     }
 
     private void refreshList(){
+        String name;
+        String message;
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(UID).child("notification");
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        ValueEventListener notificationListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                    String name = (String) messageSnapshot.child("title").getValue();
-                    String message = (String) messageSnapshot.child("message").getValue();
-                    //add to list here
-                    arrayList.add(name + "\n" + message);
+                // Get Post object and use the values to update the UI
+                Notification notification = dataSnapshot.getValue(Notification.class);
+                if (notification != null) {
+                    arrayList.add( notification.time  +":  "  + notification.title + "\n" + notification.message);
+                    // ...
                 }
             }
+
             @Override
-            public void onCancelled(DatabaseError firebaseError) { }
-        });
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        mDatabase.child("users").child(UID).child("notification")
+                .addValueEventListener(notificationListener);
+        //add to list here
+
+
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
         notificationList.setAdapter(arrayAdapter);
     }
