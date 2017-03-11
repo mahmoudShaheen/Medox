@@ -58,7 +58,7 @@ public class Notifications extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                Notification notification = dataSnapshot.getValue(Notification.class);
+                AbstractNotification notification = dataSnapshot.getValue(AbstractNotification.class);
                 if (notification != null) {
                     arrayList.add( notification.time  +":  "  + notification.title + "\n" + notification.message);
                     // ...
