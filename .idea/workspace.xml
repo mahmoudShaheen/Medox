@@ -11,9 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d1a97e39-9f2a-4a1d-b543-78ce7969354b" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/User.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Authentication.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Authentication.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/MyFirebaseInstanceIDService.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/MyFirebaseInstanceIDService.java" />
     </list>
     <ignored path="Medox.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -48,58 +47,18 @@
       <file leaf-file-name="AbstractNotification.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/AbstractNotification.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
+            <state relative-caret-position="306">
               <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MyFirebaseMessagingService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/MyFirebaseMessagingService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1025">
-              <caret line="90" column="72" selection-start-line="90" selection-start-column="72" selection-end-line="90" selection-end-column="72" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Notifications.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Notifications.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="595">
-              <caret line="60" column="94" selection-start-line="60" selection-start-column="94" selection-end-line="60" selection-end-column="94" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MyFirebaseInstanceIDService.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MyFirebaseInstanceIDService.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/MyFirebaseInstanceIDService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1105">
-              <caret line="71" column="8" selection-start-line="71" selection-start-column="8" selection-end-line="71" selection-end-column="97" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AbstractUser.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/AbstractUser.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Authentication.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Authentication.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2142">
-              <caret line="149" column="44" selection-start-line="149" selection-start-column="44" selection-end-line="149" selection-end-column="44" />
+            <state relative-caret-position="379">
+              <caret line="71" column="72" selection-start-line="71" selection-start-column="72" selection-end-line="71" selection-end-column="72" />
               <folding />
             </state>
           </provider>
@@ -1971,7 +1930,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_authentication.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/User.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/GlobalFunctions.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/MyFirebaseInstanceIDService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Notification.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_notifications.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/AbstractNotification.java" />
@@ -1979,6 +1937,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Notifications.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/AbstractUser.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Authentication.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/MyFirebaseInstanceIDService.java" />
       </list>
     </option>
   </component>
@@ -2868,10 +2827,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/MyFirebaseInstanceIDService.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/AbstractUser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1105">
-          <caret line="71" column="8" selection-start-line="71" selection-start-column="8" selection-end-line="71" selection-end-column="97" />
+        <state relative-caret-position="357">
+          <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
           <folding />
         </state>
       </provider>
@@ -2894,16 +2853,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/AbstractNotification.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
+        <state relative-caret-position="306">
           <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/AbstractUser.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/MyFirebaseInstanceIDService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
+        <state relative-caret-position="379">
+          <caret line="71" column="72" selection-start-line="71" selection-start-column="72" selection-end-line="71" selection-end-column="72" />
           <folding />
         </state>
       </provider>
