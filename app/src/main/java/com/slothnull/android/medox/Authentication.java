@@ -147,7 +147,7 @@ public class Authentication extends Activity {
 
     // [START basic_write]
     private void writeNewUser(String userId, String name, String email) {
-        User user = new User(name, email);
+        AbstractUser user = new AbstractUser(name, email);
 
         mDatabase.child("users").child(userId).setValue(user);
     }
