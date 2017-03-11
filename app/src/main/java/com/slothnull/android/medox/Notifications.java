@@ -2,60 +2,71 @@ package com.slothnull.android.medox;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public class Notifications extends Activity {
 
     private static final String TAG = "Notifications";
+    public ListView notificationList;
+    public ArrayAdapter arrayAdapter;
+    public List<String> arrayList = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications);
 
+        notificationList = (ListView)findViewById(R.id.notificationList);
+        refreshList();
+        notificationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        // If a notification message is tapped, any data accompanying the notification
-        // message is available in the intent extras. In this sample the launcher
-        // intent is fired when the notification is tapped, so any accompanying data would
-        // be handled here. If you want a different intent fired, set the click_action
-        // field of the notification message to the desired intent. The launcher intent
-        // is used when no click_action is specified.
-        //
-        // Handle possible data accompanying notification message.
-        // [START handle_data_extras]
-        if (getIntent().getExtras() != null) {
-            for (String key : getIntent().getExtras().keySet()) {
-                Object value = getIntent().getExtras().get(key);
-                Log.d(TAG, "Key: " + key + " Value: " + value);
+                Toast.makeText(getApplicationContext(), arrayList.get(position), Toast.LENGTH_LONG).show();
+
             }
-        }
-        // [END handle_data_extras]
+        });
     }
 
-    public void subscribe(View view){
-        // [START subscribe_topics]
-        FirebaseMessaging.getInstance().subscribeToTopic("news");
-        // [END subscribe_topics]
+    private void refreshList(){
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(UID).child("notification");
 
-        // Log and toast
-        String msg = "Subscribed to news topic";
-        Log.d(TAG, msg);
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-
-    }
-    public void logToken(View view){
-        // Get token
-        String token = FirebaseInstanceId.getInstance().getToken();
-
-        // Log and toast
-        String msg = "InstanceID Token: " + token;
-        Log.d(TAG, msg);
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                    String name = (String) messageSnapshot.child("title").getValue();
+                    String message = (String) messageSnapshot.child("message").getValue();
+                    //add to list here
+                    arrayList.add(name + "\n" + message);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError firebaseError) { }
+        });
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
+        notificationList.setAdapter(arrayAdapter);
     }
 }
