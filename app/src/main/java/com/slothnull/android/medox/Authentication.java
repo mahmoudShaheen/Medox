@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.app.ProgressDialog;
@@ -52,7 +53,7 @@ public class Authentication extends Activity {
         }
     }
 
-    private void signIn() {
+    public void signIn(View view) {
         Log.d(TAG, "signIn");
         if (!validateForm()) {
             return;
@@ -79,7 +80,7 @@ public class Authentication extends Activity {
                 });
     }
 
-    private void signUp() {
+    public void signUp(View view) {
         Log.d(TAG, "signUp");
         if (!validateForm()) {
             return;
