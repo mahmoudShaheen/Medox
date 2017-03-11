@@ -32,8 +32,16 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -57,21 +65,42 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // messages. For more see: https://firebase.google.com/docs/cloud-messaging/concept-options
         // [END_EXCLUDE]
 
-        // TODO(developer): Handle FCM messages here.
+        // TO DO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
+
         Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Map<String,String> payload;
+        int level;
+        String message;
+        String title;
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            sendNotification(""+remoteMessage.getData());
-        }
 
+            payload = new HashMap<>(remoteMessage.getData());
+            level = Integer.parseInt(payload.get("level"));
+            message = payload.get("message");
+            title = payload.get("title");
+            String time = DateFormat.getDateTimeInstance().format(new Date());
+
+            //send notification to user
+            sendNotification(title, message, level);
+
+            //send notification to database to access it later in Notification Activity
+            Notification notification = new Notification(String.valueOf(level), title, message, time);
+            String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            mDatabase.child("users").child(UID).child("notification").push();
+            mDatabase.setValue(notification);
+
+        }
+        /*
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            sendNotification(remoteMessage.getNotification().getBody());
-        }
+            sendNotification("Notification Message", remoteMessage.getNotification().getBody(), '0');
+        }*/
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
@@ -83,16 +112,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody) {
+    private void sendNotification(String title, String messageBody, int level) {
         Intent intent = new Intent(this, Notifications.class);
+        if (level == 1){
+            intent = new Intent(this, Emergency.class);
+        }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, level /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setContentTitle("FCM Message")
+                .setSmallIcon(R.mipmap.ic_notification_round)
+                .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
@@ -101,6 +133,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(level /* ID of notification */, notificationBuilder.build());
     }
+
 }
