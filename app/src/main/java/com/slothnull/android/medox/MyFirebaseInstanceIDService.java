@@ -69,6 +69,6 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         //send value to FDB in users/UID/mobileToken
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("users").child(UID).child("mobileToken").setValue(token);
+        mDatabase.child("users").child(UID).child("config").child("mobileToken").setValue(token);
     }
 }
