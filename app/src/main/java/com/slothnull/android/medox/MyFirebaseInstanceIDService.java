@@ -25,6 +25,9 @@ package com.slothnull.android.medox;
 
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
@@ -32,6 +35,7 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
     private static final String TAG = "MyFirebaseIIDService";
+    private DatabaseReference mDatabase;
 
     /**
      * Called if InstanceID token is updated. This may occur if the security of
@@ -61,6 +65,10 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
+        // TO DO: Implement this method to send token to your app server.
+        //send value to FDB in users/UID/mobileToken
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("users").child(UID).child("mobileToken").setValue(token);
     }
 }
