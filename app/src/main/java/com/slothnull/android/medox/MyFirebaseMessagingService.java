@@ -90,8 +90,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             //send notification to database to access it later in Notification Activity
             AbstractNotification notification = new AbstractNotification(String.valueOf(level), title, message, time);
             String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-            mDatabase.child("users").child(UID).child("notification").push();
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
+                    .child("users").child(UID).child("notification").push();
             mDatabase.setValue(notification);
 
         }
