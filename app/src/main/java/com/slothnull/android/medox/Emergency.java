@@ -14,21 +14,22 @@ import com.google.firebase.database.FirebaseDatabase;
 //TODO: add other commands
 public class Emergency extends Activity {
 
-    private AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-    private boolean check = false;
+    private AlertDialog.Builder builder ;
+    private String cmd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emergency);
 
+        builder = new AlertDialog.Builder(this);
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
                         //Yes button clicked
-                        check = true;
+                        sendCommand(cmd);
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         //No button clicked
@@ -43,20 +44,16 @@ public class Emergency extends Activity {
 
     public void cmdDo(View view){
         Button button = (Button) view;
-        String cmd = (String) button.getText();
+        cmd = (String) button.getText();
         builder.show();
-        if (check) {
-            sendCommand(cmd);
-        }
-        check = false;
     }
 
     public void sendCommand(String cmd){
-        //send notification to database to access it later in Notification Activity
+        //send command to database for raspberry to fetch
         AbstractCommand command = new AbstractCommand(cmd);
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("users").child(UID).child("command").push();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(UID).child("command").push();
         mDatabase.setValue(command);
     }
 }
