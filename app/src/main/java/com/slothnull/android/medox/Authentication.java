@@ -19,6 +19,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Authentication extends Activity {
 
 
@@ -148,8 +151,11 @@ public class Authentication extends Activity {
     // [START basic_write]
     private void writeNewUser(String userId, String name, String email) {
         AbstractUser user = new AbstractUser(name, email);
-
-        mDatabase.child("users").child(userId).setValue(user);
+        Map<String, Object> newUser = new HashMap<>();
+        newUser.put("email", user.email);
+        newUser.put("username", user.username);
+        //create a child or update if already exists
+        mDatabase.child("users").child(userId).updateChildren(newUser);
     }
     // [END basic_write]
 
