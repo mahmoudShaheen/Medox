@@ -25,7 +25,8 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 public class Notifications extends Activity {
-
+    //TODO: error some times list view doesn't view any item "in first activity load only"
+    //if you press back then go to activity again it works well
     private static final String TAG = "Notifications";
     public ListView notificationList;
     public ArrayAdapter arrayAdapter;
@@ -49,8 +50,6 @@ public class Notifications extends Activity {
     }
 
     private void refreshList(){
-        String name;
-        String message;
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -58,10 +57,11 @@ public class Notifications extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                AbstractNotification notification = dataSnapshot.getValue(AbstractNotification.class);
-                if (notification != null) {
-                    arrayList.add( notification.time  +":  "  + notification.title + "\n" + notification.message);
-                    // ...
+                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                    AbstractNotification notification = child.getValue(AbstractNotification.class);
+                    if (notification != null) {
+                        arrayList.add(notification.time + ":  " + notification.title + "\n" + notification.message);
+                    }
                 }
             }
 
