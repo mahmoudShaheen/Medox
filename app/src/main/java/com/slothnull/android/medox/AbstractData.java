@@ -17,16 +17,18 @@ public class AbstractData {
     public String pedo;
     public String longitude;
     public String latitude;
+    public String billCount;
 
     public AbstractData() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public AbstractData(String heartRate, String pedo, String longitude, String latitude) {
+    public AbstractData(String heartRate, String pedo, String longitude, String latitude, String billCount) {
         this.heartRate = heartRate;
         this.pedo = pedo;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.billCount = billCount;
     }
 
 }

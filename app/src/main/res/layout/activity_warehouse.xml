@@ -1,9 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.slothnull.android.medox.Warehouse">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/BillCountView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BillCount"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="13dp" />
+
+    <TextView
+        android:id="@+id/textBillCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/BillCountView"
+        android:layout_centerHorizontal="true"
+        android:text="Wait..."
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/button11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/textBillCount"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="115dp"
+        android:onClick="AddData"
+        android:text="AddData" />
+
+    <EditText
+        android:id="@+id/textBillArray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button11"
+        android:layout_alignStart="@+id/BillCountView"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textBillArray"
+        android:layout_alignStart="@+id/textBillArray"
+        android:layout_marginBottom="62dp"
+        android:text=" Added bill Array +/- split by ','"
+        android:textSize="20sp" />
+</android.widget.RelativeLayout>
