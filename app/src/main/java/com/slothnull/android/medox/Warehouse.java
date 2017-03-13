@@ -55,10 +55,10 @@ public class Warehouse extends Activity {
         billCount = (TextView) findViewById(R.id.textBillCount);
         billArray = (TextView) findViewById(R.id.textBillArray);
 
-        drug1 = (EditText) findViewById(R.id.editText1);
-        drug2 = (EditText) findViewById(R.id.editText2);
-        drug3 = (EditText) findViewById(R.id.editText3);
-        drug4 = (EditText) findViewById(R.id.editText4);
+        drug1 = (EditText) findViewById(R.id.drug1);
+        drug2 = (EditText) findViewById(R.id.drug2);
+        drug3 = (EditText) findViewById(R.id.drug3);
+        drug4 = (EditText) findViewById(R.id.drug4);
 
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
