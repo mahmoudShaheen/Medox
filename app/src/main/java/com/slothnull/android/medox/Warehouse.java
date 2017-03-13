@@ -128,7 +128,7 @@ public class Warehouse extends Activity {
 
     }
 
-    public void updateNames(){
+    public void updateNames(View view){
         //clear class first
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference cDatabase = FirebaseDatabase.getInstance().getReference()

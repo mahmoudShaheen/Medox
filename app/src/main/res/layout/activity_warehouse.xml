@@ -35,7 +35,7 @@
         android:layout_below="@+id/textBillCount"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="115dp"
-        android:onClick="AddData"
+        android:onClick="addData"
         android:text="AddData" />
 
     <EditText
