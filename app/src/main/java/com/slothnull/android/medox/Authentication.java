@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -156,10 +157,13 @@ public class Authentication extends Activity {
         newUser.put("username", user.username);
         //create a child or update if already exists
         mDatabase.child("users").child(userId).updateChildren(newUser);
+        String token = FirebaseInstanceId.getInstance().getToken();
+        mDatabase.child("users").child(userId).child("token").child("mobile").setValue(token);
     }
     // [END basic_write]
 
-
+    //TODO: add progress dialog to other classes
+    //TODO: keyboard handling
     private ProgressDialog mProgressDialog;
 
     public void showProgressDialog() {
