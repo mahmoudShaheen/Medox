@@ -11,7 +11,7 @@ public class Splash extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        Intent intent = new Intent(this, Home.class);
+        Intent intent = new Intent(this, Authentication.class);
         startActivity(intent);
     }
 }

@@ -80,7 +80,7 @@ public class Schedule extends Activity {
         TextView time =  (TextView) findViewById(R.id.textTime);
         TextView billArray =  (TextView) findViewById(R.id.textBillArray);
         //add new schedule
-        AbstractSchedule timetable = new AbstractSchedule((String) time.getText(), (String) billArray.getText());
+        AbstractSchedule timetable = new AbstractSchedule((String) time.getText().toString(), (String) billArray.getText().toString());
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("users").child(UID).child("timetable").push();
