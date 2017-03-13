@@ -60,7 +60,7 @@ public class Indicators extends Activity {
         //add to list here
 
     }
-
+    //TODO: auto Refresh
     public void refreshData(View view){ //sendRefreshRequest
         String cmd = "data";
         //send command to database for raspberry to fetch
