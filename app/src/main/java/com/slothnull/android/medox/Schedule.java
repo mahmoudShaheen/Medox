@@ -40,23 +40,40 @@ public class Schedule extends Activity {
                 deleteEntry(keyList.get(position));
             }
         });
-
     }
 
     private void refreshList(){
+        //TODO: error here if called more than once the list display any item twice
+        //TODO: new activity for adding new time, this will also solve the problem
+        /*
+        //arrayList = new ArrayList<>();
+        //keyList = new ArrayList<>();
+        arrayList.clear();
+        Log.d(TAG, Integer.toString( arrayList.size()));
+
+        keyList.clear();
+        Log.d(TAG, Integer.toString( keyList.size()));
+
+
+        if (arrayAdapter != null) {
+            arrayAdapter.clear();
+            scheduleList.setAdapter(arrayAdapter);
+        }
+        */
 
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        ValueEventListener notificationListener = new ValueEventListener() {
+        ValueEventListener timetableListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                AbstractSchedule timetable = dataSnapshot.getValue(AbstractSchedule.class);
-                if (timetable != null) {
-                    arrayList.add( timetable.time  + "\n"  + timetable.billArray );
-                    keyList.add(dataSnapshot.getKey());
-                    // ...
+                for (DataSnapshot child: dataSnapshot.getChildren()){
+                    AbstractSchedule timetable = child.getValue(AbstractSchedule.class);
+                    if (timetable != null) {
+                        arrayList.add( timetable.time  + "\n"  + timetable.billArray );
+                        keyList.add(child.getKey());
+                    }
                 }
             }
 
@@ -67,11 +84,9 @@ public class Schedule extends Activity {
                 // ...
             }
         };
-        mDatabase.child("users").child(UID).child("notification")
-                .addValueEventListener(notificationListener);
+        mDatabase.child("users").child(UID).child("timetable")
+                .addValueEventListener(timetableListener);
         //add to list here
-
-
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
         scheduleList.setAdapter(arrayAdapter);
     }
@@ -80,18 +95,28 @@ public class Schedule extends Activity {
         TextView time =  (TextView) findViewById(R.id.textTime);
         TextView billArray =  (TextView) findViewById(R.id.textBillArray);
         //add new schedule
-        AbstractSchedule timetable = new AbstractSchedule((String) time.getText().toString(), (String) billArray.getText().toString());
+        AbstractSchedule timetable = new AbstractSchedule(time.getText().toString(), billArray.getText().toString());
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("users").child(UID).child("timetable").push();
         mDatabase.setValue(timetable);
+        //refreshList();
     }
 
     public void deleteEntry(String key){
+        //TODO error after deleting from adapter the error message is mentioned after the function
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("users").child(UID).child("timetable");
         mDatabase.child(key).setValue(null);
+        //refreshList();
     }
+    /*
+    ava.lang.IllegalStateException: The content of the adapter has changed but ListView did not
+    receive a notification. Make sure the content of your adapter is not modified from a background
+    thread, but only from the UI thread. Make sure your adapter calls notifyDataSetChanged() when
+    its content changes. [in ListView(2131427456, class android.widget.ListView)
+    with Adapter(class android.widget.ArrayAdapter)]
+     */
 
 }

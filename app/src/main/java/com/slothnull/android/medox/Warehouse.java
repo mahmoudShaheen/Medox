@@ -22,7 +22,6 @@ public class Warehouse extends Activity {
     private static final String TAG = "Warehouse";
     public TextView billCount;
     public TextView billArray;
-    public List<AbstractWarehouse> arrayList = new ArrayList<>();
 
     public EditText drug1;
     public EditText drug2;
@@ -98,8 +97,6 @@ public class Warehouse extends Activity {
                 // Get Post object and use the values to update the UI
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
                     AbstractWarehouse warehouse = child.getValue(AbstractWarehouse.class);
-                    arrayList.add( warehouse);
-                    Log.d(TAG, child.toString());
                     if (warehouse.id != null) {
                         switch (warehouse.id) {
                             case "1":
