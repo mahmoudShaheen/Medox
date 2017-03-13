@@ -32,6 +32,14 @@ public class Warehouse extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_warehouse);
+
+        billCount = (TextView) findViewById(R.id.textBillCount);
+        billArray = (TextView) findViewById(R.id.textBillArray);
+
+        drug1 = (EditText) findViewById(R.id.drug1);
+        drug2 = (EditText) findViewById(R.id.drug2);
+        drug3 = (EditText) findViewById(R.id.drug3);
+        drug4 = (EditText) findViewById(R.id.drug4);
     }
 
     //TODO: add warehouse class has drug names and a way to change it
@@ -51,14 +59,6 @@ public class Warehouse extends Activity {
     }
 
     public void getBillCount(View view){
-
-        billCount = (TextView) findViewById(R.id.textBillCount);
-        billArray = (TextView) findViewById(R.id.textBillArray);
-
-        drug1 = (EditText) findViewById(R.id.drug1);
-        drug2 = (EditText) findViewById(R.id.drug2);
-        drug3 = (EditText) findViewById(R.id.drug3);
-        drug4 = (EditText) findViewById(R.id.drug4);
 
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
