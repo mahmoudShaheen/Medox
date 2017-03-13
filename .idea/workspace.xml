@@ -9,11 +9,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1a97e39-9f2a-4a1d-b543-78ce7969354b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Schedule.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Schedule.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Splash.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/slothnull/android/medox/Splash.java" />
-    </list>
+    <list default="true" id="d1a97e39-9f2a-4a1d-b543-78ce7969354b" name="Default" comment="" />
     <ignored path="Medox.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
