@@ -105,6 +105,7 @@
         android:layout_above="@+id/editText3"
         android:layout_marginBottom="16dp"
         android:layout_toEndOf="@+id/textView5"
+        android:onClick="getNames"
         android:text="getNames"
         tools:text="getNames" />
 
@@ -117,5 +118,14 @@
         android:layout_marginTop="17dp"
         android:onClick="updateNames"
         android:text="updateNames" />
+
+    <Button
+        android:id="@+id/button15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/button11"
+        android:layout_below="@+id/textBillCount"
+        android:onClick="getBillCount"
+        android:text="getBillCount" />
 
 </android.widget.RelativeLayout>

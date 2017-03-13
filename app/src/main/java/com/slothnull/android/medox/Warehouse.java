@@ -22,6 +22,7 @@ public class Warehouse extends Activity {
     private static final String TAG = "Warehouse";
     public TextView billCount;
     public TextView billArray;
+    public List<AbstractWarehouse> arrayList = new ArrayList<>();
 
     public EditText drug1;
     public EditText drug2;
@@ -32,6 +33,26 @@ public class Warehouse extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_warehouse);
+    }
+
+    //TODO: add warehouse class has drug names and a way to change it
+    public void addData(View view) { //sendRefreshRequest
+        //send command to database for raspberry to fetch
+        String cmd;
+        if (billArray.getText() != null) {
+            cmd = "addBills," + billArray.getText().toString();
+            AbstractCommand command = new AbstractCommand(cmd);
+            String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
+                    .child("users").child(UID).child("command").push();
+            mDatabase.setValue(command);
+        }else{
+            //no data added
+        }
+    }
+
+    public void getBillCount(View view){
+
         billCount = (TextView) findViewById(R.id.textBillCount);
         billArray = (TextView) findViewById(R.id.textBillArray);
 
@@ -67,51 +88,36 @@ public class Warehouse extends Activity {
 
     }
 
-    //TODO: add warehouse class has drug names and a way to change it
-    public void addData(View view) { //sendRefreshRequest
-        //send command to database for raspberry to fetch
-        String cmd;
-        if (billArray.getText() != null) {
-            cmd = "addBills," + billArray.getText().toString();
-            AbstractCommand command = new AbstractCommand(cmd);
-            String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                    .child("users").child(UID).child("command").push();
-            mDatabase.setValue(command);
-        }else{
-            //no data added
-        }
-    }
-
-    public void getNames(){
-
+    public void getNames(View view){
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        ValueEventListener dataListener = new ValueEventListener() {
+        ValueEventListener warehouseListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                AbstractWarehouse warehouse = dataSnapshot.getValue(AbstractWarehouse.class);
-                if (warehouse != null) {
-                    switch (warehouse.id) {
-                        case"1":
-                            drug1.setText(warehouse.name);
-                            break;
-                        case"2":
-                            drug2.setText(warehouse.name);
-                            break;
-                        case"3":
-                            drug3.setText(warehouse.name);
-                            break;
-                        case"4":
-                            drug4.setText(warehouse.name);
-                            break;
-                        default:
-                            break;
+                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                    AbstractWarehouse warehouse = child.getValue(AbstractWarehouse.class);
+                    arrayList.add( warehouse);
+                    Log.d(TAG, child.toString());
+                    if (warehouse.id != null) {
+                        switch (warehouse.id) {
+                            case "1":
+                                drug1.setText(warehouse.name);
+                                break;
+                            case "2":
+                                drug2.setText(warehouse.name);
+                                break;
+                            case "3":
+                                drug3.setText(warehouse.name);
+                                break;
+                            case "4":
+                                drug4.setText(warehouse.name);
+                                break;
+                            default:
+                                break;
+                        }
                     }
-
-                    // ...
                 }
             }
 
@@ -122,8 +128,8 @@ public class Warehouse extends Activity {
                 // ...
             }
         };
-        mDatabase.child("users").child(UID).child("data")
-                .addValueEventListener(dataListener);
+        mDatabase.child("users").child(UID).child("warehouse")
+                .addValueEventListener(warehouseListener);
         //add to list here
 
     }
