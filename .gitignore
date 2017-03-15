@@ -88,3 +88,26 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+
+
+#==============
+#Added
+.gradle
+local.properties
+.idea
+build/
+.DS_Store
+*.iml
+*.apk
+*.aar
+*.zip
+google-services.json
+
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
