@@ -111,5 +111,5 @@ google-services.json
 .DS_Store
 /build
 /captures
-
+**/.idea
 **/workspace.xml
