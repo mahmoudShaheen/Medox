@@ -156,7 +156,7 @@ public class Authentication extends Activity {
         newUser.put("email", user.email);
         newUser.put("username", user.username);
         //create a child or update if already exists
-        mDatabase.child("users").child(userId).updateChildren(newUser);
+        mDatabase.child("users").child(userId).child("config").updateChildren(newUser);
         String token = FirebaseInstanceId.getInstance().getToken();
         mDatabase.child("users").child(userId).child("token").child("mobile").setValue(token);
     }
