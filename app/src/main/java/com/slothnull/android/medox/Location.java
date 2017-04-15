@@ -24,6 +24,7 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
     private static final String TAG = "Location";
     public double longitude = 0;
     public double latitude = 0;
+    public static String watchToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,30 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
         mDatabase.child("users").child(UID).child("data")
                 .addValueEventListener(dataListener);
         //add to list here
+
+        ValueEventListener tokenListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                AbstractToken token = dataSnapshot.getValue(AbstractToken.class);
+                if (token != null) {
+                    watchToken = token.watch;
+                    // ...
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        mDatabase.child("users").child(UID).child("token")
+                .addValueEventListener(tokenListener);
+        //add to list here
+
+
         updateMarker(); //initial place
     }
 
@@ -95,9 +120,10 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
         //send command to database for raspberry to fetch
         AbstractCommand command = new AbstractCommand(cmd);
         //TODO: add if (UID != null) to all classes
-        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String level = "5";
+        AbstractMessages data = new AbstractMessages(watchToken, level);
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(UID).child("watchCommand").push();
-        mDatabase.setValue(command);
+                .child("messages").push();
+        mDatabase.setValue(data);
     }
 }
