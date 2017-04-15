@@ -38,7 +38,7 @@ public class Notifications extends Activity {
         setContentView(R.layout.activity_notifications);
 
         notificationList = (ListView)findViewById(R.id.notificationList);
-        refreshList();
+        refreshList(new View(this));
         notificationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -48,8 +48,8 @@ public class Notifications extends Activity {
             }
         });
     }
-
-    private void refreshList(){
+    //TODO: refreshList adds notifications again
+    public void refreshList(View view){
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -75,7 +75,6 @@ public class Notifications extends Activity {
         mDatabase.child("users").child(UID).child("notification")
                 .addValueEventListener(notificationListener);
         //add to list here
-
 
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
         notificationList.setAdapter(arrayAdapter);
