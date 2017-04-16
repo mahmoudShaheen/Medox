@@ -1,18 +1,76 @@
 package com.slothnull.android.medox;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-public class Home extends Activity {
+import com.slothnull.android.medox.fragment.EmergencyFragment;
+import com.slothnull.android.medox.fragment.IndicatorsFragment;
+import com.slothnull.android.medox.fragment.LocationFragment;
+import com.slothnull.android.medox.fragment.NotificationFragment;
+import com.slothnull.android.medox.fragment.ScheduleFragment;
+import com.slothnull.android.medox.fragment.StatusFragment;
+import com.slothnull.android.medox.fragment.WarehouseFragment;
+
+public class Home extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
+
+    private FragmentPagerAdapter mPagerAdapter;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-    }
 
+        // Create the adapter that will return a fragment for each section
+        mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            private final Fragment[] mFragments = new Fragment[] {
+                    new StatusFragment(),
+                    new IndicatorsFragment(),
+                    new NotificationFragment(),
+                    new ScheduleFragment(),
+                    new WarehouseFragment(),
+                    new EmergencyFragment(),
+                    new LocationFragment()
+            };
+            private final String[] mFragmentNames = new String[] {
+                    "Status",
+                    "Ind",
+                    "Not",
+                    "Sched",
+                    "War",
+                    "Emer",
+                    "Loc"
+            };
+            @Override
+            public Fragment getItem(int position) {
+                return mFragments[position];
+            }
+            @Override
+            public int getCount() {
+                return mFragments.length;
+            }
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return mFragmentNames[position];
+            }
+        };
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mPagerAdapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
+    }
+/*
     public void auth(View view){
         Intent intent = new Intent(this, Authentication.class);
         startActivity(intent);
@@ -48,5 +106,25 @@ public class Home extends Activity {
     public void emergency(View view){
         Intent intent = new Intent(this, Emergency.class);
         startActivity(intent);
+    }*/
+
+    //ProgressDialog
+/*
+    private ProgressDialog mProgressDialog;
+
+    public void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setMessage("Loading...");
+        }
+
+        mProgressDialog.show();
     }
+
+    public void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+    }*/
 }
