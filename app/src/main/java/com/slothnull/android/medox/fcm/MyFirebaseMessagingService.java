@@ -1,4 +1,4 @@
-package com.slothnull.android.medox;
+package com.slothnull.android.medox.fcm;
 
 /**
  * Created by Shaheen on 10-Mar-17
@@ -38,6 +38,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.slothnull.android.medox.Abstract.AbstractNotification;
+import com.slothnull.android.medox.Emergency;
+import com.slothnull.android.medox.Notifications;
+import com.slothnull.android.medox.R;
 
 import java.text.DateFormat;
 import java.util.Date;

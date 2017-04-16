@@ -1,4 +1,4 @@
-package com.slothnull.android.medox;
+package com.slothnull.android.medox.fcm;
 
 /**
  * Created by Shaheen on 10-Mar-17
