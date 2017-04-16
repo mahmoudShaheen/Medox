@@ -67,8 +67,13 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     private void sendRegistrationToServer(String token) {
         // TO DO: Implement this method to send token to your app server.
         //send value to FDB in users/UID/mobileToken
-        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("users").child(UID).child("token").child("mobile").setValue(token);
+        try{
+            String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            mDatabase = FirebaseDatabase.getInstance().getReference();
+            mDatabase.child("users").child(UID).child("token").child("mobile").setValue(token);
+        }catch (Exception e){
+            Log.i(TAG,"user must be signed to update token");
+            Log.i(TAG,"Don't worry Token will be added when user sign in");
+        }
     }
 }
