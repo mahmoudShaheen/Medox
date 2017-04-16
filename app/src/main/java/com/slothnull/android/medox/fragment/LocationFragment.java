@@ -9,8 +9,9 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +29,7 @@ import com.slothnull.android.medox.R;
 public class LocationFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
 
     private GoogleMap mMap;
+    MapView mMapView;
     private static final String TAG = "Location";
     public double longitude = 0;
     public double latitude = 0;
@@ -44,10 +46,24 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Vi
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_location, container, false);
 
+        mMapView = (MapView) view.findViewById(R.id.mapView);
+        mMapView.onCreate(savedInstanceState);
+
+        mMapView.onResume(); // needed to get the map to display immediately
+
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mMapView.getMapAsync(this);
+        /*
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        */
         return view;
     }
 
@@ -138,7 +154,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Vi
         AbstractMessages data = new AbstractMessages(watchToken, level);
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("messages").push();
-        mDatabase.setValue(data);
+        mDatabase.setValue(command);
     }
     @Override
     public void onClick(View view) {
