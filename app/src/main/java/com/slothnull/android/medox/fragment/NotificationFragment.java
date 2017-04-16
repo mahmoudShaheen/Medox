@@ -92,9 +92,9 @@ public class NotificationFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
         //do what you want to do when button is clicked
-        switch (v.getId()) {
+        switch (view.getId()) {
             case R.id.refreshButton:
                 refreshList();
                 break;
