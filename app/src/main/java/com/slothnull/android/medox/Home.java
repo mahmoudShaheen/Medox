@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.slothnull.android.medox.fragment.EmergencyFragment;
 import com.slothnull.android.medox.fragment.IndicatorsFragment;
@@ -41,6 +42,7 @@ public class Home extends AppCompatActivity {
                     new EmergencyFragment(),
                     new LocationFragment()
             };
+            /*
             private final String[] mFragmentNames = new String[] {
                     "Status",
                     "Ind",
@@ -49,7 +51,7 @@ public class Home extends AppCompatActivity {
                     "War",
                     "Emer",
                     "Loc"
-            };
+            };*/
             @Override
             public Fragment getItem(int position) {
                 return mFragments[position];
@@ -58,10 +60,11 @@ public class Home extends AppCompatActivity {
             public int getCount() {
                 return mFragments.length;
             }
+            /*
             @Override
             public CharSequence getPageTitle(int position) {
                 return mFragmentNames[position];
-            }
+            }*/
         };
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -69,6 +72,22 @@ public class Home extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        View mainTab;
+
+        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(0);
+        mainTab.setBackgroundResource(R.drawable.user);
+        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(1);
+        mainTab.setBackgroundResource(R.drawable.indicators);
+        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(2);
+        mainTab.setBackgroundResource(R.drawable.notification);
+        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(3);
+        mainTab.setBackgroundResource(R.drawable.schedule);
+        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(4);
+        mainTab.setBackgroundResource(R.drawable.warehouse);
+        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(5);
+        mainTab.setBackgroundResource(R.drawable.emergency);
+        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(6);
+        mainTab.setBackgroundResource(R.drawable.location);
     }
 /*
     public void auth(View view){
