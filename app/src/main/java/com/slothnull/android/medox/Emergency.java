@@ -10,6 +10,7 @@ import android.widget.Button;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.slothnull.android.medox.Abstract.AbstractCommand;
 
 //TODO: add other commands
 public class Emergency extends Activity {

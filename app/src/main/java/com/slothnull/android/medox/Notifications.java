@@ -9,20 +9,16 @@ import android.widget.Toast;
 import android.util.Log;
 import android.view.View;
 
-import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
+import com.slothnull.android.medox.Abstract.AbstractNotification;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.Arrays.asList;
 
 public class Notifications extends Activity {
     //TODO: error some times list view doesn't view any item "in first activity load only"

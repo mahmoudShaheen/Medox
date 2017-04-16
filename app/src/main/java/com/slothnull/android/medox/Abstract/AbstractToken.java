@@ -1,8 +1,8 @@
-package com.slothnull.android.medox;
+package com.slothnull.android.medox.Abstract;
 
 /**
- * Created by Shaheen on 12-Mar-17
- * Project: Medox
+ * Created by Shaheen on 17-Mar-17
+ * Project: seniormedox
  * Package: com.slothnull.android.medox
  */
 
@@ -10,17 +10,16 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 // [START user_class]
 @IgnoreExtraProperties
-public class AbstractCommand {
+public class AbstractToken {
 
-    public String cmd;
+    public String watch;
 
-    public AbstractCommand() {
+    public AbstractToken() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public AbstractCommand(String cmd) {
-        this.cmd = cmd;
+    public AbstractToken(String token) {
+        this.watch = token;
     }
 
 }
-// [END user_class]

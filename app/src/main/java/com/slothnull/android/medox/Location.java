@@ -17,6 +17,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.slothnull.android.medox.Abstract.AbstractCommand;
+import com.slothnull.android.medox.Abstract.AbstractData;
+import com.slothnull.android.medox.Abstract.AbstractMessages;
+import com.slothnull.android.medox.Abstract.AbstractToken;
 
 public class Location extends FragmentActivity implements OnMapReadyCallback {
 

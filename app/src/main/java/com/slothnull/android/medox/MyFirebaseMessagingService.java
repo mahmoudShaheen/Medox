@@ -37,6 +37,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.slothnull.android.medox.Abstract.AbstractNotification;
 
 import java.text.DateFormat;
 import java.util.Date;
