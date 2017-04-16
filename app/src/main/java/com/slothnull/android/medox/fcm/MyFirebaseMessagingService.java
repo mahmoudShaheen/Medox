@@ -38,7 +38,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.slothnull.android.medox.Abstract.AbstractNotification;
-import com.slothnull.android.medox.Emergency;
 import com.slothnull.android.medox.Home;
 import com.slothnull.android.medox.R;
 
