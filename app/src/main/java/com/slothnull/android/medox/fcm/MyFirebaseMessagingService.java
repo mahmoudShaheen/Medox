@@ -38,8 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.slothnull.android.medox.Abstract.AbstractNotification;
-import com.slothnull.android.medox.Emergency;
-import com.slothnull.android.medox.Notifications;
+import com.slothnull.android.medox.Home;
 import com.slothnull.android.medox.R;
 
 import java.text.DateFormat;
@@ -117,9 +116,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param messageBody FCM message body received.
      */
     private void sendNotification(String title, String messageBody, int level) {
-        Intent intent = new Intent(this, Notifications.class);
+        Intent intent = new Intent(this, Home.class); //TODO: To Notification
         if (level == 1){
-            intent = new Intent(this, Emergency.class);
+            intent = new Intent(this, Home.class); //TODO: To Emergency
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, level /* Request code */, intent,
@@ -127,7 +126,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_notification_round)
+                .setSmallIcon(R.drawable.settings)
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)

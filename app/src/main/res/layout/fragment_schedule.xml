@@ -4,18 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.slothnull.android.medox.Schedule">
+    tools:context="com.slothnull.android.medox.fragment.ScheduleFragment">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:onClick="addEntry"
         android:text="addEntry"
         tools:layout_editor_absoluteX="293dp"
         tools:layout_editor_absoluteY="456dp"
-        android:id="@+id/button13" />
+        android:id="@+id/addEntry" />
 
     <EditText
         android:id="@+id/textBillArray"

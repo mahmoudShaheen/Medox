@@ -6,93 +6,15 @@
     android:layout_height="match_parent"
     tools:context="com.slothnull.android.medox.Home">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="auth"
-        android:text="auth"
-        android:layout_marginEnd="29dp"
-        android:layout_marginTop="18dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="welcome"
-        android:text="welcome"
-        android:layout_alignBaseline="@+id/button"
-        android:layout_alignBottom="@+id/button"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="44dp" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tabs" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/button2"
-        android:layout_below="@+id/button2"
-        android:layout_marginTop="18dp"
-        android:onClick="warehouse"
-        android:text="warehouse" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/button"
-        android:layout_alignTop="@+id/button3"
-        android:onClick="schedule"
-        android:text="schedule" />
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="37dp"
-        android:onClick="notification"
-        android:text="notification"
-        android:layout_below="@+id/button3"
-        android:layout_alignStart="@+id/button3" />
-
-    <Button
-        android:id="@+id/button6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="emergency"
-        android:text="emergency"
-        android:layout_alignBaseline="@+id/button5"
-        android:layout_alignBottom="@+id/button5"
-        android:layout_alignEnd="@+id/button4" />
-
-    <Button
-        android:id="@+id/button7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/button5"
-        android:layout_below="@+id/button5"
-        android:layout_marginTop="28dp"
-        android:onClick="indicators"
-        android:text="indicators" />
-
-    <Button
-        android:id="@+id/button8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/button7"
-        android:layout_alignStart="@+id/button"
-        android:onClick="location"
-        android:text="location" />
-
-    <Button
-        android:id="@+id/button9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/button7"
-        android:layout_below="@+id/button7"
-        android:layout_marginTop="23dp"
-        android:onClick="settings"
-        android:text="settings" />
 </android.widget.RelativeLayout>

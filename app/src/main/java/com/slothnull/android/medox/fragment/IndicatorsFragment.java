@@ -1,73 +1,68 @@
-package com.slothnull.android.medox;
+package com.slothnull.android.medox.fragment;
 
-import android.support.v4.app.FragmentActivity;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.slothnull.android.medox.Abstract.AbstractCommand;
 import com.slothnull.android.medox.Abstract.AbstractData;
 import com.slothnull.android.medox.Abstract.AbstractMessages;
 import com.slothnull.android.medox.Abstract.AbstractToken;
+import com.slothnull.android.medox.R;
 
-public class Location extends FragmentActivity implements OnMapReadyCallback {
+public class IndicatorsFragment extends Fragment implements View.OnClickListener {
 
-    private GoogleMap mMap;
-    private static final String TAG = "Location";
-    public double longitude = 0;
-    public double latitude = 0;
+
+    private static final String TAG = "Indicators";
+    public TextView pedo;
+    public TextView heartRate;
+    public TextView longitude;
+    public TextView latitude;
     public static String watchToken;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+    View view;
+    public IndicatorsFragment() {
+        // Required empty public constructor
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_indicators, container, false);
+
+
+        pedo = (TextView) view.findViewById(R.id.textPedo);
+        heartRate = (TextView) view.findViewById(R.id.textHeartRate);
+        longitude = (TextView) view.findViewById(R.id.textLongitude);
+        latitude = (TextView) view.findViewById(R.id.textLatitude);
 
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        //data
         ValueEventListener dataListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 AbstractData data = dataSnapshot.getValue(AbstractData.class);
                 if (data != null) {
-                    longitude = Double.parseDouble(data.longitude);
-                    latitude = Double.parseDouble(data.latitude);
-                    updateMarker();
+                    pedo.setText(data.pedo);
+                    heartRate.setText(data.heartRate);
+                    longitude.setText(data.longitude);
+                    latitude.setText(data.latitude);
                     // ...
-
                 }
             }
 
@@ -103,31 +98,35 @@ public class Location extends FragmentActivity implements OnMapReadyCallback {
         mDatabase.child("users").child(UID).child("token")
                 .addValueEventListener(tokenListener);
         //add to list here
-
-
-        updateMarker(); //initial place
+        return view;
     }
 
-    //TODO: add marker for mobile Location and distance
-    //TODO: move refresh button it hides google maps app shortcut
     //TODO: auto Refresh
-    public void updateMarker(){
-        // clear map Add a marker for watch and move the camera
-        mMap.clear();
-        LatLng watch = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(watch).title("Watch"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(watch, 12));
-    }
-
-    public void refreshData(View view){ //sendRefreshRequest
-        String cmd = "data";
+    public void refreshData(){ //sendRefreshRequest
+        /*String cmd = "data";
         //send command to database for raspberry to fetch
         AbstractCommand command = new AbstractCommand(cmd);
         //TODO: add if (UID != null) to all classes
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(UID).child("watchCommand").push();
+        mDatabase.setValue(command);*/
         String level = "5";
         AbstractMessages data = new AbstractMessages(watchToken, level);
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("messages").push();
         mDatabase.setValue(data);
     }
+
+
+    @Override
+    public void onClick(View view) {
+        //do what you want to do when button is clicked
+        switch (view.getId()) {
+            case R.id.refreshData:
+                refreshData();
+                break;
+        }
+    }
+
 }

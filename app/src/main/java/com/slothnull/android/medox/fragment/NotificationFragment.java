@@ -1,13 +1,16 @@
-package com.slothnull.android.medox;
+package com.slothnull.android.medox.fragment;
 
-import android.app.Activity;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.util.Log;
-import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -16,11 +19,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.Abstract.AbstractNotification;
+import com.slothnull.android.medox.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Notifications extends Activity {
+public class NotificationFragment extends Fragment implements View.OnClickListener {
+
     //TODO: error some times list view doesn't view any item "in first activity load only"
     //if you press back then go to activity again it works well
     private static final String TAG = "Notifications";
@@ -28,24 +33,34 @@ public class Notifications extends Activity {
     public ArrayAdapter arrayAdapter;
     public List<String> arrayList = new ArrayList<String>();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notifications);
+    View view;
 
-        notificationList = (ListView)findViewById(R.id.notificationList);
-        refreshList(new View(this));
+    public NotificationFragment() {
+        // Required empty public constructor
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_notification, container, false);
+
+        notificationList = (ListView)view.findViewById(R.id.notificationList);
+        refreshList();
         notificationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(getApplicationContext(), arrayList.get(position), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), arrayList.get(position), Toast.LENGTH_LONG).show();
 
             }
         });
+        return view;
     }
+
     //TODO: refreshList adds notifications again
-    public void refreshList(View view){
+    public void refreshList(){
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -72,7 +87,17 @@ public class Notifications extends Activity {
                 .addValueEventListener(notificationListener);
         //add to list here
 
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
+        arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arrayList);
         notificationList.setAdapter(arrayAdapter);
+    }
+
+    @Override
+    public void onClick(View view) {
+        //do what you want to do when button is clicked
+        switch (view.getId()) {
+            case R.id.refreshButton:
+                refreshList();
+                break;
+        }
     }
 }

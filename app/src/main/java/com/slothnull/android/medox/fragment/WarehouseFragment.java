@@ -1,9 +1,12 @@
-package com.slothnull.android.medox;
+package com.slothnull.android.medox.fragment;
 
-import android.app.Activity;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,12 +19,15 @@ import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.Abstract.AbstractCommand;
 import com.slothnull.android.medox.Abstract.AbstractData;
 import com.slothnull.android.medox.Abstract.AbstractWarehouse;
+import com.slothnull.android.medox.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Warehouse extends Activity {
+public class WarehouseFragment extends Fragment implements View.OnClickListener {
 
+
+    View view;
     private static final String TAG = "Warehouse";
     public TextView billCount;
     public TextView billArray;
@@ -31,22 +37,29 @@ public class Warehouse extends Activity {
     public EditText drug3;
     public EditText drug4;
 
+    public WarehouseFragment() {
+        // Required empty public constructor
+    }
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_warehouse);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_warehouse, container, false);
 
-        billCount = (TextView) findViewById(R.id.textBillCount);
-        billArray = (TextView) findViewById(R.id.textBillArray);
+        billCount = (TextView) view.findViewById(R.id.textBillCount);
+        billArray = (TextView) view.findViewById(R.id.textBillArray);
 
-        drug1 = (EditText) findViewById(R.id.drug1);
-        drug2 = (EditText) findViewById(R.id.drug2);
-        drug3 = (EditText) findViewById(R.id.drug3);
-        drug4 = (EditText) findViewById(R.id.drug4);
+        drug1 = (EditText) view.findViewById(R.id.drug1);
+        drug2 = (EditText) view.findViewById(R.id.drug2);
+        drug3 = (EditText) view.findViewById(R.id.drug3);
+        drug4 = (EditText) view.findViewById(R.id.drug4);
+        return view;
     }
 
     //TODO: add warehouse class has drug names and a way to change it
-    public void addData(View view) { //sendRefreshRequest
+    public void addData() { //sendRefreshRequest
         //send command to database for raspberry to fetch
         String cmd;
         if (billArray.getText() != null) {
@@ -61,7 +74,7 @@ public class Warehouse extends Activity {
         }
     }
 
-    public void getBillCount(View view){
+    public void getBillCount(){
 
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -90,7 +103,7 @@ public class Warehouse extends Activity {
 
     }
 
-    public void getNames(View view){
+    public void getNames(){
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -134,7 +147,7 @@ public class Warehouse extends Activity {
 
     }
 
-    public void updateNames(View view){
+    public void updateNames(){
         //clear class first
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference cDatabase = FirebaseDatabase.getInstance().getReference()
@@ -151,6 +164,24 @@ public class Warehouse extends Activity {
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
                     .child("users").child(UID).child("warehouse").push();
             mDatabase.setValue(warehouse.get(i));
+        }
+    }
+    @Override
+    public void onClick(View view) {
+        //do what you want to do when button is clicked
+        switch (view.getId()) {
+            case R.id.updateNames:
+                updateNames();
+                break;
+            case R.id.getNames:
+                getNames();
+                break;
+            case R.id.getBillCount:
+                getBillCount();
+                break;
+            case R.id.addData:
+                addData();
+                break;
         }
     }
 }
