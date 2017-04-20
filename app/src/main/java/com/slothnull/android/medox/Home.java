@@ -103,7 +103,7 @@ public class Home extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.signout) {
-            signout();
+            signOut();
             finish();
             return true;
         }if (i == R.id.settings) {
@@ -113,10 +113,8 @@ public class Home extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
         }
     }
-    public void signout(){
-        FirebaseAuth mAuth;
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.signOut();
+    public void signOut(){
+        Authentication.signOut();
         Intent intent = new Intent(this, Authentication.class);
         startActivity(intent);
     }

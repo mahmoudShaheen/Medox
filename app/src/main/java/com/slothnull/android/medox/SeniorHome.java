@@ -47,6 +47,8 @@ public class SeniorHome extends AppCompatActivity {
             }
         });
 
+        //TODO: update fragments for Senior
+        //TODO: ALSO add checks and config class
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
@@ -115,7 +117,7 @@ public class SeniorHome extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.signout) {
-            signout();
+            signOut();
             finish();
             return true;
         }if (i == R.id.settings) {
@@ -125,10 +127,8 @@ public class SeniorHome extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
         }
     }
-    public void signout(){
-        FirebaseAuth mAuth;
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.signOut();
+    public void signOut(){
+        Authentication.signOut();
         Intent intent = new Intent(this, Authentication.class);
         startActivity(intent);
     }
