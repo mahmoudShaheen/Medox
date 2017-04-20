@@ -28,6 +28,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -73,7 +74,8 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
         String appType = sharedPreferences.getString("appType","");
 
-        try{
+        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+        if(auth != null){
             String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
             mDatabase = FirebaseDatabase.getInstance().getReference();
             if (appType.equals("care")){
@@ -83,7 +85,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
             }else{
                 Log.e(TAG, "error Sending Token: undefined appType");
             }
-        }catch (Exception e){
+        }else{
             Log.i(TAG,"user must be signed to update token");
             Log.i(TAG,"Don't worry Token will be added when user sign in");
         }

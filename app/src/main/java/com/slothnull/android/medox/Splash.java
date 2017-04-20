@@ -8,12 +8,15 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.slothnull.android.medox.service.IndicatorsService;
 import com.slothnull.android.medox.service.LocationService;
 
 public class Splash extends Activity {
+    String TAG = "Splash Activity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,21 +25,23 @@ public class Splash extends Activity {
         SharedPreferences sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
         //check if user is already signed-in or not
         //if not call Authentication Activity
-        boolean auth;
-        Intent intent = new Intent();
-        auth = intent.getBooleanExtra("auth", false);
-        if(!auth){
+
+        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+        if(auth == null){
             callAuth();
+            Log.i(TAG, "1");
         }else{
             //if user signed in
             //go to Home Activity according to user type
             String appType = sharedPreferences.getString("appType","");
+            Log.i(TAG, appType );
             if (appType.equals("care")){
                 callCare();
             }else if( appType.equals("senior") ){
                 callSenior();
             }else{ //user signed but undefined app type
                 callAuth();
+                Log.i(TAG, "2");
             }
         }
     }
@@ -54,7 +59,7 @@ public class Splash extends Activity {
         finish();
     }
     private void callSenior(){
-        Intent intent = new Intent(this, Home.class);
+        Intent intent = new Intent(this, SeniorHome.class);
         startActivity(intent);
         enableServices();
         triggerServices();

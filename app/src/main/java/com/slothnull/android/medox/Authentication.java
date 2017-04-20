@@ -133,7 +133,6 @@ public class Authentication extends Activity {
 
         // Go to MainActivity
         Intent intent = new Intent(Authentication.this, Splash.class);
-        intent.putExtra("auth", true);
         startActivity(intent);
         finish();
     }

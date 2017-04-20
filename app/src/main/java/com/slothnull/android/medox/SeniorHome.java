@@ -21,6 +21,7 @@ import com.slothnull.android.medox.fragment.IndicatorsFragment;
 import com.slothnull.android.medox.fragment.LocationFragment;
 import com.slothnull.android.medox.fragment.NotificationFragment;
 import com.slothnull.android.medox.fragment.ScheduleFragment;
+import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 import com.slothnull.android.medox.fragment.StatusFragment;
 import com.slothnull.android.medox.fragment.WarehouseFragment;
 
@@ -36,17 +37,6 @@ public class SeniorHome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
-        mViewPager.setOnLongClickListener(new View.OnLongClickListener() {
-
-            @Override
-            public boolean onLongClick(View v) {
-                //TODO: call Emergency fragment
-                //add code here
-                return true;
-            }
-        });
-
         //TODO: update fragments for Senior
         //TODO: ALSO add checks and config class
         // Create the adapter that will return a fragment for each section
@@ -57,7 +47,7 @@ public class SeniorHome extends AppCompatActivity {
                     new NotificationFragment(),
                     new ScheduleFragment(),
                     new WarehouseFragment(),
-                    new EmergencyFragment(),
+                    new SeniorEmergencyFragment(),
                     new LocationFragment()
             };
             /*
@@ -106,6 +96,16 @@ public class SeniorHome extends AppCompatActivity {
         mainTab.setBackgroundResource(R.drawable.emergency);
         mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(6);
         mainTab.setBackgroundResource(R.drawable.location);
+
+        mViewPager.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                //TODO: call Emergency fragment
+                //add code here
+                return true;
+            }
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
