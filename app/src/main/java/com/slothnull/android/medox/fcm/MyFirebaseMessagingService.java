@@ -135,9 +135,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param messageBody FCM message body received.
      */
     private void sendCareNotification(String title, String messageBody, int level) {
-        Intent intent = new Intent(this, Home.class); //TODO: To Notification
+        Intent intent = new Intent(this, Home.class);
         if (level == 1){
-            intent = new Intent(this, Home.class); //TODO: To Emergency
+            intent = new Intent(this, Home.class);
+            intent.putExtra("position", 5);
+        }else{
+            intent.putExtra("position", 3);
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, level /* Request code */, intent,
@@ -189,7 +192,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param messageBody FCM message body received.
      */
     private void sendSeniorNotification(String title, String messageBody, int level) {
-        Intent intent = new Intent(this, SeniorHome.class);//TODO: To Emergency
+        Intent intent = new Intent(this, SeniorHome.class);
+        intent.putExtra("position", 5);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, level /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);

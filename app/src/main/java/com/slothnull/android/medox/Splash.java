@@ -17,7 +17,7 @@ import com.slothnull.android.medox.service.LocationService;
 
 public class Splash extends Activity {
     String TAG = "Splash Activity";
-
+    //TODO: Services not running
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

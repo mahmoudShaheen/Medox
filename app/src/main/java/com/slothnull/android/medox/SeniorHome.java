@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,11 +32,16 @@ public class SeniorHome extends AppCompatActivity {
 
     private FragmentPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Intent intent = getIntent();
+        position = intent.getIntExtra("position", -1);
+        Log.i(TAG, Integer.toString(position));
 
         //TODO: update fragments for Senior
         //TODO: ALSO add checks and config class
@@ -97,6 +103,9 @@ public class SeniorHome extends AppCompatActivity {
         mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(6);
         mainTab.setBackgroundResource(R.drawable.location);
 
+        if (position != -1){
+            mViewPager.setCurrentItem(position);
+        }
         mViewPager.setOnLongClickListener(new View.OnLongClickListener() {
 
             @Override

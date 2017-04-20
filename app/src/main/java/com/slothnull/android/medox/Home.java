@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,11 +30,16 @@ public class Home extends AppCompatActivity {
 
     private FragmentPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Intent intent = getIntent();
+        position = intent.getIntExtra("position", -1);
+        Log.i(TAG, Integer.toString(position));
 
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -92,6 +98,10 @@ public class Home extends AppCompatActivity {
         mainTab.setBackgroundResource(R.drawable.emergency);
         mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(6);
         mainTab.setBackgroundResource(R.drawable.location);
+
+        if (position != -1){
+            mViewPager.setCurrentItem(position);
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
