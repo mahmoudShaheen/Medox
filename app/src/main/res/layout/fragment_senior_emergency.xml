@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.slothnull.android.medox.fragment.SeniorEmergencyFragment">
+
+    <Button
+        android:id="@+id/buttonEmergency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:onClick="sendEmergency"
+        android:text="emergency" />
+
+    <Button
+        android:id="@+id/buttonDoor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonEmergency"
+        android:layout_centerHorizontal="true"
+        android:onClick="sendDoor"
+        android:text="open door" />
+
+    <Button
+        android:id="@+id/buttonWarehouse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonEmergency"
+        android:layout_centerHorizontal="true"
+        android:onClick="sendWarehouse"
+        android:text="open warehouse" />
+</android.widget.RelativeLayout>
