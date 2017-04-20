@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.slothnull.android.medox.fragment.EmergencyFragment;
@@ -21,10 +22,11 @@ import com.slothnull.android.medox.fragment.IndicatorsFragment;
 import com.slothnull.android.medox.fragment.LocationFragment;
 import com.slothnull.android.medox.fragment.NotificationFragment;
 import com.slothnull.android.medox.fragment.ScheduleFragment;
+import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 import com.slothnull.android.medox.fragment.StatusFragment;
 import com.slothnull.android.medox.fragment.WarehouseFragment;
 
-public class Home extends AppCompatActivity {
+public class SeniorHome extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
@@ -41,6 +43,8 @@ public class Home extends AppCompatActivity {
         position = intent.getIntExtra("position", -1);
         Log.i(TAG, Integer.toString(position));
 
+        //TODO: update fragments for Senior
+        //TODO: ALSO add checks and config class
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
@@ -49,7 +53,7 @@ public class Home extends AppCompatActivity {
                     new NotificationFragment(),
                     new ScheduleFragment(),
                     new WarehouseFragment(),
-                    new EmergencyFragment(),
+                    new SeniorEmergencyFragment(),
                     new LocationFragment()
             };
             /*
@@ -102,6 +106,15 @@ public class Home extends AppCompatActivity {
         if (position != -1){
             mViewPager.setCurrentItem(position);
         }
+        mViewPager.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                //TODO: call Emergency fragment
+                //add code here
+                return true;
+            }
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

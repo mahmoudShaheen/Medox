@@ -27,6 +27,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -40,6 +41,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.slothnull.android.medox.Abstract.AbstractNotification;
 import com.slothnull.android.medox.Home;
 import com.slothnull.android.medox.R;
+import com.slothnull.android.medox.SeniorHome;
+import com.slothnull.android.medox.service.LocationService;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -72,6 +75,34 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
 
         Log.d(TAG, "From: " + remoteMessage.getFrom());
+
+        SharedPreferences sharedPreferences;
+        sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
+        String appType = sharedPreferences.getString("appType","");
+
+        if (appType.equals("care")){
+            onCareMessageReceived(remoteMessage);
+        }else if( appType.equals("senior") ){
+            onSeniorMessageReceived(remoteMessage);
+        }else{
+            Log.e(TAG, "error Sending Notification: undefined appType");
+        }
+
+
+
+        /*
+        // Check if message contains a notification payload.
+        if (remoteMessage.getNotification() != null) {
+            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            sendNotification("Notification Message", remoteMessage.getNotification().getBody(), '0');
+        }*/
+
+        // Also if you intend on generating your own notifications as a result of a received FCM
+        // message, here is where that should be initiated. See sendNotification method below.
+    }
+    // [END receive_message]
+
+    private void onCareMessageReceived(RemoteMessage remoteMessage) {
         Map<String,String> payload;
         int level;
         String message;
@@ -88,7 +119,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String time = DateFormat.getDateTimeInstance().format(new Date());
 
             //send notification to user
-            sendNotification(title, message, level);
+            sendCareNotification(title, message, level);
 
             //send notification to database to access it later in Notification Activity
             AbstractNotification notification = new AbstractNotification(String.valueOf(level), title, message, time);
@@ -96,29 +127,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
                     .child("users").child(UID).child("notification").push();
             mDatabase.setValue(notification);
-
         }
-        /*
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            sendNotification("Notification Message", remoteMessage.getNotification().getBody(), '0');
-        }*/
-
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
     }
-    // [END receive_message]
-
     /**
      * Create and show a simple notification containing the received FCM message.
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String title, String messageBody, int level) {
-        Intent intent = new Intent(this, Home.class); //TODO: To Notification
+    private void sendCareNotification(String title, String messageBody, int level) {
+        Intent intent = new Intent(this, Home.class);
         if (level == 1){
-            intent = new Intent(this, Home.class); //TODO: To Emergency
+            intent = new Intent(this, Home.class);
+            intent.putExtra("position", 5);
+        }else{
+            intent.putExtra("position", 3);
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, level /* Request code */, intent,
@@ -137,6 +159,70 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(level /* ID of notification */, notificationBuilder.build());
+    }
+
+    private void onSeniorMessageReceived(RemoteMessage remoteMessage) {
+        Map<String,String> payload;
+        int level;
+        String message;
+        String title;
+
+        // Check if message contains a data payload.
+        if (remoteMessage.getData().size() > 0) {
+            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+
+            payload = new HashMap<>(remoteMessage.getData());
+            level = Integer.parseInt(payload.get("level"));
+            message = payload.get("message");
+            title = payload.get("title");
+
+            if (level == 5){
+                //data request
+                sendSeniorData();
+            }else{
+                //send notification to user
+                sendSeniorNotification(title, message, level);
+            }
+        }
+    }
+
+    /**
+     * Create and show a simple notification containing the received FCM message.
+     *
+     * @param messageBody FCM message body received.
+     */
+    private void sendSeniorNotification(String title, String messageBody, int level) {
+        Intent intent = new Intent(this, SeniorHome.class);
+        intent.putExtra("position", 5);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, level /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_notification_round) //TODO: no icon showed in notification
+                .setContentTitle(title)
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(level /* ID of notification */, notificationBuilder.build());
+    }
+
+    public void sendSeniorData(){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        /*mDatabase.child("users").child(UID).child("data").child("heartRate")
+                .setValue(String.valueOf(IndicatorsService.heartRate));*/
+        mDatabase.child("users").child(UID).child("data").child("latitude")
+                .setValue(String.valueOf(LocationService.latitude));
+        mDatabase.child("users").child(UID).child("data").child("longitude")
+                .setValue(String.valueOf(LocationService.longitude));
     }
 
 }

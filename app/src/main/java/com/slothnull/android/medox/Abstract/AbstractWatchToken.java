@@ -10,15 +10,15 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 // [START user_class]
 @IgnoreExtraProperties
-public class AbstractToken {
+public class AbstractWatchToken {
 
     public String watch;
 
-    public AbstractToken() {
+    public AbstractWatchToken() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public AbstractToken(String token) {
+    public AbstractWatchToken(String token) {
         this.watch = token;
     }
 
