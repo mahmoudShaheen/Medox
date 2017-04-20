@@ -23,6 +23,8 @@ package com.slothnull.android.medox.fcm;
  */
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -67,10 +69,20 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     private void sendRegistrationToServer(String token) {
         // TO DO: Implement this method to send token to your app server.
         //send value to FDB in users/UID/mobileToken
+        SharedPreferences sharedPreferences;
+        sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
+        String appType = sharedPreferences.getString("appType","");
+
         try{
             String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
             mDatabase = FirebaseDatabase.getInstance().getReference();
-            mDatabase.child("users").child(UID).child("token").child("mobile").setValue(token);
+            if (appType.equals("care")){
+                mDatabase.child("users").child(UID).child("token").child("mobile").setValue(token);
+            }else if( appType.equals("senior") ){
+                mDatabase.child("users").child(UID).child("token").child("watch").setValue(token);
+            }else{
+                Log.e(TAG, "error Sending Token: undefined appType");
+            }
         }catch (Exception e){
             Log.i(TAG,"user must be signed to update token");
             Log.i(TAG,"Don't worry Token will be added when user sign in");
