@@ -23,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.Abstract.AbstractCommand;
 import com.slothnull.android.medox.Abstract.AbstractData;
 import com.slothnull.android.medox.Abstract.AbstractMessages;
-import com.slothnull.android.medox.Abstract.AbstractToken;
+import com.slothnull.android.medox.Abstract.AbstractWatchToken;
 import com.slothnull.android.medox.R;
 
 public class LocationFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
@@ -112,7 +112,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Vi
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                AbstractToken token = dataSnapshot.getValue(AbstractToken.class);
+                AbstractWatchToken token = dataSnapshot.getValue(AbstractWatchToken.class);
                 if (token != null) {
                     watchToken = token.watch;
                     // ...

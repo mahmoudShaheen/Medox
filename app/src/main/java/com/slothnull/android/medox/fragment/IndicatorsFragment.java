@@ -17,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.Abstract.AbstractData;
 import com.slothnull.android.medox.Abstract.AbstractMessages;
-import com.slothnull.android.medox.Abstract.AbstractToken;
+import com.slothnull.android.medox.Abstract.AbstractWatchToken;
 import com.slothnull.android.medox.R;
 
 public class IndicatorsFragment extends Fragment implements View.OnClickListener {
@@ -81,7 +81,7 @@ public class IndicatorsFragment extends Fragment implements View.OnClickListener
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                AbstractToken token = dataSnapshot.getValue(AbstractToken.class);
+                AbstractWatchToken token = dataSnapshot.getValue(AbstractWatchToken.class);
                 if (token != null) {
                     watchToken = token.watch;
                     // ...
