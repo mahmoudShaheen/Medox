@@ -132,7 +132,9 @@ public class Authentication extends Activity {
         sharedPreferences.edit().putString("appType", type).apply();
 
         // Go to MainActivity
-        startActivity(new Intent(Authentication.this, Home.class));
+        Intent intent = new Intent(Authentication.this, Splash.class);
+        intent.putExtra("auth", true);
+        startActivity(intent);
         finish();
     }
 
@@ -219,4 +221,9 @@ public class Authentication extends Activity {
         return type;
     }
 
+    public static void signOut() {
+        FirebaseAuth firebaseAuth;
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.signOut();
+    }
 }

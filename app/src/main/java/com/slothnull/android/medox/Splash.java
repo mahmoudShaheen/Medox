@@ -22,25 +22,26 @@ public class Splash extends Activity {
         SharedPreferences sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
         //check if user is already signed-in or not
         //if not call Authentication Activity
-        try{
-            String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        }catch(Exception e){
+        boolean auth;
+        Intent intent = new Intent();
+        auth = intent.getBooleanExtra("auth", false);
+        if(!auth){
             callAuth();
-        }
-
-        //if user signed in
-        //go to Home Activity according to user type
-        String appType = sharedPreferences.getString("appType","");
-        if (appType.equals("care")){
-            callCare();
-        }else if( appType.equals("senior") ){
-            callSenior();
         }else{
-            callAuth();
+            //if user signed in
+            //go to Home Activity according to user type
+            String appType = sharedPreferences.getString("appType","");
+            if (appType.equals("care")){
+                callCare();
+            }else if( appType.equals("senior") ){
+                callSenior();
+            }else{ //user signed but undefined app type
+                callAuth();
+            }
         }
-
     }
     private void callAuth(){
+        Authentication.signOut();
         Intent intent = new Intent(this, Authentication.class);
         startActivity(intent);
         finish();
@@ -82,7 +83,7 @@ public class Splash extends Activity {
     private void enableServices(){
         Context context = getApplicationContext();
         PackageManager pm = context.getPackageManager();
-        int disbledCheck = pm.COMPONENT_ENABLED_STATE_DISABLED;
+        int disabledCheck = pm.COMPONENT_ENABLED_STATE_DISABLED;
 
         int locationCheck = pm.getComponentEnabledSetting(
                 new ComponentName(context, LocationService.class));
@@ -90,14 +91,14 @@ public class Splash extends Activity {
         int indicatorsCheck = pm.getComponentEnabledSetting(
                 new ComponentName(context, IndicatorsService.class));
 
-        if (locationCheck == disbledCheck) {
+        if (locationCheck == disabledCheck) {
             pm.setComponentEnabledSetting(
                     new ComponentName(context, LocationService.class),
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                     PackageManager.DONT_KILL_APP);
         }
 
-        if (indicatorsCheck == disbledCheck) {
+        if (indicatorsCheck == disabledCheck) {
             pm.setComponentEnabledSetting(
                     new ComponentName(context, IndicatorsService.class),
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
