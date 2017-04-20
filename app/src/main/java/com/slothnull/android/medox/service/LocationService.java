@@ -30,6 +30,7 @@ import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 public class LocationService extends Service implements LocationListener {
 
     private static final String TAG = "LocationService";
+    public static boolean check;
     public static final String BROADCAST_ACTION = "Hello World";
     public LocationManager locationManager;
     public static double latitude;
@@ -55,6 +56,7 @@ public class LocationService extends Service implements LocationListener {
     //https://developer.android.com/training/permissions/requesting.html
     @Override
     public void onStart(Intent intent, int startId) {
+        check = true;
         setData();
         try{
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -111,6 +113,7 @@ public class LocationService extends Service implements LocationListener {
     public void onDestroy() {
         // handler.removeCallbacks(sendUpdatesToUI);
         super.onDestroy();
+        check = false;
         Log.v("STOP_SERVICE", "DONE");
         locationManager.removeUpdates(this);
     }

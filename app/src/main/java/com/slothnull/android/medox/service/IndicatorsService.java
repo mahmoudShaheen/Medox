@@ -27,6 +27,7 @@ import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 public class IndicatorsService extends Service {
 
     private static final String TAG = "IndicatorsService";
+    public static boolean check;
     public static final String BROADCAST_ACTION = "Hello World";
     public HeartRateListener listener;
     //Sensor and SensorManager
@@ -42,6 +43,7 @@ public class IndicatorsService extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
+        check = true;
         setData();
         mSensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
         mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
@@ -101,6 +103,7 @@ public class IndicatorsService extends Service {
     public void onDestroy() {
         // handler.removeCallbacks(sendUpdatesToUI);
         super.onDestroy();
+        check = false;
         Log.v("STOP_SERVICE", "DONE");
         if (mSensorManager!=null)
             mSensorManager.unregisterListener(listener);

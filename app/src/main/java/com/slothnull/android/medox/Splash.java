@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,40 +60,74 @@ public class Splash extends Activity {
         finish();
     }
     public void triggerServices(){
-        Intent location = new Intent(this, LocationService.class);
-        startService(location);
-        Intent indicators = new Intent(this, IndicatorsService.class);
-        startService(indicators);
+        if(!LocationService.check){
+            Intent location = new Intent(this, LocationService.class);
+            startService(location);
+        }
+        if(!IndicatorsService.check){
+            Intent indicators = new Intent(this, IndicatorsService.class);
+            startService(indicators);
+        }
     }
 
     private void stopServices(){
-        stopService(new Intent(this, LocationService.class));
-        stopService(new Intent(this, IndicatorsService.class));
+        if(LocationService.check){
+            stopService(new Intent(this, LocationService.class));
+        }
+        if(IndicatorsService.check){
+            stopService(new Intent(this, IndicatorsService.class));
+        }
     }
 
     private void enableServices(){
         Context context = getApplicationContext();
         PackageManager pm = context.getPackageManager();
-        pm.setComponentEnabledSetting(
-                new ComponentName(context, LocationService.class),
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP);
-        pm.setComponentEnabledSetting(
-                new ComponentName(context, IndicatorsService.class),
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP);
+        int disbledCheck = pm.COMPONENT_ENABLED_STATE_DISABLED;
+
+        int locationCheck = pm.getComponentEnabledSetting(
+                new ComponentName(context, LocationService.class));
+
+        int indicatorsCheck = pm.getComponentEnabledSetting(
+                new ComponentName(context, IndicatorsService.class));
+
+        if (locationCheck == disbledCheck) {
+            pm.setComponentEnabledSetting(
+                    new ComponentName(context, LocationService.class),
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP);
+        }
+
+        if (indicatorsCheck == disbledCheck) {
+            pm.setComponentEnabledSetting(
+                    new ComponentName(context, IndicatorsService.class),
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP);
+        }
     }
 
-    private void disableServices(){
+    private void disableServices() {
         Context context = getApplicationContext();
         PackageManager pm = context.getPackageManager();
-        pm.setComponentEnabledSetting(
-                new ComponentName(context, LocationService.class),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
-        pm.setComponentEnabledSetting(
-                new ComponentName(context, IndicatorsService.class),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
+        int enabledCheck = pm.COMPONENT_ENABLED_STATE_ENABLED;
+
+        int locationCheck = pm.getComponentEnabledSetting(
+                new ComponentName(context, LocationService.class));
+
+        int indicatorsCheck = pm.getComponentEnabledSetting(
+                new ComponentName(context, IndicatorsService.class));
+
+        if (locationCheck == enabledCheck) {
+            pm.setComponentEnabledSetting(
+                    new ComponentName(context, LocationService.class),
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP);
+        }
+
+        if (indicatorsCheck == enabledCheck) {
+            pm.setComponentEnabledSetting(
+                    new ComponentName(context, IndicatorsService.class),
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP);
+        }
     }
 }
