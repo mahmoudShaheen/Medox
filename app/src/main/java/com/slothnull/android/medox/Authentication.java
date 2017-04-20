@@ -1,13 +1,16 @@
 package com.slothnull.android.medox;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.app.ProgressDialog;
 
@@ -35,6 +38,8 @@ public class Authentication extends Activity {
     private EditText mEmailField;
     private EditText mPasswordField;
 
+    private RadioGroup signInRadioGroup;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +51,8 @@ public class Authentication extends Activity {
         // Views
         mEmailField = (EditText) findViewById(R.id.fieldEmail);
         mPasswordField = (EditText) findViewById(R.id.fieldPassword);
+
+        signInRadioGroup = (RadioGroup) findViewById(R.id.signInRadioGroup);
     }
 
     @Override
@@ -118,6 +125,11 @@ public class Authentication extends Activity {
         // Write new user
         writeNewUser(user.getUid(), username, user.getEmail());
 
+        //set app type in shared prefs.
+        String type = appType();
+        SharedPreferences sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
+        sharedPreferences.edit().putString("appType", type).apply();
+
         // Go to MainActivity
         startActivity(new Intent(Authentication.this, Home.class));
         finish();
@@ -180,6 +192,19 @@ public class Authentication extends Activity {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
+    }
+
+    public String appType(){
+        String type = "";
+        int selectedId = signInRadioGroup.getCheckedRadioButtonId();
+
+        if (selectedId == R.id.careRadio){
+            type = "care";
+        }
+        if (selectedId == R.id.seniorRadio){
+            type = "senior";
+        }
+        return type;
     }
 
 }

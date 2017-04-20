@@ -132,6 +132,8 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
                 cmd += ",";
                 cmd += ((TextView)view.findViewById(R.id.drug4Picker)).getText();
                 break;
+            default:
+                break;
         }
         builder.show();
     }
