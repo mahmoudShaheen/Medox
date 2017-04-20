@@ -27,13 +27,9 @@ public class Splash extends Activity {
         //go to Home Activity according to user type
         String appType = sharedPreferences.getString("appType","");
         if (appType.equals("care")){
-            Intent intent = new Intent(this, Home.class);
-            startActivity(intent);
-            finish();
+            callCare();
         }else if( appType.equals("senior") ){
-            Intent intent = new Intent(this, Home.class);
-            startActivity(intent);
-            finish();
+            callSenior();
         }else{
             callAuth();
         }
@@ -41,6 +37,16 @@ public class Splash extends Activity {
     }
     private void callAuth(){
         Intent intent = new Intent(this, Authentication.class);
+        startActivity(intent);
+        finish();
+    }
+    private void callCare(){
+        Intent intent = new Intent(this, Home.class);
+        startActivity(intent);
+        finish();
+    }
+    private void callSenior(){
+        Intent intent = new Intent(this, Home.class);
         startActivity(intent);
         finish();
     }
