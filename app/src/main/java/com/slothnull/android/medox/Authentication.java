@@ -39,6 +39,7 @@ public class Authentication extends Activity {
     private EditText mPasswordField;
 
     private RadioGroup signInRadioGroup;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class Authentication extends Activity {
         mPasswordField = (EditText) findViewById(R.id.fieldPassword);
 
         signInRadioGroup = (RadioGroup) findViewById(R.id.signInRadioGroup);
+        sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
     }
 
     @Override
@@ -127,7 +129,6 @@ public class Authentication extends Activity {
 
         //set app type in shared prefs.
         String type = appType();
-        SharedPreferences sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
         sharedPreferences.edit().putString("appType", type).apply();
 
         // Go to MainActivity
@@ -170,8 +171,19 @@ public class Authentication extends Activity {
         newUser.put("username", user.username);
         //create a child or update if already exists
         mDatabase.child("users").child(userId).child("config").updateChildren(newUser);
+        updateToken(userId);
+    }
+
+    private void updateToken(String userId){
         String token = FirebaseInstanceId.getInstance().getToken();
-        mDatabase.child("users").child(userId).child("token").child("mobile").setValue(token);
+        String appType = sharedPreferences.getString("appType","");
+        if (appType.equals("care")){
+            mDatabase.child("users").child(userId).child("token").child("mobile").setValue(token);
+        }else if( appType.equals("senior") ){
+            mDatabase.child("users").child(userId).child("token").child("watch").setValue(token);
+        }else{
+            Log.e(TAG, "error Sending Token: undefined appType");
+        }
     }
     // [END basic_write]
 
