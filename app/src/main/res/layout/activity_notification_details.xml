@@ -47,6 +47,7 @@
         android:layout_weight="1"
         android:clickable="true"
         android:onClick="callEmergency"
+        app:elevation="24dp"
         app:fabSize="mini"
         app:srcCompat="@android:drawable/ic_media_play" />
 

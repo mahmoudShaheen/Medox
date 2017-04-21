@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +28,7 @@ import com.slothnull.android.medox.Abstract.AbstractUser;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Authentication extends Activity {
+public class Authentication extends AppCompatActivity {
 
 
     private static final String TAG = "SignInActivity";
