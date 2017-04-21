@@ -16,13 +16,5 @@
         android:layout_height="match_parent"
         tools:context="com.slothnull.android.medox.fragment.LocationFragment" />
 
-    <Button
-        android:id="@+id/refreshData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:text="refresh" />
-
 
 </android.widget.RelativeLayout>

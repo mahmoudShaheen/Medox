@@ -18,62 +18,51 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/logobig" />
 
     <EditText
         android:id="@+id/fieldEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:id="@+id/fieldPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/fieldEmail"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:layout_below="@+id/fieldEmail"
+        android:layout_alignParentStart="true" />
 
-    <Button
-        android:id="@+id/buttonSignIn"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="signIn"
-        android:text="Sign In"
-        android:layout_centerVertical="true"
-        android:layout_alignEnd="@+id/fieldPassword" />
-
-    <Button
-        android:id="@+id/buttonSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="signUp"
-        android:text="Sign Up"
-        android:layout_below="@+id/buttonSignIn"
-        android:layout_alignStart="@+id/buttonSignIn"
-        android:layout_marginTop="13dp" />
+        android:clickable="true"
+        app:elevation="22dp"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_send"
+        android:layout_below="@+id/fieldPassword"
+        android:layout_alignEnd="@+id/fieldPassword"
+        android:layout_marginTop="10dp" />
 
     <RadioGroup
+        android:id="@+id/signInRadioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/signInRadioGroup"
+        android:checkedButton="@+id/careRadio"
         android:layout_below="@+id/textView6"
         android:layout_alignStart="@+id/fieldPassword">
 
@@ -99,10 +88,10 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/signInRadioGroup"
-        android:layout_alignTop="@+id/buttonSignIn"
         android:text="Sign-in As:"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_alignTop="@+id/floatingActionButton"
+        android:layout_alignStart="@+id/signInRadioGroup" />
 
 </android.widget.RelativeLayout>
