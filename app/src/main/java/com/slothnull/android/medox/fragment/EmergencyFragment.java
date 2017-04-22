@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +14,19 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.Abstract.AbstractCommand;
+import com.slothnull.android.medox.Abstract.AbstractWarehouse;
 import com.slothnull.android.medox.R;
 
 //TODO: add other commands
 public class EmergencyFragment extends Fragment implements View.OnClickListener {
+
+    private static final String TAG = "Emergency";
 
     private AlertDialog.Builder builder ;
     private String cmd = "";
@@ -27,6 +34,11 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
     private RadioGroup radioGroup;
     private TableLayout tableLayout;
     View view;
+
+    private TextView drug1;
+    private TextView drug2;
+    private TextView drug3;
+    private TextView drug4;
 
     public EmergencyFragment() {
         // Required empty public constructor
@@ -37,6 +49,12 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_emergency, container, false);
+
+        drug1 = (TextView) view.findViewById(R.id.drug1View);
+        drug2 = (TextView) view.findViewById(R.id.drug2View);
+        drug3 = (TextView) view.findViewById(R.id.drug3View);
+        drug4 = (TextView) view.findViewById(R.id.drug4View);
+        getNames();
 
         sendButton = (FloatingActionButton) view.findViewById(R.id.sendCommand);
         sendButton.setOnClickListener(this);
@@ -133,5 +151,49 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
                 break;
         }
         builder.show();
+    }
+
+    public void getNames(){
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        ValueEventListener warehouseListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                    AbstractWarehouse warehouse = child.getValue(AbstractWarehouse.class);
+                    if (warehouse.id != null) {
+                        switch (warehouse.id) {
+                            case "1":
+                                drug1.setText(warehouse.name);
+                                break;
+                            case "2":
+                                drug2.setText(warehouse.name);
+                                break;
+                            case "3":
+                                drug3.setText(warehouse.name);
+                                break;
+                            case "4":
+                                drug4.setText(warehouse.name);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        mDatabase.child("users").child(UID).child("warehouse")
+                .addValueEventListener(warehouseListener);
+        //add to list here
+
     }
 }

@@ -29,11 +29,13 @@ public class AddSchedule extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_schedule);
-        getNames();
+
+
         drug1 = (TextView) findViewById(R.id.drug1View);
         drug2 = (TextView) findViewById(R.id.drug2View);
         drug3 = (TextView) findViewById(R.id.drug3View);
         drug4 = (TextView) findViewById(R.id.drug4View);
+        getNames();
     }
 
     public void addEntry(View view){
