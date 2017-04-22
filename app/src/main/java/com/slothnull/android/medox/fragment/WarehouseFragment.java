@@ -1,13 +1,17 @@
 package com.slothnull.android.medox.fragment;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,13 +33,27 @@ public class WarehouseFragment extends Fragment implements View.OnClickListener 
 
     View view;
     private static final String TAG = "Warehouse";
-    public TextView billCount;
-    public TextView billArray;
 
-    public EditText drug1;
-    public EditText drug2;
-    public EditText drug3;
-    public EditText drug4;
+    public TextView drug1;
+    public TextView drug2;
+    public TextView drug3;
+    public TextView drug4;
+
+    public EditText drug1Picker;
+    public EditText drug2Picker;
+    public EditText drug3Picker;
+    public EditText drug4Picker;
+
+    public EditText drug1Edit;
+    public EditText drug2Edit;
+    public EditText drug3Edit;
+    public EditText drug4Edit;
+
+    private FloatingActionButton addData;
+    private FloatingActionButton updateNames;
+
+    private AlertDialog.Builder addDataBuilder;
+    private AlertDialog.Builder updateNamesBuilder;
 
     public WarehouseFragment() {
         // Required empty public constructor
@@ -48,30 +66,30 @@ public class WarehouseFragment extends Fragment implements View.OnClickListener 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_warehouse, container, false);
 
-        billCount = (TextView) view.findViewById(R.id.textBillCount);
-        billArray = (TextView) view.findViewById(R.id.textBillArray);
+        drug1 = (TextView) view.findViewById(R.id.drug1View);
+        drug2 = (TextView) view.findViewById(R.id.drug2View);
+        drug3 = (TextView) view.findViewById(R.id.drug3View);
+        drug4 = (TextView) view.findViewById(R.id.drug4View);
 
-        drug1 = (EditText) view.findViewById(R.id.drug1);
-        drug2 = (EditText) view.findViewById(R.id.drug2);
-        drug3 = (EditText) view.findViewById(R.id.drug3);
-        drug4 = (EditText) view.findViewById(R.id.drug4);
+        drug1Picker = (EditText) view.findViewById(R.id.drug1Picker);
+        drug2Picker = (EditText) view.findViewById(R.id.drug2Picker);
+        drug3Picker = (EditText) view.findViewById(R.id.drug3Picker);
+        drug4Picker = (EditText) view.findViewById(R.id.drug4Picker);
+
+        drug1Edit = (EditText) view.findViewById(R.id.drug1Edit);
+        drug2Edit = (EditText) view.findViewById(R.id.drug2Edit);
+        drug3Edit = (EditText) view.findViewById(R.id.drug3Edit);
+        drug4Edit = (EditText) view.findViewById(R.id.drug4Edit);
+
+        addData = (FloatingActionButton) view.findViewById(R.id.addData);
+        addData.setOnClickListener(this);
+        updateNames = (FloatingActionButton) view.findViewById(R.id.updateNames);
+        updateNames.setOnClickListener(this);
+
+        buildCheckDialog();
+        getNames();
+        getBillCount();
         return view;
-    }
-
-    //TODO: add warehouse class has drug names and a way to change it
-    public void addData() { //sendRefreshRequest
-        //send command to database for raspberry to fetch
-        String cmd;
-        if (billArray.getText() != null) {
-            cmd = "addBills," + billArray.getText().toString();
-            AbstractCommand command = new AbstractCommand(cmd);
-            String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                    .child("users").child(UID).child("command").push();
-            mDatabase.setValue(command);
-        }else{
-            //no data added
-        }
     }
 
     public void getBillCount(){
@@ -85,7 +103,11 @@ public class WarehouseFragment extends Fragment implements View.OnClickListener 
                 // Get Post object and use the values to update the UI
                 AbstractData data = dataSnapshot.getValue(AbstractData.class);
                 if (data != null) {
-                    billCount.setText(data.billCount);
+                    String[] billArray = data.billCount.split(",");
+                    drug1Picker.setHint(billArray[0]);
+                    drug2Picker.setHint(billArray[1]);
+                    drug3Picker.setHint(billArray[2]);
+                    drug4Picker.setHint(billArray[3]);
                     // ...
                 }
             }
@@ -155,10 +177,10 @@ public class WarehouseFragment extends Fragment implements View.OnClickListener 
         cDatabase.setValue(null);
 
         List<AbstractWarehouse> warehouse = new ArrayList<>();
-        warehouse.add(new AbstractWarehouse("1",drug1.getText().toString()));
-        warehouse.add(new AbstractWarehouse("2",drug2.getText().toString()));
-        warehouse.add(new AbstractWarehouse("3",drug3.getText().toString()));
-        warehouse.add(new AbstractWarehouse("4",drug4.getText().toString()));
+        warehouse.add(new AbstractWarehouse("1",drug1Edit.getText().toString()));
+        warehouse.add(new AbstractWarehouse("2",drug2Edit.getText().toString()));
+        warehouse.add(new AbstractWarehouse("3",drug3Edit.getText().toString()));
+        warehouse.add(new AbstractWarehouse("4",drug4Edit.getText().toString()));
 
         for (int i=0;i<4;i++) {
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
@@ -166,22 +188,91 @@ public class WarehouseFragment extends Fragment implements View.OnClickListener 
             mDatabase.setValue(warehouse.get(i));
         }
     }
+
+    public void addData() { //sendRefreshRequest
+        //send command to database for raspberry to fetch
+        String cmd;
+        String bills = "";
+        cmd = "addBills,";
+        bills += ((TextView)view.findViewById(R.id.drug1Picker)).getText();
+        cmd += getBills(bills);
+        cmd += ",";
+        bills = "";
+        bills +=((TextView)view.findViewById(R.id.drug2Picker)).getText();
+        cmd += getBills(bills);
+        cmd += ",";
+        bills = "";
+        bills += ((TextView)view.findViewById(R.id.drug3Picker)).getText();
+        cmd += getBills(bills);
+        cmd += ",";
+        bills = "";
+        bills += ((TextView)view.findViewById(R.id.drug4Picker)).getText();
+        cmd += getBills(bills);
+
+        AbstractCommand command = new AbstractCommand(cmd);
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(UID).child("command").push();
+        mDatabase.setValue(command);
+    }
+
     @Override
     public void onClick(View view) {
         //do what you want to do when button is clicked
         switch (view.getId()) {
             case R.id.updateNames:
-                updateNames();
-                break;
-            case R.id.getNames:
-                getNames();
-                break;
-            case R.id.getBillCount:
-                getBillCount();
+                updateNamesBuilder.show();
                 break;
             case R.id.addData:
-                addData();
+                addDataBuilder.show();
                 break;
         }
+    }
+    private String getBills(String bills){
+        if (bills.isEmpty()){
+            bills = "0";
+        }
+        return bills;
+    }
+
+
+    private void buildCheckDialog(){
+       addDataBuilder = new AlertDialog.Builder(getActivity());
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Yes button clicked
+                        addData();
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+        addDataBuilder.setMessage("New Bills count will be sent to Box, Are you sure?")
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener);
+
+        updateNamesBuilder = new AlertDialog.Builder(getActivity());
+        DialogInterface.OnClickListener dialog2ClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Yes button clicked
+                        updateNames();
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+        updateNamesBuilder.setMessage("Names will be updated, Are you sure?")
+                .setPositiveButton("Yes", dialog2ClickListener)
+                .setNegativeButton("No", dialog2ClickListener);
     }
 }
