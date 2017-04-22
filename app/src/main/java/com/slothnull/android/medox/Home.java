@@ -52,16 +52,16 @@ public class Home extends AppCompatActivity {
                     new EmergencyFragment(),
                     new LocationFragment()
             };
-            /*
+
             private final String[] mFragmentNames = new String[] {
                     "Status",
-                    "Ind",
-                    "Not",
-                    "Sched",
-                    "War",
-                    "Emer",
-                    "Loc"
-            };*/
+                    "Indicators",
+                    "Notifications",
+                    "Schedule",
+                    "Warehouse",
+                    "Emergency",
+                    "Location"
+            };
             @Override
             public Fragment getItem(int position) {
                 return mFragments[position];
@@ -70,11 +70,11 @@ public class Home extends AppCompatActivity {
             public int getCount() {
                 return mFragments.length;
             }
-            /*
+
             @Override
             public CharSequence getPageTitle(int position) {
                 return mFragmentNames[position];
-            }*/
+            }
         };
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);

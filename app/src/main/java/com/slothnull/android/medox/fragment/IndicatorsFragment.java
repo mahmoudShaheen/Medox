@@ -45,8 +45,8 @@ public class IndicatorsFragment extends Fragment implements View.OnClickListener
 
         pedo = (TextView) view.findViewById(R.id.textPedo);
         heartRate = (TextView) view.findViewById(R.id.textHeartRate);
-        longitude = (TextView) view.findViewById(R.id.textLongitude);
-        latitude = (TextView) view.findViewById(R.id.textLatitude);
+        //longitude = (TextView) view.findViewById(R.id.textLongitude);
+        //latitude = (TextView) view.findViewById(R.id.textLatitude);
 
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -60,8 +60,8 @@ public class IndicatorsFragment extends Fragment implements View.OnClickListener
                 if (data != null) {
                     pedo.setText(data.pedo);
                     heartRate.setText(data.heartRate);
-                    longitude.setText(data.longitude);
-                    latitude.setText(data.latitude);
+                    //longitude.setText(data.longitude);
+                    //latitude.setText(data.latitude);
                     // ...
                 }
             }
@@ -121,12 +121,12 @@ public class IndicatorsFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        //do what you want to do when button is clicked
+        /*//do what you want to do when button is clicked
         switch (view.getId()) {
             case R.id.refreshData:
                 refreshData();
                 break;
-        }
+        }*/
     }
 
 }
