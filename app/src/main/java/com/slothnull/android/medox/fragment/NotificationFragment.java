@@ -1,7 +1,9 @@
 package com.slothnull.android.medox.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.Abstract.AbstractNotification;
 import com.slothnull.android.medox.NotificationDetails;
 import com.slothnull.android.medox.R;
+import com.slothnull.android.medox.Splash;
 import com.slothnull.android.medox.viewholder.NotificationViewHolder;
 
 
@@ -112,11 +115,23 @@ public class NotificationFragment extends Fragment {
     }
 
     public Query getQuery(DatabaseReference databaseReference){
-
-        Query recentNotificationsQuery = databaseReference.child("users").child(getUid())
-                .child("notification")
-                .limitToFirst(100);
+        Query recentNotificationsQuery = databaseReference;
+        SharedPreferences sharedPreferences = getContext()
+                .getSharedPreferences(getContext().getPackageName(), Context.MODE_PRIVATE);
+        String appType = sharedPreferences.getString("appType","");
+        Log.i(TAG, appType );
+        if (appType.equals("care")){
+            recentNotificationsQuery = databaseReference.child("users").child(getUid())
+                    .child("notification")
+                    .limitToFirst(100);
+        }else if( appType.equals("senior") ){
+            recentNotificationsQuery = databaseReference.child("users").child(getUid())
+                    .child("watchNotification")
+                    .limitToFirst(100);
+        }else{ //user signed but undefined app type
+            Log.i(TAG, "undefined app type");
+            getActivity().finish();
+        }
         return recentNotificationsQuery;
     }
-
 }

@@ -3,7 +3,6 @@ package com.slothnull.android.medox.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -24,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.Abstract.AbstractCommand;
 import com.slothnull.android.medox.Abstract.AbstractEmergency;
 import com.slothnull.android.medox.Abstract.AbstractMobileToken;
+import com.slothnull.android.medox.Abstract.AbstractWarehouse;
 import com.slothnull.android.medox.R;
 
 /**
@@ -31,7 +31,7 @@ import com.slothnull.android.medox.R;
  */
 public class SeniorEmergencyFragment extends Fragment implements View.OnClickListener {
 
-    private static final String TAG = "Emergency";
+    private static final String TAG = "SeniorEmergency";
     public static String mobileToken;
 
     private AlertDialog.Builder builder ;
@@ -41,6 +41,11 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
     private RadioGroup radioGroup;
     private TableLayout tableLayout;
     View view;
+
+    private TextView drug1;
+    private TextView drug2;
+    private TextView drug3;
+    private TextView drug4;
 
     public SeniorEmergencyFragment() {
         // Required empty public constructor
@@ -52,6 +57,12 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view  = inflater.inflate(R.layout.fragment_senior_emergency, container, false);
+
+        drug1 = (TextView) view.findViewById(R.id.drug1View);
+        drug2 = (TextView) view.findViewById(R.id.drug2View);
+        drug3 = (TextView) view.findViewById(R.id.drug3View);
+        drug4 = (TextView) view.findViewById(R.id.drug4View);
+        getNames();
 
 
         sendButton = (FloatingActionButton) view.findViewById(R.id.sendCommand);
@@ -135,7 +146,7 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
                 .child("users").child(UID).child("command").push();
         mDatabase.setValue(command);
     }
-    //TODO: Convert to Radio buttons or list and one button
+
     @Override
     public void onClick(View v) {
 
@@ -170,20 +181,35 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
                 cmd = "restartRPI";
                 break;
             case (R.id.dispense):
-                cmd = "dispense";
+                String bills;
+                cmd = "dispense,";
+                bills = "";
+                bills += ((TextView)view.findViewById(R.id.drug1Picker)).getText();
+                cmd += getBills(bills);
                 cmd += ",";
-                cmd += ((TextView)view.findViewById(R.id.drug1Picker)).getText();
+                bills = "";
+                bills +=((TextView)view.findViewById(R.id.drug2Picker)).getText();
+                cmd += getBills(bills);
                 cmd += ",";
-                cmd += ((TextView)view.findViewById(R.id.drug2Picker)).getText();
+                bills = "";
+                bills += ((TextView)view.findViewById(R.id.drug3Picker)).getText();
+                cmd += getBills(bills);
                 cmd += ",";
-                cmd += ((TextView)view.findViewById(R.id.drug3Picker)).getText();
-                cmd += ",";
-                cmd += ((TextView)view.findViewById(R.id.drug4Picker)).getText();
+                bills = "";
+                bills += ((TextView)view.findViewById(R.id.drug4Picker)).getText();
+                cmd += getBills(bills);
                 break;
             default:
                 break;
         }
         builder.show();
+    }
+
+    private String getBills(String bills){
+        if (bills.isEmpty()){
+            bills = "0";
+        }
+        return bills;
     }
 
     public void sendEmergency(){
@@ -205,6 +231,50 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
         }else{
             //TODO: add another way here for emergency
         }
+    }
+
+    public void getNames(){
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        ValueEventListener warehouseListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                    AbstractWarehouse warehouse = child.getValue(AbstractWarehouse.class);
+                    if (warehouse.id != null) {
+                        switch (warehouse.id) {
+                            case "1":
+                                drug1.setText(warehouse.name);
+                                break;
+                            case "2":
+                                drug2.setText(warehouse.name);
+                                break;
+                            case "3":
+                                drug3.setText(warehouse.name);
+                                break;
+                            case "4":
+                                drug4.setText(warehouse.name);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        mDatabase.child("users").child(UID).child("warehouse")
+                .addValueEventListener(warehouseListener);
+        //add to list here
+
     }
 
 }

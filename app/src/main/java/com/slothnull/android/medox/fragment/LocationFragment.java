@@ -137,6 +137,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Vi
     //TODO: add marker for mobile Location and distance
     //TODO: move refresh button it hides google maps app shortcut
     //TODO: auto Refresh
+    //TODO: send one request for data
+    //TODO: and one to stop data onDestroy
     public void updateMarker(){
         // clear map Add a marker for watch and move the camera
         mMap.clear();
@@ -158,12 +160,12 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Vi
     }
     @Override
     public void onClick(View view) {
-        //do what you want to do when button is clicked
+        /*//do what you want to do when button is clicked
         switch (view.getId()) {
             case R.id.refreshData:
                 refreshData();
                 break;
-        }
+        }*/
     }
 
 }
