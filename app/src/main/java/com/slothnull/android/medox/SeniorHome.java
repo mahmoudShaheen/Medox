@@ -86,6 +86,7 @@ public class SeniorHome extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        /*
         View mainTab;
 
         mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(0);
@@ -102,7 +103,7 @@ public class SeniorHome extends AppCompatActivity {
         mainTab.setBackgroundResource(R.drawable.emergency);
         mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(6);
         mainTab.setBackgroundResource(R.drawable.location);
-
+        */
         if (position != -1){
             mViewPager.setCurrentItem(position);
         }
