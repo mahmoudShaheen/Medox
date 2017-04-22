@@ -1,6 +1,8 @@
 package com.slothnull.android.medox.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.Abstract.AbstractSchedule;
+import com.slothnull.android.medox.AddSchedule;
 import com.slothnull.android.medox.R;
 
 import java.util.ArrayList;
@@ -44,6 +47,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
         scheduleList = (ListView)view.findViewById(R.id.listSchedule);
+        view.findViewById(R.id.addEntry).setOnClickListener(this);
         refreshList();
         scheduleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -104,18 +108,6 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
         scheduleList.setAdapter(arrayAdapter);
     }
 
-    public void addEntry(){
-        TextView time =  (TextView) view.findViewById(R.id.textTime);
-        TextView billArray =  (TextView) view.findViewById(R.id.textBillArray);
-        //add new schedule
-        AbstractSchedule timetable = new AbstractSchedule(time.getText().toString(), billArray.getText().toString());
-        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(UID).child("timetable").push();
-        mDatabase.setValue(timetable);
-        //refreshList();
-    }
-
     public void deleteEntry(String key){
         //TODO error after deleting from adapter the error message is mentioned after the function
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -137,7 +129,8 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
         //do what you want to do when button is clicked
         switch (view.getId()) {
             case R.id.addEntry:
-                addEntry();
+                Intent intent = new Intent(getActivity(), AddSchedule.class);
+                startActivity(intent);
                 break;
         }
     }
