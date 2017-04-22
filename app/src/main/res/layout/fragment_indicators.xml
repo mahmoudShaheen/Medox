@@ -13,7 +13,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="24dp"
-        android:text="TextView"
+        android:text="Please Wait... "
         android:textAlignment="center"
         android:textSize="20sp" />
 
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textView2"
-        android:text="TextView"
+        android:text="Please Wait... "
         android:textAlignment="center"
         android:textSize="20sp" />
 
@@ -31,18 +31,18 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="heartRate"
-        android:textSize="20sp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="Heart Rate "
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="pedo"
-        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:text="Pedo Rate"
+        android:textSize="20sp" />
 
 </android.widget.RelativeLayout>

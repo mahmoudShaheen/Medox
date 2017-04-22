@@ -110,8 +110,7 @@ public class SeniorHome extends AppCompatActivity {
 
             @Override
             public boolean onLongClick(View v) {
-                //TODO: call Emergency fragment
-                //add code here
+                mViewPager.setCurrentItem(5);
                 return true;
             }
         });

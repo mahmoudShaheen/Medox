@@ -11,19 +11,19 @@
     tools:context="com.slothnull.android.medox.NotificationDetails">
 
     <include
-        android:id="@+id/post_author_layout"
+        android:id="@+id/include_header"
         layout="@layout/include_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true" />
 
     <include
-        android:id="@+id/post_text_layout"
+        android:id="@+id/include_text"
         layout="@layout/include_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/post_author_layout"
+        android:layout_below="@+id/include_header"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp" />
 
