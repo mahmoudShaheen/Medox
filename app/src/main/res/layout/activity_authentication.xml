@@ -50,13 +50,26 @@
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/fieldPassword"
+        android:layout_below="@+id/fieldPassword"
+        android:layout_marginTop="10dp"
         android:clickable="true"
+        android:onClick="signIn"
         app:elevation="22dp"
         app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_menu_send"
-        android:layout_below="@+id/fieldPassword"
-        android:layout_alignEnd="@+id/fieldPassword"
-        android:layout_marginTop="10dp" />
+        app:srcCompat="@android:drawable/ic_menu_send" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/signInRadioGroup"
+        android:layout_alignStart="@+id/floatingActionButton"
+        android:clickable="true"
+        android:onClick="signUp"
+        app:elevation="22dp"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_add" />
 
     <RadioGroup
         android:id="@+id/signInRadioGroup"
