@@ -23,7 +23,6 @@ import com.slothnull.android.medox.Abstract.AbstractCommand;
 import com.slothnull.android.medox.Abstract.AbstractWarehouse;
 import com.slothnull.android.medox.R;
 
-//TODO: add other commands
 public class EmergencyFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "Emergency";
@@ -137,20 +136,35 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
                 cmd = "restartRPI";
                 break;
             case (R.id.dispense):
-                cmd = "dispense";
+                String bills;
+                cmd = "dispense,";
+                bills = "";
+                bills += ((TextView)view.findViewById(R.id.drug1Picker)).getText();
+                cmd += getBills(bills);
                 cmd += ",";
-                cmd += ((TextView)view.findViewById(R.id.drug1Picker)).getText();
+                bills = "";
+                bills +=((TextView)view.findViewById(R.id.drug2Picker)).getText();
+                cmd += getBills(bills);
                 cmd += ",";
-                cmd += ((TextView)view.findViewById(R.id.drug2Picker)).getText();
+                bills = "";
+                bills += ((TextView)view.findViewById(R.id.drug3Picker)).getText();
+                cmd += getBills(bills);
                 cmd += ",";
-                cmd += ((TextView)view.findViewById(R.id.drug3Picker)).getText();
-                cmd += ",";
-                cmd += ((TextView)view.findViewById(R.id.drug4Picker)).getText();
+                bills = "";
+                bills += ((TextView)view.findViewById(R.id.drug4Picker)).getText();
+                cmd += getBills(bills);
                 break;
             default:
                 break;
         }
         builder.show();
+    }
+
+    private String getBills(String bills){
+        if (bills.isEmpty()){
+            bills = "0";
+        }
+        return bills;
     }
 
     public void getNames(){

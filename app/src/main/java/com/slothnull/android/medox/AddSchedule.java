@@ -41,7 +41,7 @@ public class AddSchedule extends AppCompatActivity {
     public void addEntry(View view){
         TimePicker timePicker =  (TimePicker) findViewById(R.id.timePicker);
         String billArray ="";
-        String bills = "";
+        String bills;
         String hour = timePicker.getCurrentHour().toString();
         String minute = timePicker.getCurrentMinute().toString();
         if(minute.equals("0")){
