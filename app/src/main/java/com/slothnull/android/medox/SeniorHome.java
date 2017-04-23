@@ -1,6 +1,5 @@
 package com.slothnull.android.medox;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -13,13 +12,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.slothnull.android.medox.fragment.EmergencyFragment;
 import com.slothnull.android.medox.fragment.IndicatorsFragment;
-import com.slothnull.android.medox.fragment.LocationFragment;
 import com.slothnull.android.medox.fragment.NotificationFragment;
 import com.slothnull.android.medox.fragment.ScheduleFragment;
 import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
@@ -53,8 +47,7 @@ public class SeniorHome extends AppCompatActivity {
                     new NotificationFragment(),
                     new ScheduleFragment(),
                     new WarehouseFragment(),
-                    new SeniorEmergencyFragment(),
-                    new LocationFragment()
+                    new SeniorEmergencyFragment()
             };
 
             private final String[] mFragmentNames = new String[] {
@@ -63,8 +56,7 @@ public class SeniorHome extends AppCompatActivity {
                     "Notifications",
                     "Schedule",
                     "Warehouse",
-                    "Emergency",
-                    "Location"
+                    "Emergency"
             };
             @Override
             public Fragment getItem(int position) {
@@ -101,8 +93,6 @@ public class SeniorHome extends AppCompatActivity {
         mainTab.setBackgroundResource(R.drawable.warehouse);
         mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(5);
         mainTab.setBackgroundResource(R.drawable.emergency);
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(6);
-        mainTab.setBackgroundResource(R.drawable.location);
         */
         if (position != -1){
             mViewPager.setCurrentItem(position);

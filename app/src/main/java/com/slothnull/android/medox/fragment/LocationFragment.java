@@ -1,18 +1,28 @@
 package com.slothnull.android.medox.fragment;
 
+import android.content.Context;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -20,21 +30,27 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.slothnull.android.medox.Abstract.AbstractCommand;
 import com.slothnull.android.medox.Abstract.AbstractData;
 import com.slothnull.android.medox.Abstract.AbstractMessages;
 import com.slothnull.android.medox.Abstract.AbstractWatchToken;
 import com.slothnull.android.medox.R;
 
-public class LocationFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
+public class LocationFragment extends Fragment implements OnMapReadyCallback,LocationListener {
 
     private GoogleMap mMap;
     MapView mMapView;
     private static final String TAG = "Location";
     public double longitude = 0;
     public double latitude = 0;
+
+    public Location mLocation;
+    public double mLongitude = 0;
+    public double mLatitude = 0;
+    public String mProvider = "";
     public static String watchToken;
     View view;
+
+    public LocationManager locationManager;
 
     public LocationFragment() {
         // Required empty public constructor
@@ -45,44 +61,41 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Vi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_location, container, false);
-
+        //map initialization
         mMapView = (MapView) view.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
-
         mMapView.onResume(); // needed to get the map to display immediately
-
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         mMapView.getMapAsync(this);
-        /*
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        */
+
+        getWatchToken();
+        refreshData();
+        
+        try{
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+            mProvider = locationManager.getBestProvider(new Criteria(), true);
+
+            mLocation = locationManager.getLastKnownLocation(mProvider);
+            Log.i(TAG, "Location achieved!");
+            locationManager.requestLocationUpdates(mProvider, 400, 1, this);
+        }catch(SecurityException e){
+            Log.i(TAG, "No location :(");
+        }
+
         return view;
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        //get remote location
         mMap = googleMap;
-
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-
         ValueEventListener dataListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -92,22 +105,76 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Vi
                     longitude = Double.parseDouble(data.longitude);
                     latitude = Double.parseDouble(data.latitude);
                     updateMarker();
-                    // ...
-
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
             }
         };
         mDatabase.child("users").child(UID).child("data")
                 .addValueEventListener(dataListener);
-        //add to list here
+    }
 
+    public void updateMarker(){
+        // clear map Add a marker for watch and move the camera
+        mMap.clear();
+        LatLng watch = new LatLng(latitude, longitude);
+        LatLng mobile = new LatLng(mLatitude, mLongitude);
+        LatLngBounds bounds = getBuilder(watch, mobile);
+
+        checkDistance();
+
+        //view other location
+        Marker watchMarker = mMap.addMarker(new MarkerOptions()
+                .position(watch)
+                .title("Watch")
+                .icon(BitmapDescriptorFactory
+                .defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        watchMarker.showInfoWindow();
+
+        //view my location
+        mMap.addMarker(new MarkerOptions().position(mobile).title("Mobile"));
+
+        //animate camera to view the two locations
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
+        mMap.animateCamera(cu);
+    }
+
+    public LatLngBounds getBuilder(LatLng loc1, LatLng loc2){
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(loc1);
+        builder.include(loc2);
+        LatLngBounds bounds = builder.build();
+        return bounds;
+    }
+    public void refreshData(){ //sendRefreshRequest
+        String level = "5";
+        AbstractMessages data = new AbstractMessages(watchToken, level);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("messages").push();
+        mDatabase.setValue(data);
+    }
+
+    public void stopData(){
+        String level = "6";
+        AbstractMessages data = new AbstractMessages(watchToken, level);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("messages").push();
+        mDatabase.setValue(data);
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopData();
+        //stop location update
+        Log.v("STOP_SERVICE", "DONE");
+        locationManager.removeUpdates(this);
+    }
+    public void getWatchToken(){
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         ValueEventListener tokenListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -115,57 +182,54 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Vi
                 AbstractWatchToken token = dataSnapshot.getValue(AbstractWatchToken.class);
                 if (token != null) {
                     watchToken = token.watch;
-                    // ...
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
             }
         };
         mDatabase.child("users").child(UID).child("token")
                 .addValueEventListener(tokenListener);
-        //add to list here
-
-
-        updateMarker(); //initial place
     }
 
-    //TODO: add marker for mobile Location and distance
-    //TODO: move refresh button it hides google maps app shortcut
-    //TODO: auto Refresh
-    //TODO: send one request for data
-    //TODO: and one to stop data onDestroy
-    public void updateMarker(){
-        // clear map Add a marker for watch and move the camera
-        mMap.clear();
-        LatLng watch = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(watch).title("Watch"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(watch, 12));
+    public void onLocationChanged(final Location location) {
+        updateMarker();
+        Log.i(TAG, "Location changed");
+
+        mLatitude = location.getLatitude();
+        mLongitude = location.getLongitude();
+        mProvider = location.getProvider();
+        Log.d(TAG, "Latitude" + Double.toString(location.getLatitude()));
+        Log.d(TAG, "Longitude" + Double.toString(location.getLongitude()));
+        Log.d(TAG, "provider" + location.getProvider());
     }
 
-    public void refreshData(){ //sendRefreshRequest
-        String cmd = "data";
-        //send command to database for raspberry to fetch
-        AbstractCommand command = new AbstractCommand(cmd);
-        //TODO: add if (UID != null) to all classes
-        String level = "5";
-        AbstractMessages data = new AbstractMessages(watchToken, level);
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("messages").push();
-        mDatabase.setValue(command);
-    }
-    @Override
-    public void onClick(View view) {
-        /*//do what you want to do when button is clicked
-        switch (view.getId()) {
-            case R.id.refreshData:
-                refreshData();
-                break;
-        }*/
+    public void checkDistance(){
+        if(mLatitude == 0 || mLongitude == 0)
+            return;
+        Location myLocation = new Location(mProvider);
+        myLocation.setLatitude(mLatitude);
+        myLocation.setLongitude(mLongitude);
+
+        Location otherLocation = new Location(mProvider);
+        otherLocation.setLatitude(latitude);
+        otherLocation.setLongitude(longitude);
+
+        float distance = myLocation.distanceTo(otherLocation);
+        Integer dist = Math.round(distance);
+        ((TextView)view.findViewById(R.id.distanceView)).setText(String.valueOf(dist) + " meter");
     }
 
+    public void onProviderDisabled(String provider) {
+        Log.i(TAG, "Gps Disabled");
+    }
+
+    public void onProviderEnabled(String provider) {
+        Log.i(TAG, "Gps Enabled");
+    }
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        Log.i(TAG, "Gps status changed");
+    }
 }
