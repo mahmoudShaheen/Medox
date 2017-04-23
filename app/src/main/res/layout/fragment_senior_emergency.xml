@@ -94,13 +94,13 @@
         android:id="@+id/EmergencyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/radioGroup"
-        android:layout_alignTop="@+id/sendCommand"
         android:clickable="true"
         app:backgroundTint="@android:color/holo_red_light"
         app:elevation="24dp"
         app:fabSize="normal"
-        app:srcCompat="@android:drawable/ic_menu_myplaces" />
+        app:srcCompat="@android:drawable/ic_menu_myplaces"
+        android:layout_alignTop="@+id/sendCommand"
+        android:layout_centerHorizontal="true" />
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -227,4 +227,14 @@
         </TableRow>
 
     </TableLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/callButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:elevation="24dp"
+        app:fabSize="normal"
+        app:srcCompat="@android:drawable/stat_sys_phone_call"
+        android:layout_alignTop="@+id/EmergencyButton"
+        android:layout_alignStart="@+id/radioGroup" />
 </android.widget.RelativeLayout>

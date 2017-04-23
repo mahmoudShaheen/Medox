@@ -2,9 +2,12 @@ package com.slothnull.android.medox.fragment;
 
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -35,7 +38,6 @@ import java.net.InetAddress;
 /**
  * A simple {@link Fragment} subclass.
  */
-//TODO: add skype call "here and in Emergency fragment"
 public class SeniorEmergencyFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "SeniorEmergency";
@@ -45,6 +47,7 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
     private String cmd = "";
     FloatingActionButton sendButton;
     FloatingActionButton EmergencyButton;
+    FloatingActionButton callButton;
     private RadioGroup radioGroup;
     private TableLayout tableLayout;
     View view;
@@ -77,6 +80,9 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
 
         EmergencyButton = (FloatingActionButton) view.findViewById(R.id.EmergencyButton);
         EmergencyButton.setOnClickListener(this);
+
+        callButton = (FloatingActionButton) view.findViewById(R.id.callButton);
+        callButton.setOnClickListener(this);
 
         buildCheckDialog();
         radioGroup = (RadioGroup) view.findViewById(R.id.radioGroup);
@@ -154,11 +160,32 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
         mDatabase.setValue(command);
     }
 
+
+    public static void skype(String number, Context ctx) {
+        try {
+            //Intent sky = new Intent("android.intent.action.CALL_PRIVILEGED");
+            //the above line tries to create an intent for which the skype app doesn't supply public api
+
+            Intent sky = new Intent("android.intent.action.VIEW");
+            sky.setData(Uri.parse("skype:" + number));
+            Log.d("UTILS", "tel:" + number);
+            ctx.startActivity(sky);
+        } catch (ActivityNotFoundException e) {
+            Log.e("SKYPE CALL", "Skype failed", e);
+        }
+
+    }
+
     @Override
     public void onClick(View v) {
 
         if (v == EmergencyButton){
             sendEmergency();
+            return;
+        }
+        if (v == callButton){
+            Log.i(TAG, "call button pressed");
+            skype("live:mahmoud_shaheen", getActivity()); //TODO: get mail from config class
             return;
         }
 
@@ -237,7 +264,7 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
             mDatabase.setValue(emergency);
         }else{
             String sms = title + "\n" + message;
-            sendSMS(c, "01141668111", sms);
+            sendSMS(c, "01141668111", sms); //TODO: get number from config class
         }
     }
 
