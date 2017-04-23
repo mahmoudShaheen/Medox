@@ -40,6 +40,9 @@ public class Settings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         checkListeners();
         checkArray = new String[3];
+        checkArray[0] = "0";
+        checkArray[1] = "0";
+        checkArray[2] = "0";
         maxHeart = (EditText) findViewById(R.id.maxHeart);
         minHeart = (EditText) findViewById(R.id.minHeart);
         mobileNumber = (EditText) findViewById(R.id.mobileNumber);
@@ -99,16 +102,17 @@ public class Settings extends AppCompatActivity {
 
             mLocation = locationManager.getLastKnownLocation(mProvider);
             Log.i(TAG, "Location achieved!");
-            Log.i(TAG, mLocation.toString());
         }catch(SecurityException e){
             Log.i(TAG, "No location :(");
             Toast.makeText(this,"can't get Location", Toast.LENGTH_LONG).show();
         }
     }
     public void save(View v){
+        Log.i(TAG, "Save Called");
         //send notification to database to access it later in Notification Activity
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        //TODO: String.valueOf raise errors "check location Service for other way"
         AbstractConfig config = new AbstractConfig(
                 maxDistance.getText().toString(),
                 String.valueOf(mLocation.getLatitude()),
