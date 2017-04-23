@@ -31,8 +31,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.Abstract.AbstractData;
-import com.slothnull.android.medox.Abstract.AbstractMessages;
-import com.slothnull.android.medox.Abstract.AbstractWatchToken;
 import com.slothnull.android.medox.R;
 
 public class LocationFragment extends Fragment implements OnMapReadyCallback,LocationListener {
@@ -72,9 +70,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Loc
         }
         mMapView.getMapAsync(this);
 
-        getWatchToken();
-        refreshData();
-        
         try{
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
@@ -149,49 +144,13 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Loc
         LatLngBounds bounds = builder.build();
         return bounds;
     }
-    public void refreshData(){ //sendRefreshRequest
-        String level = "5";
-        AbstractMessages data = new AbstractMessages(watchToken, level);
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("messages").push();
-        mDatabase.setValue(data);
-    }
 
-    public void stopData(){
-        String level = "6";
-        AbstractMessages data = new AbstractMessages(watchToken, level);
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("messages").push();
-        mDatabase.setValue(data);
-    }
     @Override
     public void onDestroy() {
         super.onDestroy();
-        stopData();
         //stop location update
         Log.v("STOP_SERVICE", "DONE");
         locationManager.removeUpdates(this);
-    }
-    public void getWatchToken(){
-        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        ValueEventListener tokenListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                AbstractWatchToken token = dataSnapshot.getValue(AbstractWatchToken.class);
-                if (token != null) {
-                    watchToken = token.watch;
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        mDatabase.child("users").child(UID).child("token")
-                .addValueEventListener(tokenListener);
     }
 
     public void onLocationChanged(final Location location) {

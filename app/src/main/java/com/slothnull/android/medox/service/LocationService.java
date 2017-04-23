@@ -70,8 +70,6 @@ public class LocationService extends Service implements LocationListener {
             Log.i(TAG, "No location :(");
         }
 
-
-
     }
 
     public void setData(){
@@ -124,6 +122,9 @@ public class LocationService extends Service implements LocationListener {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
         provider = location.getProvider();
+
+        sendLocData();
+
         checkDistance(latitude, longitude, provider);
         Log.d(TAG, "Latitude" + Double.toString(location.getLatitude()));
         Log.d(TAG, "Longitude" + Double.toString(location.getLongitude()));
@@ -155,5 +156,14 @@ public class LocationService extends Service implements LocationListener {
     }
     public void onStatusChanged(String provider, int status, Bundle extras) {
         Toast.makeText( getApplicationContext(), "Gps status changed", Toast.LENGTH_SHORT).show();
+    }
+    public void sendLocData(){
+        //send data to db
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase.child("users").child(UID).child("data").child("latitude")
+                .setValue(String.valueOf(latitude));
+        mDatabase.child("users").child(UID).child("data").child("longitude")
+                .setValue(String.valueOf(longitude));
     }
 }
