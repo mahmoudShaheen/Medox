@@ -19,6 +19,7 @@ public class Splash extends Activity {
     String TAG = "SplashActivity";
     //TODO: ask for permissions
     //https://developer.android.com/training/permissions/requesting.html
+    //TODO: go to settings if not configured "after Auth"
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

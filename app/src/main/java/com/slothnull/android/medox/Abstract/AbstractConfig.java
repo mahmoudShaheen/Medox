@@ -38,7 +38,7 @@ public class AbstractConfig {
             String mobileNumber,
             String careSkype,
             String seniorSkype,
-            String enabled,){
+            String enabled){
         this.maxDistance = maxDistance;
         this.homeLatitude = homeLatitude;
         this.homeLongitude = homeLongitude;
