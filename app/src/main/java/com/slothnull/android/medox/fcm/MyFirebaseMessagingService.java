@@ -176,21 +176,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             message = payload.get("message");
             title = payload.get("title");
 
-            if (level == 5){
-                //data request
-                sendSeniorData();
-            }else{
-                //send notification to user
-                sendSeniorNotification(title, message, level);
+            //send notification to user
+            sendSeniorNotification(title, message, level);
 
-                String time = DateFormat.getDateTimeInstance().format(new Date());
-                //send notification to database to access it later in Notification Activity
-                AbstractNotification notification = new AbstractNotification(String.valueOf(level), title, message, time);
-                String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                        .child("users").child(UID).child("watchNotification").push();
-                mDatabase.setValue(notification);
-            }
+            String time = DateFormat.getDateTimeInstance().format(new Date());
+            //send notification to database to access it later in Notification Activity
+            AbstractNotification notification = new AbstractNotification(String.valueOf(level), title, message, time);
+            String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
+                    .child("users").child(UID).child("watchNotification").push();
+            mDatabase.setValue(notification);
         }
     }
 
@@ -220,17 +215,4 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         notificationManager.notify(level /* ID of notification */, notificationBuilder.build());
     }
-
-    public void sendSeniorData(){
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        /*mDatabase.child("users").child(UID).child("data").child("heartRate")
-                .setValue(String.valueOf(IndicatorsService.heartRate));*/
-        mDatabase.child("users").child(UID).child("data").child("latitude")
-                .setValue(String.valueOf(LocationService.latitude));
-        mDatabase.child("users").child(UID).child("data").child("longitude")
-                .setValue(String.valueOf(LocationService.longitude));
-    }
-
 }

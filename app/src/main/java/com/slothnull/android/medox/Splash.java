@@ -18,6 +18,8 @@ import com.slothnull.android.medox.service.LocationService;
 public class Splash extends Activity {
     String TAG = "Splash Activity";
     //TODO: Services not running
+    //TODO: ask for permissions
+    //https://developer.android.com/training/permissions/requesting.html
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -117,6 +117,7 @@ public class IndicatorsService extends Service {
             if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
                 heartRate = event.values[0];
                 checkHeartRate();
+                sendIndData();
             }
         }
 
@@ -129,5 +130,12 @@ public class IndicatorsService extends Service {
 
         @Override
         public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+    }
+    public void sendIndData(){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        mDatabase.child("users").child(UID).child("data").child("heartRate")
+                .setValue(String.valueOf(heartRate));
     }
 }
