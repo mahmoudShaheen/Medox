@@ -40,7 +40,6 @@ public class SeniorHome extends AppCompatActivity {
         position = intent.getIntExtra("position", -1);
         Log.i(TAG, Integer.toString(position));
 
-        //TODO: update fragments for Senior
         //TODO: ALSO add checks and config class
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {

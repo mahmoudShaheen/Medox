@@ -2,10 +2,13 @@ package com.slothnull.android.medox.fragment;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +29,8 @@ import com.slothnull.android.medox.Abstract.AbstractEmergency;
 import com.slothnull.android.medox.Abstract.AbstractMobileToken;
 import com.slothnull.android.medox.Abstract.AbstractWarehouse;
 import com.slothnull.android.medox.R;
+
+import java.net.InetAddress;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -216,12 +222,12 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
     public void sendEmergency(){
         String title = "Emergency Button pressed From Watch!";
         String message = "Action Required IMMEDIATELY !!!!";
-        emergencyNotification(title, message);
+        Context c = getActivity().getApplicationContext();
+        emergencyNotification(c, title, message);
     }
 
-    public static void emergencyNotification(String title, String message){
-        //TODO: get response from mobile to know if message is opened or not
-        if (mobileToken != null){
+    public static void emergencyNotification(Context c, String title, String message){
+        if (mobileToken != null && isNetworkConnected(c)){
             String token = mobileToken;
             String level = "1";
 
@@ -230,8 +236,24 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
                     .child("messages").push();
             mDatabase.setValue(emergency);
         }else{
-            //TODO: add another way here for emergency "maybe SMS"
+            String sms = title + "\n" + message;
+            sendSMS(c, "01141668111", sms);
         }
+    }
+
+    public static void sendSMS(Context c, String phoneNo, String msg) {
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNo, null, msg, null, null);
+            Log.i(TAG, "SMS Sent");
+        } catch (Exception ex) {
+            Log.e(TAG, ex.getMessage());
+        }
+    }
+    private static boolean isNetworkConnected(Context c) {
+        //check connection state
+        ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return (cm.getActiveNetworkInfo() != null);
     }
 
     public void getNames(){
