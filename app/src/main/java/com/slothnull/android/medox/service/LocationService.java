@@ -35,6 +35,8 @@ public class LocationService extends Service implements LocationListener {
     public LocationManager locationManager;
     public static double latitude;
     public static double longitude;
+    public static double oldLatitude = 0;
+    public static double oldLongitude = 0;
     public String provider;
     public Location location;
     //initially set values to avoid database delay errors
@@ -118,12 +120,18 @@ public class LocationService extends Service implements LocationListener {
         longitude = location.getLongitude();
         provider = location.getProvider();
 
-        sendLocData();
+        //to avoid sending Location if not too much change
+        boolean LatDiff = Math.abs(latitude - oldLatitude) > 0.001;
+        boolean LongDiff = Math.abs(longitude - oldLongitude) > 0.001;
+        if(LatDiff || LongDiff)
+            sendLocData();
 
         checkDistance(latitude, longitude, provider);
         Log.d(TAG, "Latitude" + Double.toString(location.getLatitude()));
         Log.d(TAG, "Longitude" + Double.toString(location.getLongitude()));
         Log.d(TAG, "provider" + location.getProvider());
+        oldLatitude = latitude;
+        oldLongitude = longitude;
     }
 
     public void checkDistance(double lat, double lon, String prov){
@@ -137,7 +145,8 @@ public class LocationService extends Service implements LocationListener {
 
         float distance = myLocation.distanceTo(homeLocation);
         if (distance > maxDistance){
-            SeniorEmergencyFragment.emergencyNotification("Location Emergency from watch",
+            Context c = getApplicationContext();
+            SeniorEmergencyFragment.emergencyNotification(c, "Location Emergency from watch",
                     "Distance is: " + distance);
         }
     }
