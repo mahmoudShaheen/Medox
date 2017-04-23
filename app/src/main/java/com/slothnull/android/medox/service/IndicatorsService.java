@@ -82,7 +82,7 @@ public class IndicatorsService extends Service {
                 .addValueEventListener(configListener);
     }
 
-    // TODO: make service never stop "Indicators, Location, Data"
+    // TODO: make service never stop "Indicators, Location, Data", start with system
     //http://stackoverflow.com/questions/15758980/android-service-needs-to-run-always-never-pause-or-stop
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
