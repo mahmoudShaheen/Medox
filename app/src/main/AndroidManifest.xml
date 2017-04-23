@@ -36,9 +36,6 @@
             android:name=".Authentication"
             android:noHistory="true" />
         <activity
-            android:name=".Welcome"
-            android:noHistory="true" />
-        <activity
             android:name=".Settings"
             android:parentActivityName=".Home" />
 
