@@ -13,12 +13,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.Abstract.AbstractConfig;
+import com.slothnull.android.medox.Splash;
 import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 
 /**
@@ -51,9 +53,6 @@ public class LocationService extends Service implements LocationListener {
         intent = new Intent(BROADCAST_ACTION);
     }
 
-
-    //TODO: ask for permission for android 6
-    //https://developer.android.com/training/permissions/requesting.html
     @Override
     public void onStart(Intent intent, int startId) {
         check = true;
@@ -158,6 +157,12 @@ public class LocationService extends Service implements LocationListener {
         Toast.makeText( getApplicationContext(), "Gps status changed", Toast.LENGTH_SHORT).show();
     }
     public void sendLocData(){
+        //if user not signed in stop service
+        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+        if(auth == null){
+            stopService(new Intent(this, LocationService.class));
+            return;
+        }
         //send data to db
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();

@@ -13,12 +13,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.slothnull.android.medox.fragment.IndicatorsFragment;
 import com.slothnull.android.medox.fragment.NotificationFragment;
 import com.slothnull.android.medox.fragment.ScheduleFragment;
 import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 import com.slothnull.android.medox.fragment.StatusFragment;
 import com.slothnull.android.medox.fragment.WarehouseFragment;
+import com.slothnull.android.medox.service.IndicatorsService;
+import com.slothnull.android.medox.service.LocationService;
 
 public class SeniorHome extends AppCompatActivity {
 
@@ -127,7 +130,11 @@ public class SeniorHome extends AppCompatActivity {
         }
     }
     public void signOut(){
-        Authentication.signOut();
+        stopService(new Intent(this, IndicatorsService.class));
+        stopService(new Intent(this, LocationService.class));
+        FirebaseAuth firebaseAuth;
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.signOut();
         Intent intent = new Intent(this, Authentication.class);
         startActivity(intent);
     }

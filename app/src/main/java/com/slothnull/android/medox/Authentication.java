@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.slothnull.android.medox.Abstract.AbstractUser;
+import com.slothnull.android.medox.service.IndicatorsService;
+import com.slothnull.android.medox.service.LocationService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -218,7 +220,9 @@ public class Authentication extends AppCompatActivity {
         return type;
     }
 
-    public static void signOut() {
+    public void signOut() {
+        stopService(new Intent(this, IndicatorsService.class));
+        stopService(new Intent(this, LocationService.class));
         FirebaseAuth firebaseAuth;
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signOut();

@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -132,6 +133,13 @@ public class IndicatorsService extends Service {
         public void onAccuracyChanged(Sensor sensor, int accuracy) {}
     }
     public void sendIndData(){
+        //if user not signed in stop service
+        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+        if(auth == null){
+            stopService(new Intent(this, IndicatorsService.class));
+            return;
+        }
+        //send data to db
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 

@@ -34,6 +34,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -75,6 +76,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
 
         Log.d(TAG, "From: " + remoteMessage.getFrom());
+
+        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+        if(auth == null){
+            return;
+        }
 
         SharedPreferences sharedPreferences;
         sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
@@ -203,7 +209,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_notification_round) //TODO: no icon showed in notification
+                .setSmallIcon(R.mipmap.ic_notification_round)
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)

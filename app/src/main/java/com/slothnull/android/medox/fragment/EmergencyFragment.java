@@ -107,7 +107,7 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
                 .child("users").child(UID).child("command").push();
         mDatabase.setValue(command);
     }
-    //TODO: Convert to Radio buttons or list and one button
+
     @Override
     public void onClick(View v) {
         //do what you want to do when button is clicked

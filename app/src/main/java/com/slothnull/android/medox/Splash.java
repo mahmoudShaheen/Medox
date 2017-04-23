@@ -48,7 +48,7 @@ public class Splash extends Activity {
         }
     }
     private void callAuth(){
-        Authentication.signOut();
+        signOut();
         Intent intent = new Intent(this, Authentication.class);
         startActivity(intent);
         finish();
@@ -68,10 +68,10 @@ public class Splash extends Activity {
         finish();
     }
     public void triggerServices(){
-        if(!LocationService.check){
+        //if(!LocationService.check){
             Intent location = new Intent(this, LocationService.class);
             startService(location);
-        }
+        //}
         if(!IndicatorsService.check){
             Intent indicators = new Intent(this, IndicatorsService.class);
             startService(indicators);
@@ -98,12 +98,12 @@ public class Splash extends Activity {
         int indicatorsCheck = pm.getComponentEnabledSetting(
                 new ComponentName(context, IndicatorsService.class));
 
-        if (locationCheck == disabledCheck) {
+        //if (locationCheck == disabledCheck) {
             pm.setComponentEnabledSetting(
                     new ComponentName(context, LocationService.class),
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                     PackageManager.DONT_KILL_APP);
-        }
+        //}
 
         if (indicatorsCheck == disabledCheck) {
             pm.setComponentEnabledSetting(
@@ -137,5 +137,12 @@ public class Splash extends Activity {
                     PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                     PackageManager.DONT_KILL_APP);
         }
+    }
+    public void signOut() {
+        stopService(new Intent(this, IndicatorsService.class));
+        stopService(new Intent(this, LocationService.class));
+        FirebaseAuth firebaseAuth;
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.signOut();
     }
 }
