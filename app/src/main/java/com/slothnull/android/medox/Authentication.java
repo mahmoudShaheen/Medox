@@ -1,6 +1,5 @@
 package com.slothnull.android.medox;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -189,8 +188,6 @@ public class Authentication extends AppCompatActivity {
     }
     // [END basic_write]
 
-    //TODO: add progress dialog to other classes
-    //TODO: keyboard handling
     private ProgressDialog mProgressDialog;
 
     public void showProgressDialog() {
