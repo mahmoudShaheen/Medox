@@ -1,6 +1,7 @@
 package com.slothnull.android.medox.service;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -44,12 +45,14 @@ public class IndicatorsService extends Service {
     @Override
     public void onStart(Intent intent, int startId) {
         setData();
+        Log.v(TAG,"START_SERVICE");
         mSensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
         mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         listener = new HeartRateListener();
         if (mSensorManager != null) {
             mSensorManager.registerListener(listener, mHeartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
+        Log.v(TAG,"START_SERVICE"+ "DONE");
     }
 
     public void setData(){
@@ -102,7 +105,7 @@ public class IndicatorsService extends Service {
     public void onDestroy() {
         // handler.removeCallbacks(sendUpdatesToUI);
         super.onDestroy();
-        Log.v("STOP_SERVICE", "DONE");
+        Log.v(TAG,"STOP_SERVICE"+ "DONE");
         if (mSensorManager!=null)
             mSensorManager.unregisterListener(listener);
     }
@@ -121,7 +124,8 @@ public class IndicatorsService extends Service {
 
         public void checkHeartRate(){
             if (heartRate > maxHeartRate || heartRate < minHeartRate){
-                SeniorEmergencyFragment.emergencyNotification("HeartRate Emergency from watch",
+                Context c = getApplicationContext();
+                SeniorEmergencyFragment.emergencyNotification(c,"HeartRate Emergency from watch",
                         "heartRate is: " + heartRate);
             }
         }
