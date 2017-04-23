@@ -29,6 +29,7 @@ import com.slothnull.android.medox.R;
 /**
  * A simple {@link Fragment} subclass.
  */
+//TODO: add skype call "here and in Emergency fragment"
 public class SeniorEmergencyFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "SeniorEmergency";
@@ -229,7 +230,7 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
                     .child("messages").push();
             mDatabase.setValue(emergency);
         }else{
-            //TODO: add another way here for emergency
+            //TODO: add another way here for emergency "maybe SMS"
         }
     }
 

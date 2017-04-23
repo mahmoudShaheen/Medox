@@ -13,6 +13,7 @@ import com.slothnull.android.medox.R;
 /**
  * A simple {@link Fragment} subclass.
  */
+//TODO: show status
 public class StatusFragment extends Fragment  implements View.OnClickListener {
 
     View view;
