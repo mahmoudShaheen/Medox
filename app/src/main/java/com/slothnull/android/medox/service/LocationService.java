@@ -20,7 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.Abstract.AbstractConfig;
-import com.slothnull.android.medox.Splash;
 import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 
 /**
@@ -32,7 +31,6 @@ import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 public class LocationService extends Service implements LocationListener {
 
     private static final String TAG = "LocationService";
-    public static boolean check;
     public static final String BROADCAST_ACTION = "Hello World";
     public LocationManager locationManager;
     public static double latitude;
@@ -55,7 +53,6 @@ public class LocationService extends Service implements LocationListener {
 
     @Override
     public void onStart(Intent intent, int startId) {
-        check = true;
         setData();
         try{
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -110,7 +107,6 @@ public class LocationService extends Service implements LocationListener {
     public void onDestroy() {
         // handler.removeCallbacks(sendUpdatesToUI);
         super.onDestroy();
-        check = false;
         Log.v("STOP_SERVICE", "DONE");
         locationManager.removeUpdates(this);
     }

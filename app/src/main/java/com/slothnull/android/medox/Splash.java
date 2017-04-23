@@ -16,8 +16,7 @@ import com.slothnull.android.medox.service.IndicatorsService;
 import com.slothnull.android.medox.service.LocationService;
 
 public class Splash extends Activity {
-    String TAG = "Splash Activity";
-    //TODO: Services not running
+    String TAG = "SplashActivity";
     //TODO: ask for permissions
     //https://developer.android.com/training/permissions/requesting.html
     @Override
@@ -68,79 +67,89 @@ public class Splash extends Activity {
         finish();
     }
     public void triggerServices(){
-        //if(!LocationService.check){
+        try{
             Intent location = new Intent(this, LocationService.class);
             startService(location);
-        //}
-        if(!IndicatorsService.check){
+        }catch(Exception e){
+            Log.e(TAG, "error Triggering Location Service");
+        }
+        try{
             Intent indicators = new Intent(this, IndicatorsService.class);
             startService(indicators);
+        }catch(Exception e){
+            Log.e(TAG, "error Triggering Indicators Service");
         }
     }
 
     private void stopServices(){
-        if(LocationService.check){
+        try{
             stopService(new Intent(this, LocationService.class));
+        }catch(Exception e){
+            Log.e(TAG, "error Stopping Location Service");
         }
-        if(IndicatorsService.check){
+        try{
             stopService(new Intent(this, IndicatorsService.class));
+        }catch (Exception e){
+            Log.e(TAG, "error Stopping Indicators Service");
         }
     }
 
     private void enableServices(){
         Context context = getApplicationContext();
         PackageManager pm = context.getPackageManager();
-        int disabledCheck = pm.COMPONENT_ENABLED_STATE_DISABLED;
 
-        int locationCheck = pm.getComponentEnabledSetting(
-                new ComponentName(context, LocationService.class));
-
-        int indicatorsCheck = pm.getComponentEnabledSetting(
-                new ComponentName(context, IndicatorsService.class));
-
-        //if (locationCheck == disabledCheck) {
+        try{
             pm.setComponentEnabledSetting(
                     new ComponentName(context, LocationService.class),
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                     PackageManager.DONT_KILL_APP);
-        //}
 
-        if (indicatorsCheck == disabledCheck) {
+
+        }catch(Exception e){
+            Log.e(TAG, "error enabling Location Service");
+        }
+        try{
             pm.setComponentEnabledSetting(
                     new ComponentName(context, IndicatorsService.class),
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                     PackageManager.DONT_KILL_APP);
+
+        }catch(Exception e){
+            Log.e(TAG, "error enabling Indicators Service");
         }
     }
 
     private void disableServices() {
         Context context = getApplicationContext();
         PackageManager pm = context.getPackageManager();
-        int enabledCheck = pm.COMPONENT_ENABLED_STATE_ENABLED;
+       try{
+           pm.setComponentEnabledSetting(
+                   new ComponentName(context, LocationService.class),
+                   PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                   PackageManager.DONT_KILL_APP);
 
-        int locationCheck = pm.getComponentEnabledSetting(
-                new ComponentName(context, LocationService.class));
 
-        int indicatorsCheck = pm.getComponentEnabledSetting(
-                new ComponentName(context, IndicatorsService.class));
+       }catch(Exception e){
+           Log.e(TAG, "error disabling Location Service");
+       }
+        try{
+           pm.setComponentEnabledSetting(
+                   new ComponentName(context, IndicatorsService.class),
+                   PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                   PackageManager.DONT_KILL_APP);
 
-        if (locationCheck == enabledCheck) {
-            pm.setComponentEnabledSetting(
-                    new ComponentName(context, LocationService.class),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                    PackageManager.DONT_KILL_APP);
-        }
-
-        if (indicatorsCheck == enabledCheck) {
-            pm.setComponentEnabledSetting(
-                    new ComponentName(context, IndicatorsService.class),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                    PackageManager.DONT_KILL_APP);
-        }
+       }catch(Exception e){
+           Log.e(TAG, "error disabling Indicators Service");
+       }
     }
+
     public void signOut() {
-        stopService(new Intent(this, IndicatorsService.class));
-        stopService(new Intent(this, LocationService.class));
+        try{
+            stopService(new Intent(this, IndicatorsService.class));
+            stopService(new Intent(this, LocationService.class));
+        }catch(Exception e){
+            Log.e(TAG, "error Stopping Services during sign-out");
+        }
         FirebaseAuth firebaseAuth;
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signOut();
