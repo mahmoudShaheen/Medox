@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -23,12 +25,16 @@ import com.slothnull.android.medox.Abstract.AbstractUser;
 import com.slothnull.android.medox.service.IndicatorsService;
 import com.slothnull.android.medox.service.LocationService;
 
+import static java.security.AccessController.getContext;
+
 public class Splash extends Activity {
+    private static final int MY_PERMISSIONS_SEND_SMS = 0;
+    private static final int MY_PERMISSIONS_LOCATION = 1;
+    private static final int MY_PERMISSIONS_BODY_SENSORS = 2;
     String TAG = "SplashActivity";
     DatabaseReference mDatabase;
     ValueEventListener configListener;
-    //TODO: ask for permissions
-    //https://developer.android.com/training/permissions/requesting.html
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +42,7 @@ public class Splash extends Activity {
         SharedPreferences sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
         //check if user is already signed-in or not
         //if not call Authentication Activity
-
+        permissions();
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
         if (auth == null) {
             callAuth();
@@ -230,4 +236,79 @@ public class Splash extends Activity {
         super.onDestroy();
         mDatabase.removeEventListener(configListener);
     }
+
+    public void permissions(){
+                "android.permission.SEND_SMS")
+                != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{"android.permission.SEND_SMS"},
+                        MY_PERMISSIONS_SEND_SMS);
+        }
+        if (ContextCompat.checkSelfPermission(this,
+                "android.permission.ACCESS_FINE_LOCATION")
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{"android.permission.ACCESS_FINE_LOCATION"},
+                    MY_PERMISSIONS_LOCATION);
+        }
+        if (ContextCompat.checkSelfPermission(this,
+                "android.permission.BODY_SENSORS")
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{"android.permission.BODY_SENSORS"},
+                    MY_PERMISSIONS_BODY_SENSORS);
+        }
+    }
+    /*
+    * permissions results -> not working
+    * also try to make permissions one by one
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_SEND_SMS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "SMS Permission granted", Toast.LENGTH_LONG).show();
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+            case MY_PERMISSIONS_BODY_SENSORS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Body Sensors Permission granted", Toast.LENGTH_LONG).show();
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+            case MY_PERMISSIONS_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Location Permission granted", Toast.LENGTH_LONG).show();
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+        }
+    }
+    */
 }
