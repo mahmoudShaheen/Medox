@@ -234,7 +234,12 @@ public class Splash extends Activity {
     @Override
     public void onDestroy(){
         super.onDestroy();
-        mDatabase.removeEventListener(configListener);
+        try{
+            mDatabase.removeEventListener(configListener);
+        }catch(Exception e){
+            Log.i(TAG, "unable to remove event Listener");
+        }
+
     }
 
     public void permissions(){

@@ -51,11 +51,13 @@
         <service
             android:name=".service.LocationService"
             android:enabled="false"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTop"/>
         <service
             android:name=".service.IndicatorsService"
             android:enabled="false"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTop"/>
 
         <!-- [START firebase_service] -->
         <service android:name=".fcm.MyFirebaseMessagingService">
