@@ -238,6 +238,7 @@ public class Splash extends Activity {
     }
 
     public void permissions(){
+        if (ContextCompat.checkSelfPermission(this,
                 "android.permission.SEND_SMS")
                 != PackageManager.PERMISSION_GRANTED) {
 
