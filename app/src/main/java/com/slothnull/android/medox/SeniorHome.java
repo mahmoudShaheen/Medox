@@ -59,7 +59,7 @@ public class SeniorHome extends AppCompatActivity {
         Intent intent = getIntent();
         position = intent.getIntExtra("position", -1);
         Log.i(TAG, Integer.toString(position));
-        
+
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
