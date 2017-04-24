@@ -348,6 +348,22 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
                     careSkype = oldConfig.careSkype;
                 if (oldConfig.mobileNumber != null)
                     mobileNumber = oldConfig.mobileNumber;
+                if(oldConfig.enabled != null){
+                    String[] checkArray = new String[3];
+                    checkArray= oldConfig.enabled.split(",");
+                    if(checkArray[0].equals("0")){ //settings
+                        view.findViewById(R.id.restartRPI).setEnabled(false);
+                        view.findViewById(R.id.openDoor).setEnabled(false);
+                    }
+                    if(checkArray[1].equals("0")){ //warehouse
+                        view.findViewById(R.id.openWarehouse).setEnabled(false);
+                        view.findViewById(R.id.clearBills).setEnabled(false);
+                    }
+                    if(checkArray[2].equals("0")){ //schedule
+                        view.findViewById(R.id.clearTimetable).setEnabled(false);
+                        view.findViewById(R.id.forceUpdateTimetable).setEnabled(false);
+                    }
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
