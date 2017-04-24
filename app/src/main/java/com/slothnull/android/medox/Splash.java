@@ -19,11 +19,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.slothnull.android.medox.Abstract.AbstractUser;
 import com.slothnull.android.medox.service.IndicatorsService;
 import com.slothnull.android.medox.service.LocationService;
 
 public class Splash extends Activity {
     String TAG = "SplashActivity";
+    DatabaseReference mDatabase;
+    ValueEventListener configListener;
     //TODO: ask for permissions
     //https://developer.android.com/training/permissions/requesting.html
     @Override
@@ -35,52 +38,57 @@ public class Splash extends Activity {
         //if not call Authentication Activity
 
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
-        if(auth == null){
+        if (auth == null) {
             callAuth();
             Log.i(TAG, "1");
-        }else{
+        } else {
             //if user signed in
             //get app type
             showProgressDialog();
-            final String appType = sharedPreferences.getString("appType","");
-            Log.i(TAG, appType );
+            final String appType = sharedPreferences.getString("appType", "");
+            Log.i(TAG, appType);
             //check if configured
             String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            mDatabase = FirebaseDatabase.getInstance().getReference()
+                    .child("users").child(UID).child("user").child("configured");
 
-            mDatabase.child("users").child(UID).child("user").child("configured")
-                    .addValueEventListener(new ValueEventListener() {
+            configListener = new ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    if(snapshot != null){
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // Get Post object and use the values to update the UI
+                    String configured = dataSnapshot.getValue(String.class);
+                    if(configured != null && configured.equals("true")){
                         //go to Home Activity according to user type
-                        if (appType.equals("care")){
+                        if (appType.equals("care")) {
                             callCare();
-                        }else if( appType.equals("senior") ){
+                        } else if (appType.equals("senior")) {
                             callSenior();
-                        }else{ //user signed but undefined app type
+                        } else { //user signed but undefined app type
                             callAuth();
                             Log.i(TAG, "2");
                         }
-                    }else{
-                        //go to Home Activity according to user type
-                        if (appType.equals("care")){
+                    } else {
+                        //go to Settings or toast a message according to user type
+                        if (appType.equals("care")) {
                             callSettings();
-                        }else if( appType.equals("senior") ){
+                        } else if (appType.equals("senior")) {
                             Toast.makeText(getApplicationContext(),
                                     "Sign in as Care Giver to edit settings First!",
                                     Toast.LENGTH_LONG).show();
-                        }else{ //user signed but undefined app type
+                        } else { //user signed but undefined app type
                             callAuth();
                             Log.i(TAG, "2");
                         }
                     }
                 }
                 @Override
-                public void onCancelled(DatabaseError databaseError){
+                public void onCancelled(DatabaseError databaseError) {
+                    // Getting Post failed, log a message
                     Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                    // ...
                 }
-            });
+            };
+            mDatabase.addValueEventListener(configListener);
         }
     }
     private void callAuth(){
@@ -216,5 +224,10 @@ public class Splash extends Activity {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
+    }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        mDatabase.removeEventListener(configListener);
     }
 }
