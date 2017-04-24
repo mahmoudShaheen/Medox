@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.Abstract.AbstractCommand;
+import com.slothnull.android.medox.Abstract.AbstractConfig;
 import com.slothnull.android.medox.Abstract.AbstractEmergency;
 import com.slothnull.android.medox.Abstract.AbstractMobileToken;
 import com.slothnull.android.medox.Abstract.AbstractWarehouse;
@@ -50,6 +51,11 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
     FloatingActionButton callButton;
     private RadioGroup radioGroup;
     private TableLayout tableLayout;
+
+    private AbstractConfig oldConfig;
+    private static String mobileNumber;
+    private String careSkype;
+
     View view;
 
     private TextView drug1;
@@ -72,6 +78,7 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
         drug2 = (TextView) view.findViewById(R.id.drug2View);
         drug3 = (TextView) view.findViewById(R.id.drug3View);
         drug4 = (TextView) view.findViewById(R.id.drug4View);
+        getConfig();
         getNames();
 
 
@@ -185,7 +192,7 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
         }
         if (v == callButton){
             Log.i(TAG, "call button pressed");
-            skype("live:mahmoud_shaheen", getActivity()); //TODO: get mail from config class
+            skype(careSkype, getActivity());
             return;
         }
 
@@ -264,7 +271,7 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
             mDatabase.setValue(emergency);
         }else{
             String sms = title + "\n" + message;
-            sendSMS(c, "01141668111", sms); //TODO: get number from config class
+            sendSMS(c, mobileNumber, sms);
         }
     }
 
@@ -325,6 +332,32 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
                 .addValueEventListener(warehouseListener);
         //add to list here
 
+    }
+
+
+    public void getConfig() {
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        ValueEventListener configListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                oldConfig = dataSnapshot.getValue(AbstractConfig.class);
+                if (oldConfig.careSkype != null)
+                    careSkype = oldConfig.careSkype;
+                if (oldConfig.mobileNumber != null)
+                    mobileNumber = oldConfig.mobileNumber;
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        mDatabase.child("users").child(UID).child("config")
+                .addValueEventListener(configListener);
     }
 
 }
