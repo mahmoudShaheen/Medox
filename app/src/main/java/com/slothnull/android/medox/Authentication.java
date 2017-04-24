@@ -173,7 +173,7 @@ public class Authentication extends AppCompatActivity {
         newUser.put("email", user.email);
         newUser.put("username", user.username);
         //create a child or update if already exists
-        mDatabase.child("users").child(userId).child("config").updateChildren(newUser);
+        mDatabase.child("users").child(userId).child("user").updateChildren(newUser);
         updateToken(userId);
     }
 
