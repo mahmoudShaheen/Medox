@@ -168,12 +168,9 @@ public class Authentication extends AppCompatActivity {
 
     // [START basic_write]
     private void writeNewUser(String userId, String name, String email) {
-        AbstractUser user = new AbstractUser(name, email);
-        Map<String, Object> newUser = new HashMap<>();
-        newUser.put("email", user.email);
-        newUser.put("username", user.username);
         //create a child or update if already exists
-        mDatabase.child("users").child(userId).child("user").updateChildren(newUser);
+        mDatabase.child("users").child(userId).child("user").child("email").setValue(email);
+        mDatabase.child("users").child(userId).child("user").child("username").setValue(name);
         updateToken(userId);
     }
 

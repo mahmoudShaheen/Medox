@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -158,9 +159,22 @@ public class Settings extends AppCompatActivity implements LocationListener {
         if (mSeniorSkype.isEmpty())
             mSeniorSkype = oldConfig.seniorSkype;
 
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if( //if all config class fields aren't empty -> set user as configured
+                   !mMaxDistance.isEmpty()
+                && !mMaxHeart.isEmpty()
+                && !mMinHeart.isEmpty()
+                && !latitude.isEmpty()
+                && !longitude.isEmpty()
+                && !mMobileNumber.isEmpty()
+                && !mCareSkype.isEmpty()
+                && !mSeniorSkype.isEmpty()
+           ){
+            DatabaseReference configured = FirebaseDatabase.getInstance().getReference();
+            configured.child("users").child(UID).child("user").child("configured").setValue("true");
+        }
 
         //send notification to database to access it later in Notification Activity
-        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         AbstractConfig config = new AbstractConfig(
                 mMaxDistance,
                 latitude,
