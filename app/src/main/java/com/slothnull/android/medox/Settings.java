@@ -67,7 +67,7 @@ public class Settings extends AppCompatActivity implements LocationListener {
         seniorSkype = (EditText) findViewById(R.id.seniorSkype);
         maxDistance = (EditText) findViewById(R.id.maxDistance);
 
-        setData();
+        getConfig();
 
         try{
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -198,7 +198,7 @@ public class Settings extends AppCompatActivity implements LocationListener {
         locationManager.removeUpdates(this);
     }
 
-    public void setData(){
+    public void getConfig(){
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 

@@ -1,5 +1,6 @@
 package com.slothnull.android.medox;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -12,9 +13,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.slothnull.android.medox.Abstract.AbstractConfig;
 import com.slothnull.android.medox.fragment.IndicatorsFragment;
 import com.slothnull.android.medox.fragment.NotificationFragment;
 import com.slothnull.android.medox.fragment.ScheduleFragment;
@@ -31,18 +39,27 @@ public class SeniorHome extends AppCompatActivity {
     private FragmentPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
     private int position;
+    private AbstractConfig oldConfig;
+    private String[] checkArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        showProgressDialog();
+
+        //initialize checkArray and add default values
+        checkArray = new String[3];
+        checkArray[0] = "1";
+        checkArray[1] = "1";
+        checkArray[2] = "1";
+        getConfig();
 
         Intent intent = getIntent();
         position = intent.getIntExtra("position", -1);
         Log.i(TAG, Integer.toString(position));
-
-        //TODO: ALSO add checks and config class
+        
         // Create the adapter that will return a fragment for each section
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
@@ -82,22 +99,17 @@ public class SeniorHome extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        /*
+
         View mainTab;
 
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(0);
-        mainTab.setBackgroundResource(R.drawable.user);
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(1);
-        mainTab.setBackgroundResource(R.drawable.indicators);
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(2);
-        mainTab.setBackgroundResource(R.drawable.notification);
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(3);
-        mainTab.setBackgroundResource(R.drawable.schedule);
+        //warehouse
         mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(4);
-        mainTab.setBackgroundResource(R.drawable.warehouse);
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(5);
-        mainTab.setBackgroundResource(R.drawable.emergency);
-        */
+        mainTab.setEnabled(checkArray[1].equals("1"));
+        //schedule
+        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(3);
+        mainTab.setEnabled(checkArray[2].equals("1"));
+
+
         if (position != -1){
             mViewPager.setCurrentItem(position);
         }
@@ -140,21 +152,21 @@ public class SeniorHome extends AppCompatActivity {
         startActivity(intent);
     }
     public void settings(){
-        Intent intent = new Intent(this, Settings.class);
-        startActivity(intent);
+        if(checkArray[0].equals("1")) {//check if Settings enabled for Senior
+            Intent intent = new Intent(this, Settings.class);
+            startActivity(intent);
+        }
     }
 
-    //ProgressDialog
-/*
-    private ProgressDialog mProgressDialog;
 
+    //progress dialog to wait for saved data
+    private ProgressDialog mProgressDialog;
     public void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setCancelable(false);
             mProgressDialog.setMessage("Loading...");
         }
-
         mProgressDialog.show();
     }
 
@@ -162,5 +174,33 @@ public class SeniorHome extends AppCompatActivity {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
-    }*/
+    }
+
+
+
+    public void getConfig(){
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        ValueEventListener configListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                oldConfig = dataSnapshot.getValue(AbstractConfig.class);
+                if(oldConfig.enabled != null){
+                    checkArray = oldConfig.enabled.split(",");
+                }
+                hideProgressDialog();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        mDatabase.child("users").child(UID).child("config")
+                .addValueEventListener(configListener);
+    }
 }
