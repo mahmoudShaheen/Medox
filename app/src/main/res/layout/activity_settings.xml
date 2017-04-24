@@ -16,7 +16,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:focusableInTouchMode="true">
 
             <EditText
                 android:id="@+id/maxHeart"
@@ -31,7 +32,9 @@
                 android:padding="5dp"
                 android:textAlignment="center"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:nextFocusUp="@+id/maxHeart"
+                android:nextFocusLeft="@+id/maxHeart"/>
 
             <EditText
                 android:id="@+id/minHeart"
