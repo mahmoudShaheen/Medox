@@ -3,6 +3,7 @@ package com.slothnull.android.medox;
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.slothnull.android.medox.Abstract.AbstractConfig;
 
-public class Settings extends AppCompatActivity {
+public class Settings extends AppCompatActivity implements LocationListener {
 
     private final String TAG = "SettingsActivity";
 
@@ -26,6 +27,9 @@ public class Settings extends AppCompatActivity {
     private CheckedTextView scheduleEnable;
     private String[] checkArray;
     private Location mLocation;
+    public String mProvider;
+    public String latitude;
+    public String longitude;
 
     private EditText maxHeart;
     private EditText minHeart;
@@ -33,6 +37,8 @@ public class Settings extends AppCompatActivity {
     private EditText careSkype;
     private EditText seniorSkype;
     private EditText maxDistance;
+
+    public LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,18 @@ public class Settings extends AppCompatActivity {
         careSkype = (EditText) findViewById(R.id.careSkype);
         seniorSkype = (EditText) findViewById(R.id.seniorSkype);
         maxDistance = (EditText) findViewById(R.id.maxDistance);
+
+        try{
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            mProvider = locationManager.getBestProvider(new Criteria(), true);
+
+            mLocation = locationManager.getLastKnownLocation(mProvider);
+            Log.i(TAG, "Location achieved!");
+            locationManager.requestLocationUpdates(mProvider, 400, 1, this);
+        }catch(SecurityException e){
+            Log.i(TAG, "No location :(");
+        }
     }
 
     private void checkListeners(){
@@ -93,41 +111,56 @@ public class Settings extends AppCompatActivity {
         });
     }
     public void locate(View v){
-        LocationManager locationManager;
-        String mProvider;
         try{
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-            mProvider = locationManager.getBestProvider(new Criteria(), true);
-
-            mLocation = locationManager.getLastKnownLocation(mProvider);
-            Log.i(TAG, "Location achieved!");
-        }catch(SecurityException e){
-            Log.i(TAG, "No location :(");
-            Toast.makeText(this,"can't get Location", Toast.LENGTH_LONG).show();
+            latitude = Double.toString(mLocation.getLatitude());
+            longitude = Double.toString(mLocation.getLongitude());
+            Toast.makeText(this, "Location Achieved!", Toast.LENGTH_LONG).show();
+            Log.i(TAG, latitude);
+            Log.i(TAG, longitude);
+        }catch (Exception e){
+            Toast.makeText(this, "Can't get Location, Try Again!", Toast.LENGTH_LONG).show();
         }
     }
+
     public void save(View v){
         Log.i(TAG, "Save Called");
         //send notification to database to access it later in Notification Activity
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        //TODO: String.valueOf raise errors "check location Service for other way"
         AbstractConfig config = new AbstractConfig(
                 maxDistance.getText().toString(),
-                String.valueOf(mLocation.getLatitude()),
-                String.valueOf(mLocation.getLongitude()),
+                latitude,
+                longitude,
                 maxHeart.getText().toString(),
                 minHeart.getText().toString(),
                 mobileNumber.getText().toString(),
                 careSkype.getText().toString(),
                 seniorSkype.getText().toString(),
-                (checkArray[0] + "," + checkArray[1] +"," + checkArray[2] +","));
+                (checkArray[0] + "," + checkArray[1] +"," + checkArray[2]));
 
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("users").child(UID).child("config");
         mDatabase.setValue(config);
         finish();
+    }
+
+    //Location Listener Functions
+    @Override
+    public void onLocationChanged(Location location) {
+        mLocation = location;
+        Log.i(TAG,Double.toString(mLocation.getLatitude()) );
+        Log.i(TAG,Double.toString(mLocation.getLongitude()) );
+    }
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
+    @Override
+    public void onProviderEnabled(String provider) {}
+    @Override
+    public void onProviderDisabled(String provider) {}
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        locationManager.removeUpdates(this);
     }
 }
