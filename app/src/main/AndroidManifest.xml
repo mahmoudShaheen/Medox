@@ -59,6 +59,11 @@
             android:enabled="false"
             android:exported="false"
             android:launchMode="singleTop" />
+        <service
+            android:name=".service.ShakeService"
+            android:enabled="false"
+            android:exported="false"
+            android:launchMode="singleTop" />
 
         <!-- [START firebase_service] -->
         <service android:name=".fcm.MyFirebaseMessagingService">
@@ -89,10 +94,6 @@
             </intent-filter>
         </receiver>
 
-        <service
-            android:name=".service.ShakeService"
-            android:enabled="true"
-            android:exported="true"></service>
     </application>
 
 </manifest>
