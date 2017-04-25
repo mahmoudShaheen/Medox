@@ -14,10 +14,10 @@ import com.slothnull.android.medox.R;
  * A simple {@link Fragment} subclass.
  */
 //TODO: show status
-public class StatusFragment extends Fragment  implements View.OnClickListener {
+public class StatusFragment extends Fragment {  //implements View.OnClickListener {
 
     View view;
-    Button button;
+    //Button button;
     public StatusFragment() {
         // Required empty public constructor
     }
@@ -28,11 +28,11 @@ public class StatusFragment extends Fragment  implements View.OnClickListener {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_status, container, false);
 
-        button = (Button) view.findViewById(R.id.button2);
-        button.setOnClickListener(this);
+        //button = (Button) view.findViewById(R.id.button2);
+        //button.setOnClickListener(this);
         return view;
     }
-
+/*
     @Override
     public void onClick(View v) {
         //do what you want to do when button is clicked
@@ -45,4 +45,5 @@ public class StatusFragment extends Fragment  implements View.OnClickListener {
     public void hello(){
         Toast.makeText(getActivity(), "Hello!!!", Toast.LENGTH_LONG).show();
     }
+    */
 }
