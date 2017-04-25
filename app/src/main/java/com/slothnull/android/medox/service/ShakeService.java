@@ -10,6 +10,7 @@ import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.slothnull.android.medox.SeniorHome;
 import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 
 public class ShakeService extends Service implements SensorEventListener {
@@ -84,7 +85,12 @@ public class ShakeService extends Service implements SensorEventListener {
     }
 
     public void sendEmergency(){
-        
+        // Launch NotificationDetails Activity
+        Intent intent = new Intent(this, SeniorHome.class);
+        intent.putExtra("position", 5);
+        intent.putExtra(SeniorEmergencyFragment.SHAKE_KEY, "true");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 }

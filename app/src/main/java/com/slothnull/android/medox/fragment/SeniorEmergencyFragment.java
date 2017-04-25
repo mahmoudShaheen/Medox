@@ -2,15 +2,19 @@ package com.slothnull.android.medox.fragment;
 
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +37,8 @@ import com.slothnull.android.medox.Abstract.AbstractEmergency;
 import com.slothnull.android.medox.Abstract.AbstractMobileToken;
 import com.slothnull.android.medox.Abstract.AbstractWarehouse;
 import com.slothnull.android.medox.R;
+import com.slothnull.android.medox.SeniorHome;
+import com.slothnull.android.medox.fcm.MyFirebaseMessagingService;
 
 import java.net.InetAddress;
 
@@ -42,6 +48,7 @@ import java.net.InetAddress;
 public class SeniorEmergencyFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "SeniorEmergency";
+    public static final String SHAKE_KEY = "shake";
     public static String mobileToken;
 
     private AlertDialog.Builder builder ;
@@ -73,6 +80,12 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view  = inflater.inflate(R.layout.fragment_senior_emergency, container, false);
+
+        // Get post key from intent
+        String shakeKey = getActivity().getIntent().getStringExtra(SHAKE_KEY);
+        if (shakeKey != null) {
+            sendShakeEmergency();
+        }
 
         drug1 = (TextView) view.findViewById(R.id.drug1View);
         drug2 = (TextView) view.findViewById(R.id.drug2View);
@@ -258,6 +271,34 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
         String message = "Action Required IMMEDIATELY !!!!";
         Context c = getActivity().getApplicationContext();
         emergencyNotification(c, title, message);
+    }
+    public void sendShakeEmergency(){
+        String title = "Emergency Shake From Watch!";
+        String message = "Action Required IMMEDIATELY !!!!";
+        sendSeniorNotification("Emergency Sent!", "Click here for more Actions!", 10);
+        Context c = getActivity().getApplicationContext();
+        emergencyNotification(c, title, message);
+    }
+    private void sendSeniorNotification(String title, String messageBody, int level) {
+        Intent intent = new Intent(getActivity(), SeniorHome.class);
+        intent.putExtra("position", 5);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), level /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getActivity())
+                .setSmallIcon(R.mipmap.ic_notification_round)
+                .setContentTitle(title)
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(level /* ID of notification */, notificationBuilder.build());
     }
 
     public static void emergencyNotification(Context c, String title, String message){
