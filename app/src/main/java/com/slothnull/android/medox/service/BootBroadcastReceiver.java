@@ -20,8 +20,9 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
         SharedPreferences sharedPreferences =
                 context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
-        if (auth == null){
+        if (auth != null){
             final String appType = sharedPreferences.getString("appType", "");
+            Log.i(TAG, appType);
             if (appType.equals("senior")) {
                 enableServices(context);
                 triggerServices(context);
@@ -32,6 +33,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
     }
     private void enableServices(Context context){
         PackageManager pm = context.getPackageManager();
+        Log.i(TAG, "enable");
 
         try{
             pm.setComponentEnabledSetting(
@@ -54,6 +56,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
         }
     }
     public void triggerServices(Context context){
+        Log.i(TAG, "trigger");
         try{
             Intent location = new Intent(context, LocationService.class);
             context.startService(location);
