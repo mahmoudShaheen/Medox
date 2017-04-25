@@ -22,9 +22,32 @@ public class AbstractConfig {
     public String homeLongitude;
     public String maxHeartRate;
     public String minHeartRate;
+    public String mobileNumber;
+    public String careSkype;
+    public String seniorSkype;
+    public String enabled;
 
     public AbstractConfig() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
+    }
+    public AbstractConfig(String maxDistance,
+            String homeLatitude,
+            String homeLongitude,
+            String maxHeartRate,
+            String minHeartRate,
+            String mobileNumber,
+            String careSkype,
+            String seniorSkype,
+            String enabled){
+        this.maxDistance = maxDistance;
+        this.homeLatitude = homeLatitude;
+        this.homeLongitude = homeLongitude;
+        this.maxHeartRate = maxHeartRate;
+        this.minHeartRate = minHeartRate;
+        this.mobileNumber = mobileNumber;
+        this.careSkype = careSkype;
+        this.seniorSkype = seniorSkype;
+        this.enabled = enabled;
     }
 
 }

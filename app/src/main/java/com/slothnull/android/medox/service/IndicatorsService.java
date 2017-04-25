@@ -54,6 +54,10 @@ public class IndicatorsService extends Service {
         }
         Log.v(TAG,"START_SERVICE"+ "DONE");
     }
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_STICKY;
+    }
 
     public void setData(){
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -80,14 +84,6 @@ public class IndicatorsService extends Service {
         };
         mDatabase.child("users").child(UID).child("config")
                 .addValueEventListener(configListener);
-    }
-
-    // TODO: make service never stop "Indicators, Location, Data", start with system
-    //http://stackoverflow.com/questions/15758980/android-service-needs-to-run-always-never-pause-or-stop
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        //smsHandler.sendEmptyMessageDelayed(DISPLAY_DATA, 1000);
-        return Service.START_NOT_STICKY;
     }
 
     @Override

@@ -69,6 +69,10 @@ public class LocationService extends Service implements LocationListener {
         }
 
     }
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_STICKY;
+    }
 
     public void setData(){
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -110,7 +114,9 @@ public class LocationService extends Service implements LocationListener {
         // handler.removeCallbacks(sendUpdatesToUI);
         super.onDestroy();
         Log.v("STOP_SERVICE", "DONE");
-        locationManager.removeUpdates(this);
+        if(locationManager != null){
+            locationManager.removeUpdates(this);
+        }
     }
 
     public void onLocationChanged(final Location location) {

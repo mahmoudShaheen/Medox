@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.Abstract.AbstractCommand;
+import com.slothnull.android.medox.Abstract.AbstractConfig;
 import com.slothnull.android.medox.Abstract.AbstractWarehouse;
 import com.slothnull.android.medox.R;
 
@@ -37,6 +38,8 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
     FloatingActionButton callButton;
     private RadioGroup radioGroup;
     private TableLayout tableLayout;
+    private AbstractConfig oldConfig;
+    private String seniorSkype;
     View view;
 
     private TextView drug1;
@@ -58,6 +61,7 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
         drug2 = (TextView) view.findViewById(R.id.drug2View);
         drug3 = (TextView) view.findViewById(R.id.drug3View);
         drug4 = (TextView) view.findViewById(R.id.drug4View);
+        getConfig();
         getNames();
 
         sendButton = (FloatingActionButton) view.findViewById(R.id.sendCommand);
@@ -136,7 +140,7 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
 
         if (v == callButton){
             Log.i(TAG, "call button pressed");
-            skype("live:mahmoud_shaheen", getActivity()); //TODO: get mail from config class
+            skype(seniorSkype, getActivity());
             return;
         }
 
@@ -238,5 +242,29 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
                 .addValueEventListener(warehouseListener);
         //add to list here
 
+    }
+
+
+    public void getConfig() {
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        ValueEventListener configListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                oldConfig = dataSnapshot.getValue(AbstractConfig.class);
+                if (oldConfig.seniorSkype != null)
+                    seniorSkype = oldConfig.seniorSkype;
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        mDatabase.child("users").child(UID).child("config")
+                .addValueEventListener(configListener);
     }
 }
