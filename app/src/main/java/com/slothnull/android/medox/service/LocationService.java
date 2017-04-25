@@ -114,7 +114,9 @@ public class LocationService extends Service implements LocationListener {
         // handler.removeCallbacks(sendUpdatesToUI);
         super.onDestroy();
         Log.v("STOP_SERVICE", "DONE");
-        locationManager.removeUpdates(this);
+        if(locationManager != null){
+            locationManager.removeUpdates(this);
+        }
     }
 
     public void onLocationChanged(final Location location) {

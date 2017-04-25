@@ -16,6 +16,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.i(TAG, "Broadcast received");
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
         SharedPreferences sharedPreferences =
                 context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
