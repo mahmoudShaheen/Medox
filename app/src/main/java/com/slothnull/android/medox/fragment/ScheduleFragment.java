@@ -1,8 +1,10 @@
 package com.slothnull.android.medox.fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -16,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.slothnull.android.medox.Abstract.AbstractConfig;
 import com.slothnull.android.medox.Abstract.AbstractNotification;
 import com.slothnull.android.medox.Abstract.AbstractSchedule;
 import com.slothnull.android.medox.AddSchedule;
@@ -48,6 +52,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener  
     private FirebaseRecyclerAdapter<AbstractSchedule, ScheduleViewHolder> mAdapter;
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
+    private boolean deleteEnable = false; //to disable delete for senior if not enabled by care
 
     FloatingActionButton addButton;
 
@@ -62,6 +67,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener  
                               Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
+        getConfig();
 
         // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -144,10 +150,15 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener  
     }
 
     public void deleteEntry(String key){
-        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(UID).child("timetable");
-        mDatabase.child(key).setValue(null);
+        if(deleteEnable){
+            String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
+                    .child("users").child(UID).child("timetable");
+            mDatabase.child(key).setValue(null);
+        }else{
+            Toast.makeText(getActivity(), "Delete is denied by Care Giver!",
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -170,6 +181,45 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener  
         };
         builder.setMessage("Delete Schedule, Are you sure?").setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener);
+    }
+
+    public void getConfig() {
+        //disable only for senior
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(
+                getActivity().getPackageName(), Context.MODE_PRIVATE);
+        final String appType = sharedPreferences.getString("appType", "");
+        if(appType.equals("care"))
+            return;
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        ValueEventListener configListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                AbstractConfig oldConfig = dataSnapshot.getValue(AbstractConfig.class);
+                if(oldConfig.enabled != null){
+                    String[] checkArray = new String[3];
+                    checkArray= oldConfig.enabled.split(",");
+                    if(checkArray[2].equals("0")){ //schedule
+                        addButton.setEnabled(false);
+                        deleteEnable = false;
+                    }
+                    if(checkArray[2].equals("1")){ //schedule
+                        addButton.setEnabled(true);
+                        deleteEnable = true;
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        mDatabase.child("users").child(UID).child("config")
+                .addValueEventListener(configListener);
     }
 
 }

@@ -2,7 +2,9 @@ package com.slothnull.android.medox.fragment;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -21,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.Abstract.AbstractCommand;
+import com.slothnull.android.medox.Abstract.AbstractConfig;
 import com.slothnull.android.medox.Abstract.AbstractData;
 import com.slothnull.android.medox.Abstract.AbstractWarehouse;
 import com.slothnull.android.medox.R;
@@ -65,6 +68,7 @@ public class WarehouseFragment extends Fragment implements View.OnClickListener 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_warehouse, container, false);
+        getConfig(); //enable or disable items
 
         drug1 = (TextView) view.findViewById(R.id.drug1View);
         drug2 = (TextView) view.findViewById(R.id.drug2View);
@@ -274,5 +278,59 @@ public class WarehouseFragment extends Fragment implements View.OnClickListener 
         updateNamesBuilder.setMessage("Names will be updated, Are you sure?")
                 .setPositiveButton("Yes", dialog2ClickListener)
                 .setNegativeButton("No", dialog2ClickListener);
+    }
+    public void getConfig() {
+        //disable only for senior
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(
+                getActivity().getPackageName(), Context.MODE_PRIVATE);
+        final String appType = sharedPreferences.getString("appType", "");
+        if(appType.equals("care"))
+            return;
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        ValueEventListener configListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                AbstractConfig oldConfig = dataSnapshot.getValue(AbstractConfig.class);
+                if(oldConfig.enabled != null){
+                    String[] checkArray = new String[3];
+                    checkArray= oldConfig.enabled.split(",");
+                    if(checkArray[1].equals("0")){ //warehouse
+                        drug1Picker.setEnabled(false);
+                        drug2Picker.setEnabled(false);
+                        drug3Picker.setEnabled(false);
+                        drug4Picker.setEnabled(false);
+                        drug1Edit.setEnabled(false);
+                        drug2Edit.setEnabled(false);
+                        drug3Edit.setEnabled(false);
+                        drug4Edit.setEnabled(false);
+                        addData.setEnabled(false);
+                        updateNames.setEnabled(false);
+                    }
+                    if(checkArray[1].equals("1")){ //warehouse
+                        drug1Picker.setEnabled(true);
+                        drug2Picker.setEnabled(true);
+                        drug3Picker.setEnabled(true);
+                        drug4Picker.setEnabled(true);
+                        drug1Edit.setEnabled(true);
+                        drug2Edit.setEnabled(true);
+                        drug3Edit.setEnabled(true);
+                        drug4Edit.setEnabled(true);
+                        addData.setEnabled(true);
+                        updateNames.setEnabled(true);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        mDatabase.child("users").child(UID).child("config")
+                .addValueEventListener(configListener);
     }
 }
