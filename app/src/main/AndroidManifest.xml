@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.slothnull.android.medox"
     android:installLocation="internalOnly">
+
     <!-- internal only for Broadcast receiver -->
+
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -16,7 +18,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
     <!-- Application -->
     <application
         android:allowBackup="true"
@@ -52,12 +53,12 @@
             android:name=".service.LocationService"
             android:enabled="false"
             android:exported="false"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
         <service
             android:name=".service.IndicatorsService"
             android:enabled="false"
             android:exported="false"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
 
         <!-- [START firebase_service] -->
         <service android:name=".fcm.MyFirebaseMessagingService">
@@ -81,12 +82,17 @@
             android:value="@string/google_maps_key" />
 
         <!-- BroadcastReceiver -->
-        <receiver
-            android:name=".service.BootBroadcastReceiver">
+        <receiver android:name=".service.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".service.ShakeService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
+
 </manifest>
