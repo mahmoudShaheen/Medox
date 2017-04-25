@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.Abstract.AbstractUser;
 import com.slothnull.android.medox.service.IndicatorsService;
 import com.slothnull.android.medox.service.LocationService;
+import com.slothnull.android.medox.service.ShakeService;
 
 import static java.security.AccessController.getContext;
 
@@ -122,6 +123,12 @@ public class Splash extends Activity {
     }
     public void triggerServices(){
         try{
+            Intent shake = new Intent(this, ShakeService.class);
+            startService(shake);
+        }catch(Exception e){
+            Log.e(TAG, "error Triggering Shake Service");
+        }
+        try{
             Intent location = new Intent(this, LocationService.class);
             startService(location);
         }catch(Exception e){
@@ -136,6 +143,11 @@ public class Splash extends Activity {
     }
 
     private void stopServices(){
+        try{
+            stopService(new Intent(this, ShakeService.class));
+        }catch(Exception e){
+            Log.e(TAG, "error Stopping Shake Service");
+        }
         try{
             stopService(new Intent(this, LocationService.class));
         }catch(Exception e){
@@ -152,6 +164,16 @@ public class Splash extends Activity {
         Context context = getApplicationContext();
         PackageManager pm = context.getPackageManager();
 
+        try{
+            pm.setComponentEnabledSetting(
+                    new ComponentName(context, ShakeService.class),
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP);
+
+
+        }catch(Exception e){
+            Log.e(TAG, "error enabling Shake Service");
+        }
         try{
             pm.setComponentEnabledSetting(
                     new ComponentName(context, LocationService.class),
@@ -176,6 +198,17 @@ public class Splash extends Activity {
     private void disableServices() {
         Context context = getApplicationContext();
         PackageManager pm = context.getPackageManager();
+
+        try{
+            pm.setComponentEnabledSetting(
+                    new ComponentName(context, ShakeService.class),
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP);
+
+
+        }catch(Exception e){
+            Log.e(TAG, "error disabling Shake Service");
+        }
        try{
            pm.setComponentEnabledSetting(
                    new ComponentName(context, LocationService.class),
@@ -199,6 +232,7 @@ public class Splash extends Activity {
 
     public void signOut() {
         try{
+            stopService(new Intent(this, ShakeService.class));
             stopService(new Intent(this, IndicatorsService.class));
             stopService(new Intent(this, LocationService.class));
         }catch(Exception e){

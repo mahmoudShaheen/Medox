@@ -37,6 +37,16 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
 
         try{
             pm.setComponentEnabledSetting(
+                    new ComponentName(context, ShakeService.class),
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP);
+
+
+        }catch(Exception e){
+            Log.e(TAG, "error enabling Shake Service");
+        }
+        try{
+            pm.setComponentEnabledSetting(
                     new ComponentName(context, LocationService.class),
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                     PackageManager.DONT_KILL_APP);
@@ -57,6 +67,13 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
     }
     public void triggerServices(Context context){
         Log.i(TAG, "trigger");
+
+        try{
+            Intent shake = new Intent(context, ShakeService.class);
+            context.startService(shake);
+        }catch(Exception e){
+            Log.e(TAG, "error Triggering Shake Service");
+        }
         try{
             Intent location = new Intent(context, LocationService.class);
             context.startService(location);
