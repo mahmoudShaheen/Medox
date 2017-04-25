@@ -8,6 +8,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -51,6 +52,8 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
     public static final String SHAKE_KEY = "shake";
     public static String mobileToken;
 
+    public static SharedPreferences sharedPreferences;
+
     private AlertDialog.Builder builder ;
     private String cmd = "";
     FloatingActionButton sendButton;
@@ -80,6 +83,9 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view  = inflater.inflate(R.layout.fragment_senior_emergency, container, false);
+
+        sharedPreferences = getActivity().getSharedPreferences(
+                getActivity().getPackageName(), Context.MODE_PRIVATE);
 
         // Get post key from intent
         String shakeKey = getActivity().getIntent().getStringExtra(SHAKE_KEY);
@@ -318,9 +324,12 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
 
     public static void sendSMS(Context c, String phoneNo, String msg) {
         try {
+            if(phoneNo == null){
+                phoneNo = sharedPreferences.getString("mobileNumber", "");
+            }
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phoneNo, null, msg, null, null);
-            Log.i(TAG, "SMS Sent");
+            Log.i(TAG, "SMS Sent to: " + phoneNo);
         } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
         }
@@ -387,8 +396,11 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
                 oldConfig = dataSnapshot.getValue(AbstractConfig.class);
                 if (oldConfig.careSkype != null)
                     careSkype = oldConfig.careSkype;
-                if (oldConfig.mobileNumber != null)
+                if (oldConfig.mobileNumber != null) {
                     mobileNumber = oldConfig.mobileNumber;
+                    //save mobile number to shared prefs
+                    sharedPreferences.edit().putString("mobileNumber", mobileNumber).apply();
+                }
                 if(oldConfig.enabled != null){
                     String[] checkArray = new String[3];
                     checkArray= oldConfig.enabled.split(",");
