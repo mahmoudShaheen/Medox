@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -54,61 +53,49 @@ public class Splash extends Activity {
             showProgressDialog();
             final String appType = sharedPreferences.getString("appType", "");
             Log.i(TAG, appType);
-            if (isNetworkConnected()) {
-                //check if configured
-                String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                mDatabase = FirebaseDatabase.getInstance().getReference()
-                        .child("users").child(UID).child("user").child("configured");
 
-                configListener = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get Post object and use the values to update the UI
-                        String configured = dataSnapshot.getValue(String.class);
-                        if (configured != null && configured.equals("true")) {
-                            //go to Home Activity according to user type
-                            if (appType.equals("care")) {
-                                callCare();
-                            } else if (appType.equals("senior")) {
-                                callSenior();
-                            } else { //user signed but undefined app type
-                                callAuth();
-                                Log.i(TAG, "2");
-                            }
-                        } else {
-                            //go to Settings or toast a message according to user type
-                            if (appType.equals("care")) {
-                                callSettings();
-                            } else if (appType.equals("senior")) {
-                                Toast.makeText(getApplicationContext(),
-                                        "Sign in as Care Giver to edit settings First!",
-                                        Toast.LENGTH_LONG).show();
-                            } else { //user signed but undefined app type
-                                callAuth();
-                                Log.i(TAG, "2");
-                            }
+            //check if configured
+            String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            mDatabase = FirebaseDatabase.getInstance().getReference()
+                    .child("users").child(UID).child("user").child("configured");
+
+            configListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // Get Post object and use the values to update the UI
+                    String configured = dataSnapshot.getValue(String.class);
+                    if(configured != null && configured.equals("true")){
+                        //go to Home Activity according to user type
+                        if (appType.equals("care")) {
+                            callCare();
+                        } else if (appType.equals("senior")) {
+                            callSenior();
+                        } else { //user signed but undefined app type
+                            callAuth();
+                            Log.i(TAG, "2");
+                        }
+                    } else {
+                        //go to Settings or toast a message according to user type
+                        if (appType.equals("care")) {
+                            callSettings();
+                        } else if (appType.equals("senior")) {
+                            Toast.makeText(getApplicationContext(),
+                                    "Sign in as Care Giver to edit settings First!",
+                                    Toast.LENGTH_LONG).show();
+                        } else { //user signed but undefined app type
+                            callAuth();
+                            Log.i(TAG, "2");
                         }
                     }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        // Getting Post failed, log a message
-                        Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                        // ...
-                    }
-                };
-                mDatabase.addValueEventListener(configListener);
-
-            } else { //no connection
-                if (appType.equals("care")) {
-                    callCare();
-                } else if (appType.equals("senior")) {
-                    callSenior();
-                } else { //user signed but undefined app type
-                    callAuth();
-                    Log.i(TAG, "2");
                 }
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Getting Post failed, log a message
+                    Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                    // ...
+                }
+            };
+            mDatabase.addValueEventListener(configListener);
         }
     }
     private void callAuth(){
@@ -314,10 +301,5 @@ public class Splash extends Activity {
                     new String[]{"android.permission.BODY_SENSORS"},
                     MY_PERMISSIONS_BODY_SENSORS);
         }
-    }
-    private boolean isNetworkConnected() {
-        //check connection state
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return (cm.getActiveNetworkInfo() != null);
     }
 }
