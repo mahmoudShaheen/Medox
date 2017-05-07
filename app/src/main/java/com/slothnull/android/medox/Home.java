@@ -1,6 +1,5 @@
 package com.slothnull.android.medox;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -12,8 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -86,24 +83,6 @@ public class Home extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        /*
-        View mainTab;
-
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(0);
-        mainTab.setBackgroundResource(R.drawable.user);
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(1);
-        mainTab.setBackgroundResource(R.drawable.indicators);
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(2);
-        mainTab.setBackgroundResource(R.drawable.notification);
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(3);
-        mainTab.setBackgroundResource(R.drawable.schedule);
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(4);
-        mainTab.setBackgroundResource(R.drawable.warehouse);
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(5);
-        mainTab.setBackgroundResource(R.drawable.emergency);
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(6);
-        mainTab.setBackgroundResource(R.drawable.location);
-        */
         if (position != -1){
             mViewPager.setCurrentItem(position);
         }
@@ -141,24 +120,4 @@ public class Home extends AppCompatActivity {
         Intent intent = new Intent(this, Settings.class);
         startActivity(intent);
     }
-
-    //ProgressDialog
-/*
-    private ProgressDialog mProgressDialog;
-
-    public void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.setMessage("Loading...");
-        }
-
-        mProgressDialog.show();
-    }
-
-    public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
-    }*/
 }

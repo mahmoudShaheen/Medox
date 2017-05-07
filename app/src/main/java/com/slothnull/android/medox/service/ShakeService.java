@@ -1,7 +1,6 @@
 package com.slothnull.android.medox.service;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -17,8 +16,6 @@ public class ShakeService extends Service implements SensorEventListener {
 
     private static final String TAG = "ShakeService";
 
-    //public static final String BROADCAST_ACTION = "Hello World";
-    //Intent intent;
     // variables for shake detection
     private static final float SHAKE_THRESHOLD = 18f; // m/S^2
     private static final int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 1000;

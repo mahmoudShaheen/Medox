@@ -43,7 +43,6 @@ import com.slothnull.android.medox.Abstract.AbstractNotification;
 import com.slothnull.android.medox.Home;
 import com.slothnull.android.medox.R;
 import com.slothnull.android.medox.SeniorHome;
-import com.slothnull.android.medox.service.LocationService;
 
 import java.text.DateFormat;
 import java.util.Date;

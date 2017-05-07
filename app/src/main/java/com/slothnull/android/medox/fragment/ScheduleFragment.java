@@ -14,10 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -29,16 +25,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.Abstract.AbstractConfig;
-import com.slothnull.android.medox.Abstract.AbstractNotification;
 import com.slothnull.android.medox.Abstract.AbstractSchedule;
 import com.slothnull.android.medox.AddSchedule;
-import com.slothnull.android.medox.NotificationDetails;
 import com.slothnull.android.medox.R;
-import com.slothnull.android.medox.viewholder.NotificationViewHolder;
 import com.slothnull.android.medox.viewholder.ScheduleViewHolder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ScheduleFragment extends Fragment implements View.OnClickListener  {
 
