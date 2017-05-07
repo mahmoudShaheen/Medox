@@ -35,9 +35,10 @@ import com.slothnull.android.medox.R;
 
 public class LocationFragment extends Fragment implements OnMapReadyCallback,LocationListener {
 
+    private static final String TAG = "LocationFragment";
+
     private GoogleMap mMap;
     MapView mMapView;
-    private static final String TAG = "Location";
     public double longitude = 0;
     public double latitude = 0;
 

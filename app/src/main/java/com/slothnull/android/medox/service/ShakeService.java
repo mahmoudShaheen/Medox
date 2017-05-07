@@ -16,6 +16,7 @@ import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 public class ShakeService extends Service implements SensorEventListener {
 
     private static final String TAG = "ShakeService";
+
     //public static final String BROADCAST_ACTION = "Hello World";
     //Intent intent;
     // variables for shake detection

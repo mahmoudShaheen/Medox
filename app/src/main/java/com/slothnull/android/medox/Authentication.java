@@ -32,7 +32,7 @@ import java.util.Map;
 public class Authentication extends AppCompatActivity {
 
 
-    private static final String TAG = "SignInActivity";
+    private static final String TAG = "AuthenticationActivity";
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;

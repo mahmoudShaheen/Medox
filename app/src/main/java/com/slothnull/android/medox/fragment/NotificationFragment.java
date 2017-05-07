@@ -33,7 +33,7 @@ import com.slothnull.android.medox.viewholder.NotificationViewHolder;
 
 public class NotificationFragment extends Fragment {
 
-    private static final String TAG = "PostListFragment";
+    private static final String TAG = "NotificationFragment";
 
     // [START define_database_reference]
     private DatabaseReference mDatabase;

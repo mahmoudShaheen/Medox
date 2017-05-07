@@ -16,6 +16,8 @@ import com.slothnull.android.medox.R;
 //TODO: show status
 public class StatusFragment extends Fragment {  //implements View.OnClickListener {
 
+    private static final String TAG = "StatusFragment";
+
     View view;
     //Button button;
     public StatusFragment() {

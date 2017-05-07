@@ -29,7 +29,7 @@ import com.slothnull.android.medox.service.LocationService;
 
 public class Home extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "HomeActivity";
 
     private FragmentPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;

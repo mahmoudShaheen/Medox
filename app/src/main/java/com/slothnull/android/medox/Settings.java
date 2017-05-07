@@ -25,7 +25,7 @@ import com.slothnull.android.medox.Abstract.AbstractConfig;
 
 public class Settings extends AppCompatActivity implements LocationListener {
 
-    private final String TAG = "SettingsActivity";
+    private static final String TAG = "SettingsActivity";
 
     private ProgressDialog mProgressDialog;
 

@@ -42,7 +42,8 @@ import java.util.List;
 
 public class ScheduleFragment extends Fragment implements View.OnClickListener  {
 
-    private static final String TAG = "PostListFragment";
+    private static final String TAG = "ScheduleFragment";
+
     private AlertDialog.Builder builder ;
 
     // [START define_database_reference]

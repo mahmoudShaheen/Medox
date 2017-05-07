@@ -29,10 +29,13 @@ import com.slothnull.android.medox.service.ShakeService;
 import static java.security.AccessController.getContext;
 
 public class Splash extends Activity {
+
+    private static final String TAG = "SplashActivity";
+
     private static final int MY_PERMISSIONS_SEND_SMS = 0;
     private static final int MY_PERMISSIONS_LOCATION = 1;
     private static final int MY_PERMISSIONS_BODY_SENSORS = 2;
-    String TAG = "SplashActivity";
+
     DatabaseReference mDatabase;
     ValueEventListener configListener;
 

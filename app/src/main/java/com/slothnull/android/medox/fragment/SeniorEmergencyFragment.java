@@ -48,7 +48,8 @@ import java.net.InetAddress;
  */
 public class SeniorEmergencyFragment extends Fragment implements View.OnClickListener {
 
-    private static final String TAG = "SeniorEmergency";
+    private static final String TAG = "SeniorEmergencyFragment";
+
     public static final String SHAKE_KEY = "shake";
     public static String mobileToken;
 

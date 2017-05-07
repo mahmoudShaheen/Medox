@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class BootBroadcastReceiver extends BroadcastReceiver {
+
     private static final String TAG = "BootBroadcastReceiver";
 
     @Override

@@ -31,6 +31,7 @@ import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 public class LocationService extends Service implements LocationListener {
 
     private static final String TAG = "LocationService";
+
     public static final String BROADCAST_ACTION = "Hello World";
     public LocationManager locationManager;
     public static double latitude;

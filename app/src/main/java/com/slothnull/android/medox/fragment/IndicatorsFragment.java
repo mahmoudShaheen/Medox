@@ -20,8 +20,8 @@ import com.slothnull.android.medox.R;
 
 public class IndicatorsFragment extends Fragment {
 
+    private static final String TAG = "IndicatorsFragment";
 
-    private static final String TAG = "Indicators";
     public TextView pedo;
     public TextView heartRate;
 

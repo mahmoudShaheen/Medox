@@ -33,9 +33,9 @@ import java.util.List;
 
 public class WarehouseFragment extends Fragment implements View.OnClickListener {
 
+    private static final String TAG = "WarehouseFragment";
 
     View view;
-    private static final String TAG = "Warehouse";
 
     public TextView drug1;
     public TextView drug2;

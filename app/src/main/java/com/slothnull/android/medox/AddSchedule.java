@@ -18,7 +18,7 @@ import com.slothnull.android.medox.Abstract.AbstractWarehouse;
 
 public class AddSchedule extends AppCompatActivity {
 
-    final private String TAG = "AddSchedule";
+    private static final String TAG = "AddScheduleActivity";
 
     private TextView drug1;
     private TextView drug2;
