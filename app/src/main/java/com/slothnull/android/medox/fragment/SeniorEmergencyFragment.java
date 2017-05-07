@@ -294,7 +294,7 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getActivity())
-                .setSmallIcon(R.mipmap.ic_notification_round)
+                .setSmallIcon(R.mipmap.logo)
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)
