@@ -30,7 +30,7 @@ import com.slothnull.android.medox.R;
 
 public class EmergencyFragment extends Fragment implements View.OnClickListener {
 
-    private static final String TAG = "Emergency";
+    private static final String TAG = "EmergencyFragment";
 
     private AlertDialog.Builder builder ;
     private String cmd = "";

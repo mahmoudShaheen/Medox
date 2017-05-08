@@ -7,7 +7,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +24,7 @@ import com.slothnull.android.medox.Abstract.AbstractConfig;
 
 public class Settings extends AppCompatActivity implements LocationListener {
 
-    private final String TAG = "SettingsActivity";
+    private static final String TAG = "SettingsActivity";
 
     private ProgressDialog mProgressDialog;
 

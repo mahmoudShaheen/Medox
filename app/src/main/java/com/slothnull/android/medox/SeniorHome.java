@@ -35,7 +35,7 @@ import com.slothnull.android.medox.service.LocationService;
 
 public class SeniorHome extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "SeniorHomeActivity";
 
     private FragmentPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;

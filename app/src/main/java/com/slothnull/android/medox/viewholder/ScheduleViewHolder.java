@@ -22,7 +22,9 @@ import com.slothnull.android.medox.R;
  */
 
 public class ScheduleViewHolder extends RecyclerView.ViewHolder {
-    private final String TAG = "SceduleViewHolder";
+
+    private static final String TAG = "ScheduleViewHolder";
+
     public TextView titleView;
     public TextView timeView;
     public TextView messageView;

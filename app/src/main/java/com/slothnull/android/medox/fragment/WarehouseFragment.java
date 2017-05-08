@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,9 +32,9 @@ import java.util.List;
 
 public class WarehouseFragment extends Fragment implements View.OnClickListener {
 
+    private static final String TAG = "WarehouseFragment";
 
     View view;
-    private static final String TAG = "Warehouse";
 
     public TextView drug1;
     public TextView drug2;

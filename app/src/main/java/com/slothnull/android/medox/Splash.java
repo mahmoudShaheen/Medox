@@ -7,11 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,18 +21,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.slothnull.android.medox.Abstract.AbstractUser;
 import com.slothnull.android.medox.service.IndicatorsService;
 import com.slothnull.android.medox.service.LocationService;
 import com.slothnull.android.medox.service.ShakeService;
 
-import static java.security.AccessController.getContext;
-
 public class Splash extends Activity {
+
+    private static final String TAG = "SplashActivity";
+
     private static final int MY_PERMISSIONS_SEND_SMS = 0;
     private static final int MY_PERMISSIONS_LOCATION = 1;
     private static final int MY_PERMISSIONS_BODY_SENSORS = 2;
-    String TAG = "SplashActivity";
+
     DatabaseReference mDatabase;
     ValueEventListener configListener;
 
@@ -40,6 +40,8 @@ public class Splash extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        ImageView logoView = (ImageView) findViewById(R.id.logoView);
+        logoView.setImageResource(R.drawable.logo);
         SharedPreferences sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
         //check if user is already signed-in or not
         //if not call Authentication Activity
@@ -51,9 +53,10 @@ public class Splash extends Activity {
         } else {
             //if user signed in
             //get app type
-            showProgressDialog();
+            //showProgressDialog();
             final String appType = sharedPreferences.getString("appType", "");
             Log.i(TAG, appType);
+
             //check if configured
             String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
             mDatabase = FirebaseDatabase.getInstance().getReference()
@@ -100,13 +103,13 @@ public class Splash extends Activity {
     }
     private void callAuth(){
         signOut();
-        hideProgressDialog();
+        //hideProgressDialog();
         Intent intent = new Intent(this, Authentication.class);
         startActivity(intent);
         finish();
     }
     private void callCare(){
-        hideProgressDialog();
+        //hideProgressDialog();
         Intent intent = new Intent(this, Home.class);
         startActivity(intent);
         stopServices();
@@ -114,7 +117,7 @@ public class Splash extends Activity {
         finish();
     }
     private void callSenior(){
-        hideProgressDialog();
+        //hideProgressDialog();
         Intent intent = new Intent(this, SeniorHome.class);
         startActivity(intent);
         enableServices();
@@ -243,12 +246,12 @@ public class Splash extends Activity {
         firebaseAuth.signOut();
     }
     public void callSettings(){
-        hideProgressDialog();
+        //hideProgressDialog();
         Intent settings = new Intent(this, Settings.class);
         startActivity(settings);
         finish();
     }
-
+/*
     //progress dialog to wait for saved data
     private ProgressDialog mProgressDialog;
     public void showProgressDialog() {
@@ -264,7 +267,7 @@ public class Splash extends Activity {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
-    }
+    }*/
     @Override
     public void onDestroy(){
         super.onDestroy();
@@ -302,53 +305,4 @@ public class Splash extends Activity {
                     MY_PERMISSIONS_BODY_SENSORS);
         }
     }
-    /*
-    * permissions results -> not working
-    * also try to make permissions one by one
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_SEND_SMS: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "SMS Permission granted", Toast.LENGTH_LONG).show();
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-            case MY_PERMISSIONS_BODY_SENSORS: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Body Sensors Permission granted", Toast.LENGTH_LONG).show();
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-            case MY_PERMISSIONS_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Location Permission granted", Toast.LENGTH_LONG).show();
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-        }
-    }
-    */
 }

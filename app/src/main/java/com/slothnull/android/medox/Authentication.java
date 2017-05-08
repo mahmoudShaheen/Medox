@@ -22,17 +22,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.slothnull.android.medox.Abstract.AbstractUser;
 import com.slothnull.android.medox.service.IndicatorsService;
 import com.slothnull.android.medox.service.LocationService;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Authentication extends AppCompatActivity {
 
-
-    private static final String TAG = "SignInActivity";
+    private static final String TAG = "AuthenticationActivity";
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;

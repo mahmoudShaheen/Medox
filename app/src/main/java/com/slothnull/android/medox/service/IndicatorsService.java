@@ -29,6 +29,7 @@ import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 public class IndicatorsService extends Service {
 
     private static final String TAG = "IndicatorsService";
+
     public static final String BROADCAST_ACTION = "Hello World";
     public HeartRateListener listener;
     //Sensor and SensorManager

@@ -14,6 +14,9 @@ import com.slothnull.android.medox.R;
  */
 
 public class NotificationViewHolder extends RecyclerView.ViewHolder {
+
+    private static final String TAG = "NotificationViewHolder";
+
     public TextView titleView;
     public TextView timeView;
     public TextView messageView;

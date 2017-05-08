@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -39,16 +38,14 @@ import com.slothnull.android.medox.Abstract.AbstractMobileToken;
 import com.slothnull.android.medox.Abstract.AbstractWarehouse;
 import com.slothnull.android.medox.R;
 import com.slothnull.android.medox.SeniorHome;
-import com.slothnull.android.medox.fcm.MyFirebaseMessagingService;
-
-import java.net.InetAddress;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SeniorEmergencyFragment extends Fragment implements View.OnClickListener {
 
-    private static final String TAG = "SeniorEmergency";
+    private static final String TAG = "SeniorEmergencyFragment";
+
     public static final String SHAKE_KEY = "shake";
     public static String mobileToken;
 
@@ -294,7 +291,7 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getActivity())
-                .setSmallIcon(R.mipmap.ic_notification_round)
+                .setSmallIcon(R.mipmap.logo)
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)

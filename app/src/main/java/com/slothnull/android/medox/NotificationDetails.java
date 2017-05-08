@@ -21,7 +21,7 @@ import com.slothnull.android.medox.Abstract.AbstractNotification;
 
 public class NotificationDetails extends AppCompatActivity {
 
-    private static final String TAG = "NotificationDetails";
+    private static final String TAG = "NotifDetailsActivity";
 
     public static final String EXTRA_NOTIFICATION_KEY = "notification_key";
 
