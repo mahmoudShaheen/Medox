@@ -46,7 +46,8 @@
             android:noHistory="true" />
         <activity
             android:name=".Settings"
-            android:parentActivityName=".Home" />
+            android:parentActivityName=".Home"
+            android:label="Settings" />
         <activity android:name=".NotificationDetails" />
         <activity android:name=".AddSchedule" />
 
