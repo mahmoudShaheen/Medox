@@ -35,6 +35,7 @@ public class WarehouseFragment extends Fragment implements View.OnClickListener 
     private static final String TAG = "WarehouseFragment";
 
     View view;
+    AbstractWarehouse warehouse;
 
     public TextView drug1;
     public TextView drug2;
@@ -179,11 +180,25 @@ public class WarehouseFragment extends Fragment implements View.OnClickListener 
                 .child("users").child(UID).child("warehouse");
         cDatabase.setValue(null);
 
+        String drug1Name = drug1Edit.getText().toString();
+        String drug2Name = drug2Edit.getText().toString();
+        String drug3Name = drug3Edit.getText().toString();
+        String drug4Name = drug4Edit.getText().toString();
+
+        if (drug1Name.isEmpty())
+            drug1Name = drug1.getText().toString();
+        if (drug2Name.isEmpty())
+            drug2Name = drug2.getText().toString();
+        if (drug3Name.isEmpty())
+            drug3Name = drug3.getText().toString();
+        if (drug4Name.isEmpty())
+            drug4Name = drug4.getText().toString();
+
         List<AbstractWarehouse> warehouse = new ArrayList<>();
-        warehouse.add(new AbstractWarehouse("1",drug1Edit.getText().toString()));
-        warehouse.add(new AbstractWarehouse("2",drug2Edit.getText().toString()));
-        warehouse.add(new AbstractWarehouse("3",drug3Edit.getText().toString()));
-        warehouse.add(new AbstractWarehouse("4",drug4Edit.getText().toString()));
+        warehouse.add(new AbstractWarehouse("1",drug1Name));
+        warehouse.add(new AbstractWarehouse("2",drug2Name));
+        warehouse.add(new AbstractWarehouse("3",drug3Name));
+        warehouse.add(new AbstractWarehouse("4",drug4Name));
 
         for (int i=0;i<4;i++) {
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
