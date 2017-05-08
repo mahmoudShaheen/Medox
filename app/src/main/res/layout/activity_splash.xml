@@ -7,13 +7,13 @@
     tools:context="com.slothnull.android.medox.Splash">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/logoView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/logo"
+        app:srcCompat="@drawable/logo"
+        android:layout_marginTop="68dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="141dp" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/textView7"
@@ -22,6 +22,6 @@
         android:text="MEDOX"
         android:textSize="50sp"
         android:textStyle="bold"
-        android:layout_below="@+id/imageView2"
+        android:layout_below="@+id/logoView"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

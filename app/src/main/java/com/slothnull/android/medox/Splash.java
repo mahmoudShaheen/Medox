@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,6 +40,8 @@ public class Splash extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        ImageView logoView = (ImageView) findViewById(R.id.logoView);
+        logoView.setImageResource(R.drawable.logo);
         SharedPreferences sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
         //check if user is already signed-in or not
         //if not call Authentication Activity
@@ -50,7 +53,7 @@ public class Splash extends Activity {
         } else {
             //if user signed in
             //get app type
-            showProgressDialog();
+            //showProgressDialog();
             final String appType = sharedPreferences.getString("appType", "");
             Log.i(TAG, appType);
 
@@ -100,13 +103,13 @@ public class Splash extends Activity {
     }
     private void callAuth(){
         signOut();
-        hideProgressDialog();
+        //hideProgressDialog();
         Intent intent = new Intent(this, Authentication.class);
         startActivity(intent);
         finish();
     }
     private void callCare(){
-        hideProgressDialog();
+        //hideProgressDialog();
         Intent intent = new Intent(this, Home.class);
         startActivity(intent);
         stopServices();
@@ -114,7 +117,7 @@ public class Splash extends Activity {
         finish();
     }
     private void callSenior(){
-        hideProgressDialog();
+        //hideProgressDialog();
         Intent intent = new Intent(this, SeniorHome.class);
         startActivity(intent);
         enableServices();
@@ -243,12 +246,12 @@ public class Splash extends Activity {
         firebaseAuth.signOut();
     }
     public void callSettings(){
-        hideProgressDialog();
+        //hideProgressDialog();
         Intent settings = new Intent(this, Settings.class);
         startActivity(settings);
         finish();
     }
-
+/*
     //progress dialog to wait for saved data
     private ProgressDialog mProgressDialog;
     public void showProgressDialog() {
@@ -264,7 +267,7 @@ public class Splash extends Activity {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
-    }
+    }*/
     @Override
     public void onDestroy(){
         super.onDestroy();
