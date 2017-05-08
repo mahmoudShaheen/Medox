@@ -39,7 +39,8 @@
             android:padding="5dp"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:nextFocusDown="@+id/drug2Picker"/>
 
         <TextView
             android:id="@+id/drug2View"
@@ -66,7 +67,8 @@
             android:padding="5dp"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:nextFocusDown="@+id/drug3Picker"/>
 
         <TextView
             android:id="@+id/drug3View"
@@ -93,7 +95,8 @@
             android:padding="5dp"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:nextFocusDown="@+id/drug4Picker"/>
 
         <TextView
             android:id="@+id/drug4View"
@@ -125,7 +128,7 @@
 
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/editDrugNamesView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -141,7 +144,7 @@
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
+        android:layout_below="@+id/editDrugNamesView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="23dp">
 
