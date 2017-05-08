@@ -1,7 +1,6 @@
 package com.slothnull.android.medox;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -40,8 +39,10 @@ public class Splash extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        //add image to image view as no image showing using xml ref.
         ImageView logoView = (ImageView) findViewById(R.id.logoView);
         logoView.setImageResource(R.drawable.logo);
+
         SharedPreferences sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
         //check if user is already signed-in or not
         //if not call Authentication Activity
@@ -53,7 +54,6 @@ public class Splash extends Activity {
         } else {
             //if user signed in
             //get app type
-            //showProgressDialog();
             final String appType = sharedPreferences.getString("appType", "");
             Log.i(TAG, appType);
 
@@ -109,7 +109,6 @@ public class Splash extends Activity {
         finish();
     }
     private void callCare(){
-        //hideProgressDialog();
         Intent intent = new Intent(this, Home.class);
         startActivity(intent);
         stopServices();
@@ -117,7 +116,6 @@ public class Splash extends Activity {
         finish();
     }
     private void callSenior(){
-        //hideProgressDialog();
         Intent intent = new Intent(this, SeniorHome.class);
         startActivity(intent);
         enableServices();
@@ -246,28 +244,11 @@ public class Splash extends Activity {
         firebaseAuth.signOut();
     }
     public void callSettings(){
-        //hideProgressDialog();
         Intent settings = new Intent(this, Settings.class);
         startActivity(settings);
         finish();
     }
-/*
-    //progress dialog to wait for saved data
-    private ProgressDialog mProgressDialog;
-    public void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.setMessage("Loading...");
-        }
-        mProgressDialog.show();
-    }
 
-    public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
-    }*/
     @Override
     public void onDestroy(){
         super.onDestroy();

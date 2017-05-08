@@ -1,7 +1,9 @@
 package com.slothnull.android.medox;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -48,6 +50,8 @@ public class SeniorHome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        checkConnection();
+
         showProgressDialog();
 
         //initialize checkArray and add default values
@@ -206,5 +210,15 @@ public class SeniorHome extends AppCompatActivity {
         };
         mDatabase.child("users").child(UID).child("config")
                 .addValueEventListener(configListener);
+    }
+    private void checkConnection(){
+        //check connection state
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        if(cm.getActiveNetworkInfo() == null){//Not Connected
+            String message = "You are offline, changes will not take effect until connection is restored!";
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(message).setPositiveButton("OK", null);
+            builder.show();
+        }
     }
 }

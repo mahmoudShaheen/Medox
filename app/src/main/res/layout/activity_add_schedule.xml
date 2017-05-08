@@ -52,7 +52,8 @@
             android:padding="5dp"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:nextFocusDown="@+id/drug2Picker"/>
 
         <TextView
             android:id="@+id/drug2View"
@@ -79,7 +80,8 @@
             android:padding="5dp"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:nextFocusDown="@+id/drug3Picker"/>
 
         <TextView
             android:id="@+id/drug3View"
@@ -106,7 +108,8 @@
             android:padding="5dp"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:nextFocusDown="@+id/drug4Picker"/>
 
         <TextView
             android:id="@+id/drug4View"

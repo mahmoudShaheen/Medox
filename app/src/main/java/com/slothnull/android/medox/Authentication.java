@@ -1,8 +1,10 @@
 package com.slothnull.android.medox;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +44,8 @@ public class Authentication extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
+        //remove sign up button
+        findViewById(R.id.signupButton).setVisibility(View.GONE);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
@@ -66,6 +70,9 @@ public class Authentication extends AppCompatActivity {
 
     public void signIn(View view) {
         Log.d(TAG, "signIn");
+        if(!checkConnection()){//not connected
+            return;
+        }
         if (!validateForm()) {
             return;
         }
@@ -218,5 +225,17 @@ public class Authentication extends AppCompatActivity {
         FirebaseAuth firebaseAuth;
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signOut();
+    }
+    private boolean checkConnection(){
+        //check connection state
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        if(cm.getActiveNetworkInfo() == null){//Not Connected
+            String message = "You are offline, Please enable connection to be able to sign in";
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(message).setPositiveButton("OK", null);
+            builder.show();
+            return false;
+        }
+        return true;
     }
 }

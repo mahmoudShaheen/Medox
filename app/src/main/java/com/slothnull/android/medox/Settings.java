@@ -2,6 +2,7 @@ package com.slothnull.android.medox;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -52,6 +53,7 @@ public class Settings extends AppCompatActivity implements LocationListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        disableSenior();
         //wait for getting old config
         showProgressDialog();
 
@@ -82,6 +84,15 @@ public class Settings extends AppCompatActivity implements LocationListener {
         }
     }
 
+    private void disableSenior(){
+        //remove enabled group in senior app
+        SharedPreferences sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
+        final String appType = sharedPreferences.getString("appType", "");
+        if(appType.equals("senior")){
+            findViewById(R.id.enabledView).setVisibility(View.GONE);
+            findViewById(R.id.enabledLayout).setVisibility(View.GONE);
+        }
+    }
     private void checkListeners(){
         settingsEnable = (CheckedTextView) findViewById(R.id.settingsEnable);
         settingsEnable.setOnClickListener(new View.OnClickListener() {

@@ -6,13 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import com.slothnull.android.medox.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-//TODO: show status
 public class StatusFragment extends Fragment {
 
     private static final String TAG = "StatusFragment";
