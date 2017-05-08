@@ -1,4 +1,4 @@
-package com.slothnull.android.medox.service;
+package com.slothnull.android.medox.broadcastreceiver;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -10,6 +10,9 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.slothnull.android.medox.service.IndicatorsService;
+import com.slothnull.android.medox.service.LocationService;
+import com.slothnull.android.medox.service.ShakeService;
 
 public class BootBroadcastReceiver extends BroadcastReceiver {
 

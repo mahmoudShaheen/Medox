@@ -90,7 +90,7 @@
             android:value="@string/google_maps_key" />
 
         <!-- BroadcastReceiver -->
-        <receiver android:name=".service.BootBroadcastReceiver">
+        <receiver android:name=".broadcastreceiver.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
