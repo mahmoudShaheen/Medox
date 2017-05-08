@@ -10,20 +10,22 @@
         android:id="@+id/logoView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/logo"
-        android:layout_marginTop="68dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="68dp"
+        android:elevation="24dp"
+        app:srcCompat="@drawable/logo" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/logoView"
+        android:layout_centerHorizontal="true"
+        android:elevation="24dp"
         android:text="MEDOX"
         android:textSize="50sp"
-        android:textStyle="bold"
-        android:layout_below="@+id/logoView"
-        android:layout_centerHorizontal="true" />
+        android:textStyle="bold" />
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
