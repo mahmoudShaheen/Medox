@@ -28,6 +28,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -154,6 +155,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.notification)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),
+                        R.mipmap.logo))
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)
@@ -209,6 +212,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.notification)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),
+                        R.mipmap.logo))
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)

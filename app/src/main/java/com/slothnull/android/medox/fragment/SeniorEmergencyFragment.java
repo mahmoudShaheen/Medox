@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -292,6 +293,8 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getActivity())
                 .setSmallIcon(R.drawable.notification)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),
+                        R.mipmap.logo))
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)
