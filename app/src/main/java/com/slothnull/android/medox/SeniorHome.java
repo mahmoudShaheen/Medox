@@ -14,8 +14,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -44,7 +42,6 @@ public class SeniorHome extends AppCompatActivity {
     private int position;
     private AbstractConfig oldConfig;
     private boolean settingsEnable;
-    private String[] checkArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +52,7 @@ public class SeniorHome extends AppCompatActivity {
 
         showProgressDialog();
 
-        //initialize checkArray and add default values
-        checkArray = new String[3];
-        checkArray[0] = "1";
-        checkArray[1] = "1";
-        checkArray[2] = "1";
-        getConfig();
+        getConfig(); //for settings enabled state
 
         Intent intent = getIntent();
         position = intent.getIntExtra("position", -1);
