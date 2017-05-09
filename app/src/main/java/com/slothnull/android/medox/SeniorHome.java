@@ -122,8 +122,8 @@ public class SeniorHome extends AppCompatActivity {
         }
     }
     public void signOut(){
-        stopService(new Intent(this, IndicatorsService.class));
-        stopService(new Intent(this, LocationService.class));
+        Splash.stopServices(this);
+        Splash.disableServices(this);
         FirebaseAuth firebaseAuth;
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signOut();
