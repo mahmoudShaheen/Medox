@@ -103,7 +103,6 @@ public class Splash extends Activity {
     }
     private void callAuth(){
         signOut();
-        //hideProgressDialog();
         Intent intent = new Intent(this, Authentication.class);
         startActivity(intent);
         finish();
@@ -111,8 +110,8 @@ public class Splash extends Activity {
     private void callCare(){
         Intent intent = new Intent(this, Home.class);
         startActivity(intent);
-        stopServices();
-        disableServices();
+        stopServices(this);
+        disableServices(this);
         finish();
     }
     private void callSenior(){
@@ -143,19 +142,19 @@ public class Splash extends Activity {
         }
     }
 
-    private void stopServices(){
+    public static void stopServices(Context context){
         try{
-            stopService(new Intent(this, ShakeService.class));
+            context.stopService(new Intent(context, ShakeService.class));
         }catch(Exception e){
             Log.e(TAG, "error Stopping Shake Service");
         }
         try{
-            stopService(new Intent(this, LocationService.class));
+            context.stopService(new Intent(context, LocationService.class));
         }catch(Exception e){
             Log.e(TAG, "error Stopping Location Service");
         }
         try{
-            stopService(new Intent(this, IndicatorsService.class));
+            context.stopService(new Intent(context, IndicatorsService.class));
         }catch (Exception e){
             Log.e(TAG, "error Stopping Indicators Service");
         }
@@ -196,8 +195,7 @@ public class Splash extends Activity {
         }
     }
 
-    private void disableServices() {
-        Context context = getApplicationContext();
+    public static void disableServices(Context context) {
         PackageManager pm = context.getPackageManager();
 
         try{
@@ -232,17 +230,13 @@ public class Splash extends Activity {
     }
 
     public void signOut() {
-        try{
-            stopService(new Intent(this, ShakeService.class));
-            stopService(new Intent(this, IndicatorsService.class));
-            stopService(new Intent(this, LocationService.class));
-        }catch(Exception e){
-            Log.e(TAG, "error Stopping Services during sign-out");
-        }
+        stopServices(this);
+        disableServices(this);
         FirebaseAuth firebaseAuth;
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signOut();
     }
+
     public void callSettings(){
         Intent settings = new Intent(this, Settings.class);
         startActivity(settings);
