@@ -23,6 +23,7 @@ public class AbstractConfig {
     public String maxHeartRate;
     public String minHeartRate;
     public String mobileNumber;
+    public String mobileNumber2;
     public String careSkype;
     public String seniorSkype;
     public String enabled;
@@ -36,6 +37,7 @@ public class AbstractConfig {
             String maxHeartRate,
             String minHeartRate,
             String mobileNumber,
+            String mobileNumber2,
             String careSkype,
             String seniorSkype,
             String enabled){
@@ -45,6 +47,7 @@ public class AbstractConfig {
         this.maxHeartRate = maxHeartRate;
         this.minHeartRate = minHeartRate;
         this.mobileNumber = mobileNumber;
+        this.mobileNumber2 = mobileNumber2;
         this.careSkype = careSkype;
         this.seniorSkype = seniorSkype;
         this.enabled = enabled;

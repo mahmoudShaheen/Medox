@@ -41,6 +41,7 @@ public class Settings extends AppCompatActivity implements LocationListener {
     private EditText maxHeart;
     private EditText minHeart;
     private EditText mobileNumber;
+    private EditText mobileNumber2;
     private EditText careSkype;
     private EditText seniorSkype;
     private EditText maxDistance;
@@ -65,6 +66,7 @@ public class Settings extends AppCompatActivity implements LocationListener {
         maxHeart = (EditText) findViewById(R.id.maxHeart);
         minHeart = (EditText) findViewById(R.id.minHeart);
         mobileNumber = (EditText) findViewById(R.id.mobileNumber);
+        mobileNumber2 = (EditText) findViewById(R.id.mobileNumber2);
         careSkype = (EditText) findViewById(R.id.careSkype);
         seniorSkype = (EditText) findViewById(R.id.seniorSkype);
         maxDistance = (EditText) findViewById(R.id.maxDistance);
@@ -152,6 +154,7 @@ public class Settings extends AppCompatActivity implements LocationListener {
         String mMaxHeart = maxHeart.getText().toString();
         String mMinHeart = minHeart.getText().toString();
         String mMobileNumber = mobileNumber.getText().toString();
+        String mMobileNumber2 = mobileNumber2.getText().toString();
         String mCareSkype = careSkype.getText().toString();
         String mSeniorSkype = seniorSkype.getText().toString();
 
@@ -164,6 +167,8 @@ public class Settings extends AppCompatActivity implements LocationListener {
             mMinHeart = oldConfig.minHeartRate;
         if (mMobileNumber.isEmpty())
             mMobileNumber = oldConfig.mobileNumber;
+        if (mMobileNumber2.isEmpty())
+            mMobileNumber2 = oldConfig.mobileNumber2;
         if (mCareSkype.isEmpty())
             mCareSkype = oldConfig.careSkype;
         if (mSeniorSkype.isEmpty())
@@ -177,6 +182,7 @@ public class Settings extends AppCompatActivity implements LocationListener {
                 && !latitude.isEmpty()
                 && !longitude.isEmpty()
                 && !mMobileNumber.isEmpty()
+                && !mMobileNumber2.isEmpty()
                 && !mCareSkype.isEmpty()
                 && !mSeniorSkype.isEmpty()
            ){
@@ -192,6 +198,7 @@ public class Settings extends AppCompatActivity implements LocationListener {
                 mMaxHeart,
                 mMinHeart,
                 mMobileNumber,
+                mMobileNumber2,
                 mCareSkype,
                 mSeniorSkype,
                 (checkArray[0] + "," + checkArray[1] +"," + checkArray[2]));
@@ -243,6 +250,8 @@ public class Settings extends AppCompatActivity implements LocationListener {
                     longitude = oldConfig.homeLongitude;
                 if(oldConfig.mobileNumber != null)
                     mobileNumber.setHint(mobileNumber.getHint() + oldConfig.mobileNumber);
+                if(oldConfig.mobileNumber2 != null)
+                    mobileNumber2.setHint(mobileNumber2.getHint() + oldConfig.mobileNumber2);
                 if(oldConfig.careSkype != null)
                     careSkype.setHint(careSkype.getHint() + oldConfig.careSkype);
                 if(oldConfig.seniorSkype != null)

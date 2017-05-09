@@ -62,6 +62,7 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
 
     private AbstractConfig oldConfig;
     private static String mobileNumber;
+    private static String mobileNumber2;
     private String careSkype;
 
     View view;
@@ -308,36 +309,27 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
     }
 
     public static void emergencyNotification(Context c, String title, String message){
-        if (mobileToken != null && isNetworkConnected(c)){
-            String token = mobileToken;
-            String level = "1";
-
-            AbstractEmergency emergency = new AbstractEmergency(token, level, title, message);
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                    .child("messages").push();
-            mDatabase.setValue(emergency);
-        }else{
-            String sms = title + "\n" + message;
-            sendSMS(c, mobileNumber, sms);
-        }
+        //send emergency notification
+        String token = mobileToken;
+        String level = "1";
+        AbstractEmergency emergency = new AbstractEmergency(token, level, title, message);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("messages").push();
+        mDatabase.setValue(emergency);
+        //send emergency as sms
+        String sms = "EmergencySMS";
+        sendSMS(c, mobileNumber, sms);
+        sendSMS(c, mobileNumber2, sms);
     }
 
     public static void sendSMS(Context c, String phoneNo, String msg) {
         try {
-            if(phoneNo == null){
-                phoneNo = sharedPreferences.getString("mobileNumber", "");
-            }
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phoneNo, null, msg, null, null);
             Log.i(TAG, "SMS Sent to: " + phoneNo);
         } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
         }
-    }
-    private static boolean isNetworkConnected(Context c) {
-        //check connection state
-        ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return (cm.getActiveNetworkInfo() != null);
     }
 
     public void getNames(){
@@ -396,11 +388,10 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
                 oldConfig = dataSnapshot.getValue(AbstractConfig.class);
                 if (oldConfig.careSkype != null)
                     careSkype = oldConfig.careSkype;
-                if (oldConfig.mobileNumber != null) {
+                if (oldConfig.mobileNumber != null)
                     mobileNumber = oldConfig.mobileNumber;
-                    //save mobile number to shared prefs
-                    sharedPreferences.edit().putString("mobileNumber", mobileNumber).apply();
-                }
+                if (oldConfig.mobileNumber2 != null)
+                    mobileNumber2 = oldConfig.mobileNumber2;
                 if(oldConfig.enabled != null){
                     String[] checkArray = new String[3];
                     checkArray= oldConfig.enabled.split(",");
