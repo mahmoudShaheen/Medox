@@ -43,6 +43,7 @@ public class SeniorHome extends AppCompatActivity {
     private ViewPager mViewPager;
     private int position;
     private AbstractConfig oldConfig;
+    private boolean settingsEnable;
     private String[] checkArray;
 
     @Override
@@ -104,28 +105,9 @@ public class SeniorHome extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-
-        View mainTab;
-
-        //warehouse
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(4);
-        mainTab.setEnabled(checkArray[1].equals("1"));
-        //schedule
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(3);
-        mainTab.setEnabled(checkArray[2].equals("1"));
-
-
         if (position != -1){
             mViewPager.setCurrentItem(position);
         }
-        mViewPager.setOnLongClickListener(new View.OnLongClickListener() {
-
-            @Override
-            public boolean onLongClick(View v) {
-                mViewPager.setCurrentItem(5);
-                return true;
-            }
-        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -157,7 +139,7 @@ public class SeniorHome extends AppCompatActivity {
         startActivity(intent);
     }
     public void settings(){
-        if(checkArray[0].equals("1")) {//check if Settings enabled for Senior
+        if(settingsEnable) {//check if Settings enabled for Senior
             Intent intent = new Intent(this, Settings.class);
             startActivity(intent);
         }else{
@@ -196,7 +178,8 @@ public class SeniorHome extends AppCompatActivity {
                 // Get Post object and use the values to update the UI
                 oldConfig = dataSnapshot.getValue(AbstractConfig.class);
                 if(oldConfig.enabled != null){
-                    checkArray = oldConfig.enabled.split(",");
+                    String enabled[]= oldConfig.enabled.split(",");
+                    settingsEnable = (enabled[0].equals("1"));
                 }
                 hideProgressDialog();
             }
