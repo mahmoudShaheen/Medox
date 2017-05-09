@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.slothnull.android.medox.Abstract.AbstractNotification;
+import com.slothnull.android.medox.model.AbstractNotification;
 import com.slothnull.android.medox.R;
 
 /**

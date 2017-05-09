@@ -1,25 +1,25 @@
-package com.slothnull.android.medox.Abstract;
+package com.slothnull.android.medox.model;
 
 /**
  * Created by Shaheen on 17-Mar-17
  * Project: seniormedox
- * Package: com.slothnull.android.seniormedox
+ * Package: com.slothnull.android.medox
  */
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
 // [START user_class]
 @IgnoreExtraProperties
-public class AbstractMobileToken {
+public class AbstractWatchToken {
 
-    public String mobile;
+    public String watch;
 
-    public AbstractMobileToken() {
+    public AbstractWatchToken() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public AbstractMobileToken(String token) {
-        this.mobile = token;
+    public AbstractWatchToken(String token) {
+        this.watch = token;
     }
 
 }

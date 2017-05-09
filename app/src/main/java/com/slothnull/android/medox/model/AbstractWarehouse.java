@@ -1,4 +1,4 @@
-package com.slothnull.android.medox.Abstract;
+package com.slothnull.android.medox.model;
 
 /**
  * Created by Shaheen on 13-Mar-17
