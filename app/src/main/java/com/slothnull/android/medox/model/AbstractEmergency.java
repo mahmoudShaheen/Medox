@@ -1,9 +1,9 @@
-package com.slothnull.android.medox.Abstract;
+package com.slothnull.android.medox.model;
 
 /**
  * Created by Shaheen on 20-Apr-17
  * Project: Medox
- * Package: com.slothnull.android.medox.Abstract
+ * Package: com.slothnull.android.medox.model
  */
 
 /**

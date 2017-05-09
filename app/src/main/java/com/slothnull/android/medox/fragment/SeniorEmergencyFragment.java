@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -32,11 +31,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.slothnull.android.medox.Abstract.AbstractCommand;
-import com.slothnull.android.medox.Abstract.AbstractConfig;
-import com.slothnull.android.medox.Abstract.AbstractEmergency;
-import com.slothnull.android.medox.Abstract.AbstractMobileToken;
-import com.slothnull.android.medox.Abstract.AbstractWarehouse;
+import com.slothnull.android.medox.model.AbstractCommand;
+import com.slothnull.android.medox.model.AbstractConfig;
+import com.slothnull.android.medox.model.AbstractEmergency;
+import com.slothnull.android.medox.model.AbstractMobileToken;
+import com.slothnull.android.medox.model.AbstractWarehouse;
 import com.slothnull.android.medox.R;
 import com.slothnull.android.medox.SeniorHome;
 
@@ -62,6 +61,7 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
 
     private AbstractConfig oldConfig;
     private static String mobileNumber;
+    private static String mobileNumber2;
     private String careSkype;
 
     View view;
@@ -308,36 +308,27 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
     }
 
     public static void emergencyNotification(Context c, String title, String message){
-        if (mobileToken != null && isNetworkConnected(c)){
-            String token = mobileToken;
-            String level = "1";
-
-            AbstractEmergency emergency = new AbstractEmergency(token, level, title, message);
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                    .child("messages").push();
-            mDatabase.setValue(emergency);
-        }else{
-            String sms = title + "\n" + message;
-            sendSMS(c, mobileNumber, sms);
-        }
+        //send emergency notification
+        String token = mobileToken;
+        String level = "1";
+        AbstractEmergency emergency = new AbstractEmergency(token, level, title, message);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("messages").push();
+        mDatabase.setValue(emergency);
+        //send emergency as sms
+        String sms = "EmergencySMS";
+        sendSMS(c, mobileNumber, sms);
+        sendSMS(c, mobileNumber2, sms);
     }
 
     public static void sendSMS(Context c, String phoneNo, String msg) {
         try {
-            if(phoneNo == null){
-                phoneNo = sharedPreferences.getString("mobileNumber", "");
-            }
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phoneNo, null, msg, null, null);
             Log.i(TAG, "SMS Sent to: " + phoneNo);
         } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
         }
-    }
-    private static boolean isNetworkConnected(Context c) {
-        //check connection state
-        ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return (cm.getActiveNetworkInfo() != null);
     }
 
     public void getNames(){
@@ -396,11 +387,10 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
                 oldConfig = dataSnapshot.getValue(AbstractConfig.class);
                 if (oldConfig.careSkype != null)
                     careSkype = oldConfig.careSkype;
-                if (oldConfig.mobileNumber != null) {
+                if (oldConfig.mobileNumber != null)
                     mobileNumber = oldConfig.mobileNumber;
-                    //save mobile number to shared prefs
-                    sharedPreferences.edit().putString("mobileNumber", mobileNumber).apply();
-                }
+                if (oldConfig.mobileNumber2 != null)
+                    mobileNumber2 = oldConfig.mobileNumber2;
                 if(oldConfig.enabled != null){
                     String[] checkArray = new String[3];
                     checkArray= oldConfig.enabled.split(",");

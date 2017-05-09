@@ -14,8 +14,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -25,7 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.slothnull.android.medox.Abstract.AbstractConfig;
+import com.slothnull.android.medox.model.AbstractConfig;
 import com.slothnull.android.medox.fragment.IndicatorsFragment;
 import com.slothnull.android.medox.fragment.NotificationFragment;
 import com.slothnull.android.medox.fragment.ScheduleFragment;
@@ -43,7 +41,7 @@ public class SeniorHome extends AppCompatActivity {
     private ViewPager mViewPager;
     private int position;
     private AbstractConfig oldConfig;
-    private String[] checkArray;
+    private boolean settingsEnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +52,7 @@ public class SeniorHome extends AppCompatActivity {
 
         showProgressDialog();
 
-        //initialize checkArray and add default values
-        checkArray = new String[3];
-        checkArray[0] = "1";
-        checkArray[1] = "1";
-        checkArray[2] = "1";
-        getConfig();
+        getConfig(); //for settings enabled state
 
         Intent intent = getIntent();
         position = intent.getIntExtra("position", -1);
@@ -104,28 +97,9 @@ public class SeniorHome extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-
-        View mainTab;
-
-        //warehouse
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(4);
-        mainTab.setEnabled(checkArray[1].equals("1"));
-        //schedule
-        mainTab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(3);
-        mainTab.setEnabled(checkArray[2].equals("1"));
-
-
         if (position != -1){
             mViewPager.setCurrentItem(position);
         }
-        mViewPager.setOnLongClickListener(new View.OnLongClickListener() {
-
-            @Override
-            public boolean onLongClick(View v) {
-                mViewPager.setCurrentItem(5);
-                return true;
-            }
-        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -157,7 +131,7 @@ public class SeniorHome extends AppCompatActivity {
         startActivity(intent);
     }
     public void settings(){
-        if(checkArray[0].equals("1")) {//check if Settings enabled for Senior
+        if(settingsEnable) {//check if Settings enabled for Senior
             Intent intent = new Intent(this, Settings.class);
             startActivity(intent);
         }else{
@@ -196,7 +170,8 @@ public class SeniorHome extends AppCompatActivity {
                 // Get Post object and use the values to update the UI
                 oldConfig = dataSnapshot.getValue(AbstractConfig.class);
                 if(oldConfig.enabled != null){
-                    checkArray = oldConfig.enabled.split(",");
+                    String enabled[]= oldConfig.enabled.split(",");
+                    settingsEnable = (enabled[0].equals("1"));
                 }
                 hideProgressDialog();
             }

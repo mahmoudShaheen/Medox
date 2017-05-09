@@ -2,7 +2,6 @@ package com.slothnull.android.medox.fragment;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,8 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.slothnull.android.medox.Abstract.AbstractNotification;
-import com.slothnull.android.medox.NotificationDetails;
+import com.slothnull.android.medox.model.AbstractNotification;
 import com.slothnull.android.medox.R;
 import com.slothnull.android.medox.viewholder.NotificationViewHolder;
 
@@ -75,19 +73,7 @@ public class NotificationFragment extends Fragment {
             @Override
             protected void populateViewHolder(final NotificationViewHolder viewHolder,
                                               final AbstractNotification model, final int position) {
-                final DatabaseReference notificationRef = getRef(position);
 
-                // Set click listener for the whole post view
-                final String notificationKey = notificationRef.getKey();
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Launch NotificationDetails Activity
-                        Intent intent = new Intent(getActivity(), NotificationDetails.class);
-                        intent.putExtra(NotificationDetails.EXTRA_NOTIFICATION_KEY, notificationKey);
-                        startActivity(intent);
-                    }
-                });
                 viewHolder.bindToNotification(model);
             }
         };

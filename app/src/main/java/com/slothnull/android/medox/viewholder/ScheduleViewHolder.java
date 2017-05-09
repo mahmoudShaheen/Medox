@@ -11,8 +11,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.slothnull.android.medox.Abstract.AbstractSchedule;
-import com.slothnull.android.medox.Abstract.AbstractWarehouse;
+import com.slothnull.android.medox.model.AbstractSchedule;
+import com.slothnull.android.medox.model.AbstractWarehouse;
 import com.slothnull.android.medox.R;
 
 /**

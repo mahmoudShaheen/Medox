@@ -83,7 +83,7 @@ public class ShakeService extends Service implements SensorEventListener {
     }
 
     public void sendEmergency(){
-        // Launch NotificationDetails Activity
+        // Launch Emergency Activity
         Intent intent = new Intent(this, SeniorHome.class);
         intent.putExtra("position", 5);
         intent.putExtra(SeniorEmergencyFragment.SHAKE_KEY, "true");
