@@ -219,13 +219,6 @@ public class Authentication extends AppCompatActivity {
         return type;
     }
 
-    public void signOut() {
-        stopService(new Intent(this, IndicatorsService.class));
-        stopService(new Intent(this, LocationService.class));
-        FirebaseAuth firebaseAuth;
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuth.signOut();
-    }
     private boolean checkConnection(){
         //check connection state
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);

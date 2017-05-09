@@ -1,14 +1,10 @@
 package com.slothnull.android.medox;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -20,17 +16,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.slothnull.android.medox.service.IndicatorsService;
-import com.slothnull.android.medox.service.LocationService;
-import com.slothnull.android.medox.service.ShakeService;
 
 public class Splash extends Activity {
 
     private static final String TAG = "SplashActivity";
-
-    private static final int MY_PERMISSIONS_SEND_SMS = 0;
-    private static final int MY_PERMISSIONS_LOCATION = 1;
-    private static final int MY_PERMISSIONS_BODY_SENSORS = 2;
 
     DatabaseReference mDatabase;
     ValueEventListener configListener;
@@ -43,18 +32,16 @@ public class Splash extends Activity {
         ImageView logoView = (ImageView) findViewById(R.id.logoView);
         logoView.setImageResource(R.drawable.logo);
 
-        SharedPreferences sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
+        //get permissions for marshmallow users
+        BasicHelper.permissions(this, this);
+
         //check if user is already signed-in or not
-        //if not call Authentication Activity
-        permissions();
-        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
-        if (auth == null) {
+        if (!BasicHelper.isAuth()) { //if not call Authentication Activity
             callAuth();
-            Log.i(TAG, "1");
-        } else {
-            //if user signed in
-            //get app type
-            final String appType = sharedPreferences.getString("appType", "");
+        } else {//if user signed in
+            //get app type and go to corresponding Activity
+            //Also checks if account is configured or not
+            final String appType = BasicHelper.getAppType(this);
             Log.i(TAG, appType);
 
             //check if configured
@@ -102,188 +89,45 @@ public class Splash extends Activity {
         }
     }
     private void callAuth(){
-        signOut();
+        BasicHelper.signOut(this);
         //hideProgressDialog();
         Intent intent = new Intent(this, Authentication.class);
         startActivity(intent);
         finish();
     }
+
+    //call Care giver Home activity and disable/stop services
     private void callCare(){
         Intent intent = new Intent(this, Home.class);
         startActivity(intent);
-        stopServices();
-        disableServices();
+        BasicHelper.stopServices(this);
+        BasicHelper.disableServices(this);
         finish();
     }
+
+    //calls Senior citizen Home activity and trigger/enable services
     private void callSenior(){
         Intent intent = new Intent(this, SeniorHome.class);
         startActivity(intent);
-        enableServices();
-        triggerServices();
+        BasicHelper.enableServices(this);
+        BasicHelper.triggerServices(this);
         finish();
     }
-    public void triggerServices(){
-        try{
-            Intent shake = new Intent(this, ShakeService.class);
-            startService(shake);
-        }catch(Exception e){
-            Log.e(TAG, "error Triggering Shake Service");
-        }
-        try{
-            Intent location = new Intent(this, LocationService.class);
-            startService(location);
-        }catch(Exception e){
-            Log.e(TAG, "error Triggering Location Service");
-        }
-        try{
-            Intent indicators = new Intent(this, IndicatorsService.class);
-            startService(indicators);
-        }catch(Exception e){
-            Log.e(TAG, "error Triggering Indicators Service");
-        }
-    }
 
-    private void stopServices(){
-        try{
-            stopService(new Intent(this, ShakeService.class));
-        }catch(Exception e){
-            Log.e(TAG, "error Stopping Shake Service");
-        }
-        try{
-            stopService(new Intent(this, LocationService.class));
-        }catch(Exception e){
-            Log.e(TAG, "error Stopping Location Service");
-        }
-        try{
-            stopService(new Intent(this, IndicatorsService.class));
-        }catch (Exception e){
-            Log.e(TAG, "error Stopping Indicators Service");
-        }
-    }
-
-    private void enableServices(){
-        Context context = getApplicationContext();
-        PackageManager pm = context.getPackageManager();
-
-        try{
-            pm.setComponentEnabledSetting(
-                    new ComponentName(context, ShakeService.class),
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP);
-
-
-        }catch(Exception e){
-            Log.e(TAG, "error enabling Shake Service");
-        }
-        try{
-            pm.setComponentEnabledSetting(
-                    new ComponentName(context, LocationService.class),
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP);
-
-
-        }catch(Exception e){
-            Log.e(TAG, "error enabling Location Service");
-        }
-        try{
-            pm.setComponentEnabledSetting(
-                    new ComponentName(context, IndicatorsService.class),
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP);
-
-        }catch(Exception e){
-            Log.e(TAG, "error enabling Indicators Service");
-        }
-    }
-
-    private void disableServices() {
-        Context context = getApplicationContext();
-        PackageManager pm = context.getPackageManager();
-
-        try{
-            pm.setComponentEnabledSetting(
-                    new ComponentName(context, ShakeService.class),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                    PackageManager.DONT_KILL_APP);
-
-
-        }catch(Exception e){
-            Log.e(TAG, "error disabling Shake Service");
-        }
-       try{
-           pm.setComponentEnabledSetting(
-                   new ComponentName(context, LocationService.class),
-                   PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                   PackageManager.DONT_KILL_APP);
-
-
-       }catch(Exception e){
-           Log.e(TAG, "error disabling Location Service");
-       }
-        try{
-           pm.setComponentEnabledSetting(
-                   new ComponentName(context, IndicatorsService.class),
-                   PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                   PackageManager.DONT_KILL_APP);
-
-       }catch(Exception e){
-           Log.e(TAG, "error disabling Indicators Service");
-       }
-    }
-
-    public void signOut() {
-        try{
-            stopService(new Intent(this, ShakeService.class));
-            stopService(new Intent(this, IndicatorsService.class));
-            stopService(new Intent(this, LocationService.class));
-        }catch(Exception e){
-            Log.e(TAG, "error Stopping Services during sign-out");
-        }
-        FirebaseAuth firebaseAuth;
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuth.signOut();
-    }
+    //call settings Activity to complete account configuration
     public void callSettings(){
         Intent settings = new Intent(this, Settings.class);
         startActivity(settings);
         finish();
     }
 
-    @Override
+    @Override //remove event listener
     public void onDestroy(){
         super.onDestroy();
         try{
             mDatabase.removeEventListener(configListener);
         }catch(Exception e){
             Log.i(TAG, "unable to remove event Listener");
-        }
-
-    }
-
-    public void permissions(){
-        if (ContextCompat.checkSelfPermission(this,
-                "android.permission.SEND_SMS")
-                != PackageManager.PERMISSION_GRANTED) {
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{"android.permission.SEND_SMS"},
-                        MY_PERMISSIONS_SEND_SMS);
-        }
-        if (ContextCompat.checkSelfPermission(this,
-                "android.permission.ACCESS_FINE_LOCATION")
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{"android.permission.ACCESS_FINE_LOCATION"},
-                    MY_PERMISSIONS_LOCATION);
-        }
-        if (ContextCompat.checkSelfPermission(this,
-                "android.permission.BODY_SENSORS")
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{"android.permission.BODY_SENSORS"},
-                    MY_PERMISSIONS_BODY_SENSORS);
         }
     }
 }
