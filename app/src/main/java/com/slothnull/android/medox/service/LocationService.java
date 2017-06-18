@@ -52,10 +52,7 @@ public class LocationService extends Service implements LocationListener {
         super.onCreate();
         Log.v(TAG, "started");
         intent = new Intent(BROADCAST_ACTION);
-    }
 
-    @Override
-    public void onStart(Intent intent, int startId) {
         setData();
         try{
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -68,8 +65,8 @@ public class LocationService extends Service implements LocationListener {
         }catch(SecurityException e){
             Log.i(TAG, "No location :(");
         }
-
     }
+    
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return START_STICKY;
@@ -170,6 +167,7 @@ public class LocationService extends Service implements LocationListener {
     }
     public void sendLocData(){
         //if user not signed in stop service
+        Log.i(TAG, "sending data to fb");
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
         if(auth == null){
             stopService(new Intent(this, LocationService.class));
