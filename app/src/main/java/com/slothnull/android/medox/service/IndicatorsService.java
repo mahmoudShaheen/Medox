@@ -28,6 +28,12 @@ import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 
 public class IndicatorsService extends Service {
 
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    /*
     private static final String TAG = "IndicatorsService";
 
     public static final String BROADCAST_ACTION = "Hello World";
@@ -144,4 +150,5 @@ public class IndicatorsService extends Service {
         mDatabase.child("users").child(UID).child("data").child("heartRate")
                 .setValue(String.valueOf(heartRate));
     }
+    */
 }
