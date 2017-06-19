@@ -1,15 +1,21 @@
 package com.slothnull.android.medox.service;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.slothnull.android.medox.R;
 import com.slothnull.android.medox.SeniorHome;
+import com.slothnull.android.medox.Splash;
 import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 
 public class ShakeService extends Service implements SensorEventListener {
@@ -40,6 +46,22 @@ public class ShakeService extends Service implements SensorEventListener {
             mSensorMgr.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
         }
         Log.v(TAG, "started Create");
+
+        //foreground service
+        Intent notificationIntent = new Intent(this, Splash.class);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                notificationIntent, 0);
+
+        Notification notification = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.notification)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),
+                        R.mipmap.logo))
+                .setContentTitle("Medox Service Running")
+                .setContentText("Shake service running")
+                .setContentIntent(pendingIntent).build();
+
+        startForeground(1337/* ID of notification */, notification);
     }
 
     @Override

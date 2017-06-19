@@ -1,14 +1,18 @@
 package com.slothnull.android.medox.service;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,7 +23,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.slothnull.android.medox.R;
 import com.slothnull.android.medox.SeniorHome;
+import com.slothnull.android.medox.Splash;
 import com.slothnull.android.medox.model.AbstractConfig;
 import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 
@@ -67,6 +73,22 @@ public class LocationService extends Service implements LocationListener {
         }catch(SecurityException e){
             Log.i(TAG, "No location :(");
         }
+
+        //foreground service
+        Intent notificationIntent = new Intent(this, Splash.class);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                notificationIntent, 0);
+
+        Notification notification = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.notification)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),
+                        R.mipmap.logo))
+                .setContentTitle("Location Service Running")
+                .setContentText("Medox Location service running")
+                .setContentIntent(pendingIntent).build();
+
+        startForeground(1338/* ID of notification */, notification);
     }
 
     @Override
