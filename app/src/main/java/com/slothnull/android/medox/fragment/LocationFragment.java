@@ -33,6 +33,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.model.AbstractData;
 import com.slothnull.android.medox.R;
 
+import java.util.Locale;
+
 public class LocationFragment extends Fragment implements OnMapReadyCallback,LocationListener {
 
     private static final String TAG = "LocationFragment";
@@ -178,8 +180,18 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Loc
         otherLocation.setLongitude(longitude);
 
         float distance = myLocation.distanceTo(otherLocation);
-        Integer dist = Math.round(distance);
-        ((TextView)view.findViewById(R.id.distanceView)).setText(String.valueOf(dist) + " meter");
+
+        String unit;
+        String dist;
+        if(distance > 500){
+            unit = "KM";
+            dist = String.format(Locale.getDefault(), "%.2f", distance/1000);
+        }else{
+            unit = "M";
+            dist = String.valueOf(Math.round(distance));
+        }
+        String text = dist + " " + unit;
+        ((TextView)view.findViewById(R.id.distanceView)).setText(text);
     }
 
     public void onProviderDisabled(String provider) {
