@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.slothnull.android.medox.SeniorHome;
 import com.slothnull.android.medox.model.AbstractConfig;
 import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 
@@ -32,6 +33,7 @@ public class LocationService extends Service implements LocationListener {
 
     private static final String TAG = "LocationService";
 
+    private boolean emergencyState = false;
     public static final String BROADCAST_ACTION = "Hello World";
     public LocationManager locationManager;
     public static double latitude;
@@ -41,9 +43,9 @@ public class LocationService extends Service implements LocationListener {
     public String provider;
     public Location location;
     //initially set values to avoid database delay errors
-    public double maxDistance =  999999999;
-    public double homeLatitude = 0;
-    public double homeLongitude = 0;
+    public double maxDistance = -1;
+    public double homeLatitude = -1;
+    public double homeLongitude = -1;
 
     Intent intent;
 
@@ -60,13 +62,13 @@ public class LocationService extends Service implements LocationListener {
             provider = locationManager.getBestProvider(new Criteria(), true);
 
             location = locationManager.getLastKnownLocation(provider);
-            Log.i(TAG, "Location achieved!");
+            Log.i(TAG, "Location can be achieved!");
             locationManager.requestLocationUpdates(provider, 400, 1, this);
         }catch(SecurityException e){
             Log.i(TAG, "No location :(");
         }
     }
-    
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return START_STICKY;
@@ -81,12 +83,18 @@ public class LocationService extends Service implements LocationListener {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 AbstractConfig config = dataSnapshot.getValue(AbstractConfig.class);
-                if (config.maxDistance != null)
+                if (config.maxDistance != null) {
                     maxDistance = Double.parseDouble(config.maxDistance);
-                if (config.homeLatitude != null)
+                    Log.i(TAG, "maxDistance" + maxDistance);
+                }
+                if (config.homeLatitude != null) {
                     homeLatitude = Double.parseDouble(config.homeLatitude);
-                if (config.homeLongitude != null)
+                    Log.i(TAG, "homeLatitude" + homeLatitude);
+                }
+                if (config.homeLongitude != null) {
                     homeLongitude = Double.parseDouble(config.homeLongitude);
+                    Log.i(TAG, "homeLongitude" + homeLongitude);
+                }
                 // ...
 
             }
@@ -130,29 +138,46 @@ public class LocationService extends Service implements LocationListener {
         if(LatDiff || LongDiff)
             sendLocData();
 
-        checkDistance(latitude, longitude, provider);
         Log.d(TAG, "Latitude" + Double.toString(location.getLatitude()));
         Log.d(TAG, "Longitude" + Double.toString(location.getLongitude()));
         Log.d(TAG, "provider" + location.getProvider());
         oldLatitude = latitude;
         oldLongitude = longitude;
+
+        checkDistance(latitude, longitude, provider);
     }
 
     public void checkDistance(double lat, double lon, String prov){
+        Log.i(TAG, "checking Distance" );
         Location myLocation = new Location(prov);
         myLocation.setLatitude(lat);
         myLocation.setLongitude(lon);
 
         Location homeLocation = new Location(prov);
-        myLocation.setLatitude(homeLatitude);
-        myLocation.setLongitude(homeLongitude);
+        homeLocation.setLatitude(homeLatitude);
+        homeLocation.setLongitude(homeLongitude);
 
         float distance = myLocation.distanceTo(homeLocation);
-        if (distance > maxDistance){
-            Context c = getApplicationContext();
-            SeniorEmergencyFragment.emergencyNotification(c, "Location Emergency from watch",
-                    "Distance is: " + distance);
+        Log.i(TAG, "distance: " + distance );
+        if (maxDistance != -1){ //initialized "already get that from db"
+            if (distance > maxDistance && !emergencyState){ //!emergencyState to avoid resend emergency
+                Log.i(TAG, "distance > maxDistance: sending emerg." );
+                emergencyState = true;
+                sendEmergency();
+            }
+            if(distance < maxDistance && emergencyState){ //returned to home
+                emergencyState = false;
+            }
         }
+    }
+
+    public void sendEmergency(){
+        // Launch Emergency Activity
+        Intent intent = new Intent(this, SeniorHome.class);
+        intent.putExtra("position", 5);
+        intent.putExtra(SeniorEmergencyFragment.LOCATION_KEY, "true");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     public void onProviderDisabled(String provider) {
