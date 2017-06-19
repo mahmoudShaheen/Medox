@@ -175,19 +175,31 @@ public class Settings extends AppCompatActivity implements LocationListener {
             mSeniorSkype = oldConfig.seniorSkype;
 
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        if( //if all config class fields aren't empty -> set user as configured
-                   !mMaxDistance.isEmpty()
-                && !mMaxHeart.isEmpty()
-                && !mMinHeart.isEmpty()
-                && !latitude.isEmpty()
-                && !longitude.isEmpty()
-                && !mMobileNumber.isEmpty()
-                && !mMobileNumber2.isEmpty()
-                && !mCareSkype.isEmpty()
-                && !mSeniorSkype.isEmpty()
+        if( //if all config class fields aren't null -> set user as configured
+                   mMaxDistance != null
+                && mMaxHeart != null
+                && mMinHeart != null
+                && latitude != null
+                && longitude != null
+                && mMobileNumber != null
+                && mMobileNumber2 != null
+                && mCareSkype != null
+                && mSeniorSkype != null
            ){
-            DatabaseReference configured = FirebaseDatabase.getInstance().getReference();
-            configured.child("users").child(UID).child("user").child("configured").setValue("true");
+            if( //if all config class fields aren't empty -> set user as configured
+                        !mMaxDistance.isEmpty()
+                    && !mMaxHeart.isEmpty()
+                    && !mMinHeart.isEmpty()
+                    && !latitude.isEmpty()
+                    && !longitude.isEmpty()
+                    && !mMobileNumber.isEmpty()
+                    && !mMobileNumber2.isEmpty()
+                    && !mCareSkype.isEmpty()
+                    && !mSeniorSkype.isEmpty()
+                ){
+                DatabaseReference configured = FirebaseDatabase.getInstance().getReference();
+                configured.child("users").child(UID).child("user").child("configured").setValue("true");
+            }
         }
 
         //send notification to database to access it later in Notification Activity
