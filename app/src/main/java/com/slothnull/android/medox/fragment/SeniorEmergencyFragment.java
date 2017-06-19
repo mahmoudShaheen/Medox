@@ -38,6 +38,7 @@ import com.slothnull.android.medox.model.AbstractMobileToken;
 import com.slothnull.android.medox.model.AbstractWarehouse;
 import com.slothnull.android.medox.R;
 import com.slothnull.android.medox.SeniorHome;
+import com.slothnull.android.medox.service.LocationService;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +48,7 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
     private static final String TAG = "SeniorEmergencyFragment";
 
     public static final String SHAKE_KEY = "shake";
+    public static final String LOCATION_KEY = "location";
     public static String mobileToken;
 
     public static SharedPreferences sharedPreferences;
@@ -89,6 +91,10 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
         String shakeKey = getActivity().getIntent().getStringExtra(SHAKE_KEY);
         if (shakeKey != null) {
             sendShakeEmergency();
+        }
+        String locationKey = getActivity().getIntent().getStringExtra(LOCATION_KEY);
+        if (locationKey != null) {
+            sendLocationEmergency();
         }
 
         drug1 = (TextView) view.findViewById(R.id.drug1View);
@@ -279,6 +285,13 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
     public void sendShakeEmergency(){
         String title = "Emergency Shake From Watch!";
         String message = "Action Required IMMEDIATELY !!!!";
+        sendSeniorNotification("Emergency Sent!", "Click here for more Actions!", 10);
+        Context c = getActivity().getApplicationContext();
+        emergencyNotification(c, title, message);
+    }
+    public void sendLocationEmergency(){
+        String title = "Location Emergency from watch";
+        String message = "Mobile location is out of safe distance ";
         sendSeniorNotification("Emergency Sent!", "Click here for more Actions!", 10);
         Context c = getActivity().getApplicationContext();
         emergencyNotification(c, title, message);
