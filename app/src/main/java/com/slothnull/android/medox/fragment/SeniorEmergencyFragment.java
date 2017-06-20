@@ -31,6 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.slothnull.android.medox.EmergencyNotification;
 import com.slothnull.android.medox.model.AbstractCommand;
 import com.slothnull.android.medox.model.AbstractConfig;
 import com.slothnull.android.medox.model.AbstractEmergency;
@@ -297,8 +298,7 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
         emergencyNotification(c, title, message);
     }
     private void sendSeniorNotification(String title, String messageBody, int level) {
-        Intent intent = new Intent(getActivity(), SeniorHome.class);
-        intent.putExtra("position", 5);
+        Intent intent = new Intent(getActivity(), EmergencyNotification.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), level /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
