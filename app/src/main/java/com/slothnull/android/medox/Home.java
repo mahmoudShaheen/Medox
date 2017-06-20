@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.slothnull.android.medox.fragment.ControlFragment;
 import com.slothnull.android.medox.fragment.EmergencyFragment;
 import com.slothnull.android.medox.fragment.IndicatorsFragment;
 import com.slothnull.android.medox.fragment.LocationFragment;
@@ -55,7 +56,8 @@ public class Home extends AppCompatActivity {
                     new ScheduleFragment(),
                     new WarehouseFragment(),
                     new EmergencyFragment(),
-                    new LocationFragment()
+                    new LocationFragment(),
+                    new ControlFragment()
             };
 
             private final String[] mFragmentNames = new String[] {
@@ -65,7 +67,8 @@ public class Home extends AppCompatActivity {
                     "Schedule",
                     "Warehouse",
                     "Emergency",
-                    "Location"
+                    "Location",
+                    "Control"
             };
             @Override
             public Fragment getItem(int position) {
