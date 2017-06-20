@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.slothnull.android.medox.fragment.ControlFragment;
 import com.slothnull.android.medox.model.AbstractConfig;
 import com.slothnull.android.medox.fragment.IndicatorsFragment;
 import com.slothnull.android.medox.fragment.NotificationFragment;
@@ -66,7 +67,8 @@ public class SeniorHome extends AppCompatActivity {
                     new NotificationFragment(),
                     new ScheduleFragment(),
                     new WarehouseFragment(),
-                    new SeniorEmergencyFragment()
+                    new SeniorEmergencyFragment(),
+                    new ControlFragment()
             };
 
             private final String[] mFragmentNames = new String[] {
@@ -75,7 +77,8 @@ public class SeniorHome extends AppCompatActivity {
                     "Notifications",
                     "Schedule",
                     "Warehouse",
-                    "Emergency"
+                    "Emergency",
+                    "Control"
             };
             @Override
             public Fragment getItem(int position) {
