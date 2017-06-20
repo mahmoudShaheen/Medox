@@ -58,9 +58,9 @@ public class ControlFragment extends Fragment {
                 AbstractSensor sensor = dataSnapshot.getValue(AbstractSensor.class);
                 if (sensor != null) {
                     if (sensor.light != null)
-                        light.setText(sensor.light);
+                        light.setText(sensor.light + " lx");
                     if (sensor.temperature != null)
-                        temperature.setText(sensor.temperature);
+                        temperature.setText(sensor.temperature + " C");
                 }
             }
 
@@ -133,7 +133,7 @@ public class ControlFragment extends Fragment {
         AbstractSwitch abstractSwitch = new AbstractSwitch(state1, state2);
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(UID).child("iot").child("switch").push();
+                .child("users").child(UID).child("iot").child("switch");
         mDatabase.setValue(abstractSwitch);
     }
 }
