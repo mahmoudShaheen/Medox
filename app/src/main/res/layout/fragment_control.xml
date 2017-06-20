@@ -123,11 +123,13 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_margin="10dp"
+            android:checked="false"
             android:switchPadding="40dp"
             android:text="Switch 1"
             android:textColor="@color/colorAccent"
             android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:checked="false" />
 
         <Switch
             android:id="@+id/switch2"
@@ -140,7 +142,8 @@
             android:text="Switch 2"
             android:textColor="@color/colorAccent"
             android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:checked="false" />
 
     </RelativeLayout>
 
