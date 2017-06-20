@@ -48,7 +48,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Loc
     public double mLongitude = 0;
     public double mLatitude = 0;
     public String mProvider = "";
-    public static String watchToken;
     View view;
 
     public LocationManager locationManager;
@@ -152,8 +151,26 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Loc
     public void onDestroy() {
         super.onDestroy();
         //stop location update
-        Log.v("STOP_SERVICE", "DONE");
+        Log.v(TAG, "DONE");
         locationManager.removeUpdates(this);
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        //stop location update
+        Log.v(TAG, "pause");
+        locationManager.removeUpdates(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.v(TAG, "resume");
+        try{
+            locationManager.requestLocationUpdates(mProvider, 400, 1, this);
+        }catch(SecurityException e){
+            Log.i(TAG, "No location :(");
+        }
     }
 
     public void onLocationChanged(final Location location) {
