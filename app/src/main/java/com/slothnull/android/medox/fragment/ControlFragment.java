@@ -30,6 +30,12 @@ public class ControlFragment extends Fragment {
 
     public Switch switch1;
     public Switch switch2;
+    public Switch switch3;
+    public Switch switch4;
+    public Switch switch5;
+    public Switch switch6;
+    public Switch switch7;
+    public Switch switch8;
 
     View view;
     public ControlFragment() {
@@ -76,6 +82,12 @@ public class ControlFragment extends Fragment {
         //Switches
         switch1 = (Switch) view.findViewById(R.id.switch1);
         switch2 = (Switch) view.findViewById(R.id.switch2);
+        switch3 = (Switch) view.findViewById(R.id.switch3);
+        switch4 = (Switch) view.findViewById(R.id.switch4);
+        switch5 = (Switch) view.findViewById(R.id.switch5);
+        switch6 = (Switch) view.findViewById(R.id.switch6);
+        switch7 = (Switch) view.findViewById(R.id.switch7);
+        switch8 = (Switch) view.findViewById(R.id.switch8);
 
         //data
         ValueEventListener switchListener = new ValueEventListener() {
@@ -94,6 +106,42 @@ public class ControlFragment extends Fragment {
                         if(!abstractSwitch.switch2.isEmpty()){
                             if(abstractSwitch.switch2.equals("on"))
                                 switch2.setChecked(true);
+                        }
+                    }
+                    if (abstractSwitch.switch3 != null){
+                        if(!abstractSwitch.switch3.isEmpty()){
+                            if(abstractSwitch.switch3.equals("on"))
+                                switch3.setChecked(true);
+                        }
+                    }
+                    if (abstractSwitch.switch4 != null){
+                        if(!abstractSwitch.switch4.isEmpty()){
+                            if(abstractSwitch.switch4.equals("on"))
+                                switch4.setChecked(true);
+                        }
+                    }
+                    if (abstractSwitch.switch5 != null){
+                        if(!abstractSwitch.switch5.isEmpty()){
+                            if(abstractSwitch.switch5.equals("on"))
+                                switch5.setChecked(true);
+                        }
+                    }
+                    if (abstractSwitch.switch6 != null){
+                        if(!abstractSwitch.switch6.isEmpty()){
+                            if(abstractSwitch.switch6.equals("on"))
+                                switch6.setChecked(true);
+                        }
+                    }
+                    if (abstractSwitch.switch7 != null){
+                        if(!abstractSwitch.switch7.isEmpty()){
+                            if(abstractSwitch.switch7.equals("on"))
+                                switch7.setChecked(true);
+                        }
+                    }
+                    if (abstractSwitch.switch8 != null){
+                        if(!abstractSwitch.switch8.isEmpty()){
+                            if(abstractSwitch.switch8.equals("on"))
+                                switch8.setChecked(true);
                         }
                     }
                 }
@@ -119,18 +167,66 @@ public class ControlFragment extends Fragment {
                 updateChecked();
             }
         });
+        switch3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                updateChecked();
+            }
+        });
+        switch4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                updateChecked();
+            }
+        });
+        switch5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                updateChecked();
+            }
+        });
+        switch6.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                updateChecked();
+            }
+        });
+        switch7.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                updateChecked();
+            }
+        });
+        switch8.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                updateChecked();
+            }
+        });
 
         return view;
     }
     public void updateChecked(){
         String state1 = "off";
         String state2 = "off";
+        String state3 = "off";
+        String state4 = "off";
+        String state5 = "off";
+        String state6 = "off";
+        String state7 = "off";
+        String state8 = "off";
         if(switch1.isChecked())
             state1 = "on";
         if(switch2.isChecked())
             state2 = "on";
+        if(switch3.isChecked())
+            state3 = "on";
+        if(switch4.isChecked())
+            state4 = "on";
+        if(switch5.isChecked())
+            state5 = "on";
+        if(switch6.isChecked())
+            state6 = "on";
+        if(switch7.isChecked())
+            state7 = "on";
+        if(switch8.isChecked())
+            state8 = "on";
         //send to db
-        AbstractSwitch abstractSwitch = new AbstractSwitch(state1, state2);
+        AbstractSwitch abstractSwitch = new AbstractSwitch(state1, state2, state3, state4, state5, state6, state7, state8);
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("users").child(UID).child("iot").child("switch");

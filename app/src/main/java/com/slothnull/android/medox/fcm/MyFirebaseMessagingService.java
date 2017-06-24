@@ -40,6 +40,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.slothnull.android.medox.EmergencyNotification;
 import com.slothnull.android.medox.model.AbstractNotification;
 import com.slothnull.android.medox.Home;
 import com.slothnull.android.medox.R;
@@ -143,8 +144,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendCareNotification(String title, String messageBody, int level) {
         Intent intent = new Intent(this, Home.class);
         if (level == 1){
-            intent = new Intent(this, Home.class);
-            intent.putExtra("position", 5);
+            intent = new Intent(this, EmergencyNotification.class);
         }else{
             intent.putExtra("position", 3);
         }
@@ -203,8 +203,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param messageBody FCM message body received.
      */
     private void sendSeniorNotification(String title, String messageBody, int level) {
-        Intent intent = new Intent(this, SeniorHome.class);
-        intent.putExtra("position", 5);
+        Intent intent = new Intent(this, EmergencyNotification.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, level /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);

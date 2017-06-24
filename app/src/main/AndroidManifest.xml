@@ -14,7 +14,7 @@
     <uses-feature android:name="android.hardware.sensor.accelerometer" />
 
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.BODY_SENSORS" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -97,12 +97,13 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".broadcastreceiver.SMSBroadcastReceiver">
+        <receiver android:name=".broadcastreceiver.SMSBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".EmergencyNotification"></activity>
     </application>
 
 </manifest>
