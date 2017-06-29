@@ -12,15 +12,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.slothnull.android.medox.fragment.EmergencyFragment;
 import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 
+import static com.slothnull.android.medox.fragment.SeniorEmergencyFragment.emergencyNotification;
+
 public class EmergencyNotification extends AppCompatActivity {
 
     private static final String TAG = "EmergencyNotification";
+
+    public static final String SHAKE_KEY = "shake";
+    public static final String LOCATION_KEY = "location";
 
     private FragmentPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
@@ -38,6 +44,18 @@ public class EmergencyNotification extends AppCompatActivity {
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
         if (auth == null) {
             finish();
+        }
+
+        Toast.makeText(this,"Emergency Sent!", Toast.LENGTH_LONG).show();
+
+        // Get post key from intent
+        String shakeKey = getIntent().getStringExtra(SHAKE_KEY);
+        if (shakeKey != null) {
+            sendShakeEmergency();
+        }
+        String locationKey = getIntent().getStringExtra(LOCATION_KEY);
+        if (locationKey != null) {
+            sendLocationEmergency();
         }
 
         SharedPreferences sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
@@ -98,5 +116,17 @@ public class EmergencyNotification extends AppCompatActivity {
         Intent intent = new Intent(this, Splash.class);
         startActivity(intent);
         finish();
+    }
+
+    public void sendShakeEmergency(){
+        String title = "Emergency Shake From Watch!";
+        String message = "Action Required IMMEDIATELY !!!!";
+        emergencyNotification(title, message);
+    }
+
+    public void sendLocationEmergency(){
+        String title = "Location Emergency from watch";
+        String message = "Mobile location is out of safe distance ";
+        emergencyNotification(title, message);
     }
 }

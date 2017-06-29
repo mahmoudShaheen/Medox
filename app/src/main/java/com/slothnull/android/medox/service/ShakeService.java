@@ -108,6 +108,7 @@ public class ShakeService extends Service implements SensorEventListener {
     public void sendEmergency(){
         // Launch Emergency Activity
         Intent intent = new Intent(this, EmergencyNotification.class);
+        intent.putExtra(EmergencyNotification.SHAKE_KEY, "true");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }

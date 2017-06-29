@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.slothnull.android.medox.EmergencyNotification;
 import com.slothnull.android.medox.R;
 import com.slothnull.android.medox.SeniorHome;
 import com.slothnull.android.medox.Splash;
@@ -195,9 +196,8 @@ public class LocationService extends Service implements LocationListener {
 
     public void sendEmergency(){
         // Launch Emergency Activity
-        Intent intent = new Intent(this, SeniorHome.class);
-        intent.putExtra("position", 5);
-        intent.putExtra(SeniorEmergencyFragment.LOCATION_KEY, "true");
+        Intent intent = new Intent(this, EmergencyNotification.class);
+        intent.putExtra(EmergencyNotification.LOCATION_KEY, "true");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
