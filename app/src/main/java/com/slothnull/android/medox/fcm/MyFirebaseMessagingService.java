@@ -123,7 +123,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             level = Integer.parseInt(payload.get("level"));
             message = payload.get("message");
             title = payload.get("title");
-            String time = DateFormat.getDateTimeInstance().format(new Date());
 
             //send notification to user
             sendCareNotification(title, message, level);
