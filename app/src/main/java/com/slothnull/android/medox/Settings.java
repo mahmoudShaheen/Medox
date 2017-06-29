@@ -1,20 +1,23 @@
 package com.slothnull.android.medox;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,9 +26,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.model.AbstractConfig;
 
-public class Settings extends AppCompatActivity implements LocationListener {
+
+
+public class Settings extends AppCompatActivity {
 
     private static final String TAG = "SettingsActivity";
+
+    private static final int PLACE_PICKER_REQUEST = 1;
 
     private ProgressDialog mProgressDialog;
 
@@ -33,10 +40,8 @@ public class Settings extends AppCompatActivity implements LocationListener {
     private CheckedTextView warehouseEnable;
     private CheckedTextView scheduleEnable;
     private String[] checkArray;
-    private Location mLocation;
-    public String mProvider;
-    public String latitude;
-    public String longitude;
+    public static String latitude;
+    public static String longitude;
 
     private EditText maxHeart;
     private EditText minHeart;
@@ -47,8 +52,6 @@ public class Settings extends AppCompatActivity implements LocationListener {
     private EditText maxDistance;
 
     AbstractConfig oldConfig;
-
-    public LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,18 +75,6 @@ public class Settings extends AppCompatActivity implements LocationListener {
         maxDistance = (EditText) findViewById(R.id.maxDistance);
 
         getConfig();
-
-        try{
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-            mProvider = locationManager.getBestProvider(new Criteria(), true);
-
-            mLocation = locationManager.getLastKnownLocation(mProvider);
-            Log.i(TAG, "Location achieved!");
-            locationManager.requestLocationUpdates(mProvider, 400, 1, this);
-        }catch(SecurityException e){
-            Log.i(TAG, "No location :(");
-        }
     }
 
     private void disableSenior(){
@@ -136,15 +127,32 @@ public class Settings extends AppCompatActivity implements LocationListener {
             }
         });
     }
+
     public void locate(View v){
-        try{
-            latitude = Double.toString(mLocation.getLatitude());
-            longitude = Double.toString(mLocation.getLongitude());
-            Toast.makeText(this, "Location Achieved!", Toast.LENGTH_LONG).show();
-            Log.i(TAG, latitude);
-            Log.i(TAG, longitude);
-        }catch (Exception e){
-            Toast.makeText(this, "Can't get Location, Try Again!", Toast.LENGTH_LONG).show();
+        try {
+            PlacePicker.IntentBuilder intentBuilder =
+                    new PlacePicker.IntentBuilder();
+            Intent intent = intentBuilder.build(this);
+            startActivityForResult(intent, PLACE_PICKER_REQUEST);
+
+        } catch (GooglePlayServicesRepairableException
+                | GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode,
+                                    int resultCode, Intent data) {
+
+        if (requestCode == PLACE_PICKER_REQUEST
+                && resultCode == Activity.RESULT_OK) {
+
+            final Place place = PlacePicker.getPlace(this, data);
+            latitude = String.valueOf(place.getLatLng().latitude);
+            longitude = String.valueOf(place.getLatLng().longitude);
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -220,25 +228,6 @@ public class Settings extends AppCompatActivity implements LocationListener {
                 .child("users").child(UID).child("config");
         mDatabase.setValue(config);
         finish();
-    }
-
-    //Location Listener Functions
-    @Override
-    public void onLocationChanged(Location location) {
-        mLocation = location;
-        Log.i(TAG,Double.toString(mLocation.getLatitude()) );
-        Log.i(TAG,Double.toString(mLocation.getLongitude()) );
-    }
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {}
-    @Override
-    public void onProviderEnabled(String provider) {}
-    @Override
-    public void onProviderDisabled(String provider) {}
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        locationManager.removeUpdates(this);
     }
 
     public void getConfig(){
