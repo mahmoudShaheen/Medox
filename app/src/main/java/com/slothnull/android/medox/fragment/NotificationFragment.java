@@ -1,13 +1,10 @@
 package com.slothnull.android.medox.fragment;
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,23 +90,8 @@ public class NotificationFragment extends Fragment {
     }
 
     public Query getQuery(DatabaseReference databaseReference){
-        Query recentNotificationsQuery = databaseReference;
-        SharedPreferences sharedPreferences = getContext()
-                .getSharedPreferences(getContext().getPackageName(), Context.MODE_PRIVATE);
-        String appType = sharedPreferences.getString("appType","");
-        Log.i(TAG, appType );
-        if (appType.equals("care")){
-            recentNotificationsQuery = databaseReference.child("users").child(getUid())
+        return databaseReference.child("users").child(getUid())
                     .child("notification")
                     .limitToFirst(100);
-        }else if( appType.equals("senior") ){
-            recentNotificationsQuery = databaseReference.child("users").child(getUid())
-                    .child("watchNotification")
-                    .limitToFirst(100);
-        }else{ //user signed but undefined app type
-            Log.i(TAG, "undefined app type");
-            getActivity().finish();
-        }
-        return recentNotificationsQuery;
     }
 }
