@@ -126,14 +126,14 @@ public class Authentication extends AppCompatActivity {
     }
 
     private void onAuthSuccess(FirebaseUser user) {
+        //set app type in shared prefs.
+        String type = appType();
+        sharedPreferences.edit().putString("appType", type).apply();
+        
         String username = usernameFromEmail(user.getEmail());
 
         // Write new user
         writeNewUser(user.getUid(), username, user.getEmail());
-
-        //set app type in shared prefs.
-        String type = appType();
-        sharedPreferences.edit().putString("appType", type).apply();
 
         // Go to MainActivity
         Intent intent = new Intent(Authentication.this, Splash.class);
@@ -178,10 +178,14 @@ public class Authentication extends AppCompatActivity {
 
     private void updateToken(String userId){
         String token = FirebaseInstanceId.getInstance().getToken();
+        Log.i(TAG, "Token =  " + token);
         String appType = sharedPreferences.getString("appType","");
+        Log.i(TAG, "appType =  " + appType);
         if (appType.equals("care")){
+            Log.i(TAG, "in care");
             mDatabase.child("users").child(userId).child("token").child("mobile").setValue(token);
         }else if( appType.equals("senior") ){
+            Log.i(TAG, "in senior");
             mDatabase.child("users").child(userId).child("token").child("watch").setValue(token);
         }else{
             Log.e(TAG, "error Sending Token: undefined appType");
