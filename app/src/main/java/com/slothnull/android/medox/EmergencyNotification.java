@@ -27,6 +27,7 @@ public class EmergencyNotification extends AppCompatActivity {
 
     public static final String SHAKE_KEY = "shake";
     public static final String LOCATION_KEY = "location";
+    public static final String INDICATORS_KEY = "indicators";
 
     private FragmentPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
@@ -56,6 +57,10 @@ public class EmergencyNotification extends AppCompatActivity {
         String locationKey = getIntent().getStringExtra(LOCATION_KEY);
         if (locationKey != null) {
             sendLocationEmergency();
+        }
+        String indicatorsKey = getIntent().getStringExtra(INDICATORS_KEY);
+        if (indicatorsKey != null) {
+            sendIndicatorsEmergency();
         }
 
         SharedPreferences sharedPreferences = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
@@ -127,6 +132,12 @@ public class EmergencyNotification extends AppCompatActivity {
     public void sendLocationEmergency(){
         String title = "Location Emergency from watch";
         String message = "Mobile location is out of safe distance ";
+        emergencyNotification(title, message);
+    }
+
+    public void sendIndicatorsEmergency(){
+        String title = "Indicators Emergency from watch";
+        String message = "Indicators are out of safe value ";
         emergencyNotification(title, message);
     }
 }
