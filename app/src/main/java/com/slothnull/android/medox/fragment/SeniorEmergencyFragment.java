@@ -34,12 +34,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.EmergencyNotification;
 import com.slothnull.android.medox.model.AbstractCommand;
 import com.slothnull.android.medox.model.AbstractConfig;
-import com.slothnull.android.medox.model.AbstractEmergency;
-import com.slothnull.android.medox.model.AbstractMobileToken;
+import com.slothnull.android.medox.model.AbstractNotification;
 import com.slothnull.android.medox.model.AbstractWarehouse;
 import com.slothnull.android.medox.R;
-import com.slothnull.android.medox.SeniorHome;
-import com.slothnull.android.medox.service.LocationService;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,7 +50,6 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
 
     public static final String SHAKE_KEY = "shake";
     public static final String LOCATION_KEY = "location";
-    public static String mobileToken;
 
     public static SharedPreferences sharedPreferences;
 
@@ -130,32 +129,6 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
                 }
             }
         });
-
-        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        ValueEventListener dataListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                AbstractMobileToken token = dataSnapshot.getValue(AbstractMobileToken.class);
-                if (token != null) {
-                    mobileToken = token.mobile;
-                    // ...
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        };
-        mDatabase.child("users").child(UID).child("token")
-                .addValueEventListener(dataListener);
-        //add to list here
-
         return view;
     }
 
@@ -322,19 +295,20 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
 
     public static void emergencyNotification(Context c, String title, String message){
         //send emergency notification
-        String token = mobileToken;
+        String to = "mobile";
         String level = "1";
-        AbstractEmergency emergency = new AbstractEmergency(token, level, title, message);
+        String time = DateFormat.getDateTimeInstance().format(new Date());
+        AbstractNotification emergency = new AbstractNotification(level, title, message, time, to);
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("messages").push();
         mDatabase.setValue(emergency);
         //send emergency as sms
         String sms = "EmergencySMS";
-        sendSMS(c, mobileNumber, sms);
-        sendSMS(c, mobileNumber2, sms);
+        sendSMS(mobileNumber, sms);
+        sendSMS(mobileNumber2, sms);
     }
 
-    public static void sendSMS(Context c, String phoneNo, String msg) {
+    public static void sendSMS(String phoneNo, String msg) {
         try {
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phoneNo, null, msg, null, null);
