@@ -129,7 +129,7 @@ public class Authentication extends AppCompatActivity {
         //set app type in shared prefs.
         String type = appType();
         sharedPreferences.edit().putString("appType", type).apply();
-        
+
         String username = usernameFromEmail(user.getEmail());
 
         // Write new user
