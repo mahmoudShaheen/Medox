@@ -127,13 +127,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             //send notification to user
             sendCareNotification(title, message, level);
-
-            //send notification to database to access it later in Notification Activity
-            AbstractNotification notification = new AbstractNotification(String.valueOf(level), title, message, time);
-            String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                    .child("users").child(UID).child("notification").push();
-            mDatabase.setValue(notification);
         }
     }
     /**
@@ -186,14 +179,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             //send notification to user
             sendSeniorNotification(title, message, level);
-
-            String time = DateFormat.getDateTimeInstance().format(new Date());
-            //send notification to database to access it later in Notification Activity
-            AbstractNotification notification = new AbstractNotification(String.valueOf(level), title, message, time);
-            String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                    .child("users").child(UID).child("watchNotification").push();
-            mDatabase.setValue(notification);
         }
     }
 
