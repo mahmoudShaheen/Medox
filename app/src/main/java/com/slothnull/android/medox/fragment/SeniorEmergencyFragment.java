@@ -48,9 +48,6 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
 
     private static final String TAG = "SeniorEmergencyFragment";
 
-    public static final String SHAKE_KEY = "shake";
-    public static final String LOCATION_KEY = "location";
-
     public static SharedPreferences sharedPreferences;
 
     private AlertDialog.Builder builder ;
@@ -86,16 +83,6 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
 
         sharedPreferences = getActivity().getSharedPreferences(
                 getActivity().getPackageName(), Context.MODE_PRIVATE);
-
-        // Get post key from intent
-        String shakeKey = getActivity().getIntent().getStringExtra(SHAKE_KEY);
-        if (shakeKey != null) {
-            sendShakeEmergency();
-        }
-        String locationKey = getActivity().getIntent().getStringExtra(LOCATION_KEY);
-        if (locationKey != null) {
-            sendLocationEmergency();
-        }
 
         drug1 = (TextView) view.findViewById(R.id.drug1View);
         drug2 = (TextView) view.findViewById(R.id.drug2View);
@@ -253,23 +240,9 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
     public void sendEmergency(){
         String title = "Emergency Button pressed From Watch!";
         String message = "Action Required IMMEDIATELY !!!!";
-        Context c = getActivity().getApplicationContext();
-        emergencyNotification(c, title, message);
+        emergencyNotification(title, message);
     }
-    public void sendShakeEmergency(){
-        String title = "Emergency Shake From Watch!";
-        String message = "Action Required IMMEDIATELY !!!!";
-        sendSeniorNotification("Emergency Sent!", "Click here for more Actions!", 10);
-        Context c = getActivity().getApplicationContext();
-        emergencyNotification(c, title, message);
-    }
-    public void sendLocationEmergency(){
-        String title = "Location Emergency from watch";
-        String message = "Mobile location is out of safe distance ";
-        sendSeniorNotification("Emergency Sent!", "Click here for more Actions!", 10);
-        Context c = getActivity().getApplicationContext();
-        emergencyNotification(c, title, message);
-    }
+
     private void sendSeniorNotification(String title, String messageBody, int level) {
         Intent intent = new Intent(getActivity(), EmergencyNotification.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -293,14 +266,15 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
         notificationManager.notify(level /* ID of notification */, notificationBuilder.build());
     }
 
-    public static void emergencyNotification(Context c, String title, String message){
+    public static void emergencyNotification(String title, String message){
         //send emergency notification
         String to = "mobile";
         String level = "1";
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         String time = DateFormat.getDateTimeInstance().format(new Date());
         AbstractNotification emergency = new AbstractNotification(level, title, message, time, to);
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("messages").push();
+                .child("users").child(userID).child("notification").push();
         mDatabase.setValue(emergency);
         //send emergency as sms
         String sms = "EmergencySMS";
