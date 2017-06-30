@@ -35,6 +35,7 @@ dependencies {
     compile 'com.android.support:design:25.3.0'
     compile 'com.android.support:support-v4:25.3.0'
     compile 'com.google.android.gms:play-services-places:10.2.0'
+    compile 'com.google.android.gms:play-services-fitness:10.2.0'
     testCompile 'junit:junit:4.12'
 }
 
