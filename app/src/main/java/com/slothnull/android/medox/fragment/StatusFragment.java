@@ -82,7 +82,6 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
                 intent.putExtra("position", 2);
                 startActivity(intent);
             }
-            return;
         }else if(v == emergencyButton){
             if(appType.equals("care")){
                 Intent intent = new Intent(getActivity(), Home.class);
@@ -93,8 +92,10 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
                 intent.putExtra("position", 5);
                 startActivity(intent);
             }
+        }else{
+            return;
         }
-
+        getActivity().finish();
     }
 
     public void getAppType(){
@@ -109,59 +110,57 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        ValueEventListener warehouseListener = new ValueEventListener() {
+        ValueEventListener statusListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                for (DataSnapshot child: dataSnapshot.getChildren()) {
-                    AbstractStatus status = child.getValue(AbstractStatus.class);
-                    if (status != null) {
-                        if(status.heart != null){
-                            if(status.heart.equals("ok")){
-                                stateHeart.setText("Ok");
-                                stateHeart.setTextColor(ContextCompat.getColor(getActivity()
-                                        , R.color.colorPrimary));
-                            }else if(status.heart.equals("fail")){
-                                stateHeart.setText("Fail");
-                                stateHeart.setTextColor(ContextCompat.getColor(getActivity()
-                                        , R.color.colorRed));
-                            }
+            // Get Post object and use the values to update the UID
+                AbstractStatus status = dataSnapshot.getValue(AbstractStatus.class);
+                if (status != null) {
+                    if(status.heart != null){
+                        if(status.heart.equals("ok")){
+                            stateHeart.setText("Ok");
+                            stateHeart.setTextColor(ContextCompat.getColor(getActivity()
+                                    , R.color.colorPrimary));
+                        }else if(status.heart.equals("fail")){
+                            stateHeart.setText("Fail");
+                            stateHeart.setTextColor(ContextCompat.getColor(getActivity()
+                                    , R.color.colorRed));
                         }
-                        if(status.location != null){
-                            if(status.location.equals("ok")){
-                                stateLocation.setText("Ok");
-                                stateLocation.setTextColor(ContextCompat.getColor(getActivity()
-                                        , R.color.colorPrimary));
-                            }else if(status.location.equals("fail")){
-                                stateLocation.setText("Fail");
-                                stateLocation.setTextColor(ContextCompat.getColor(getActivity()
-                                        , R.color.colorRed));
-                            }
-                        }
-                        if(status.emergency != null){
-                            if(status.emergency.equals("ok")){
-                                stateEmergency.setText("Ok");
-                                stateEmergency.setTextColor(ContextCompat.getColor(getActivity()
-                                        , R.color.colorPrimary));
-                            }else if(status.emergency.equals("fail")){
-                                stateEmergency.setText("Fail");
-                                stateEmergency.setTextColor(ContextCompat.getColor(getActivity()
-                                        , R.color.colorRed));
-                            }
-                        }
-                        if(status.bills != null){
-                            if(status.heart.equals("ok")){
-                                stateBills.setText("Ok");
-                                stateBills.setTextColor(ContextCompat.getColor(getActivity()
-                                        , R.color.colorPrimary));
-                            }else if(status.bills.equals("fail")){
-                                stateBills.setText("Fail");
-                                stateBills.setTextColor(ContextCompat.getColor(getActivity()
-                                        , R.color.colorRed));
-                            }
-                        }
-
                     }
+                    if(status.location != null){
+                        if(status.location.equals("ok")){
+                            stateLocation.setText("Ok");
+                            stateLocation.setTextColor(ContextCompat.getColor(getActivity()
+                                    , R.color.colorPrimary));
+                        }else if(status.location.equals("fail")){
+                            stateLocation.setText("Fail");
+                            stateLocation.setTextColor(ContextCompat.getColor(getActivity()
+                                    , R.color.colorRed));
+                        }
+                    }
+                    if(status.emergency != null){
+                        if(status.emergency.equals("ok")){
+                            stateEmergency.setText("Ok");
+                            stateEmergency.setTextColor(ContextCompat.getColor(getActivity()
+                                    , R.color.colorPrimary));
+                        }else if(status.emergency.equals("fail")){
+                            stateEmergency.setText("Fail");
+                            stateEmergency.setTextColor(ContextCompat.getColor(getActivity()
+                                    , R.color.colorRed));
+                        }
+                    }
+                    if(status.bills != null){
+                        if(status.bills.equals("ok")){
+                            stateBills.setText("Ok");
+                            stateBills.setTextColor(ContextCompat.getColor(getActivity()
+                                    , R.color.colorPrimary));
+                        }else if(status.bills.equals("fail")){
+                            stateBills.setText("Fail");
+                            stateBills.setTextColor(ContextCompat.getColor(getActivity()
+                                    , R.color.colorRed));
+                        }
+                    }
+
                 }
             }
 
@@ -173,7 +172,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener {
             }
         };
         mDatabase.child("users").child(UID).child("status")
-                .addValueEventListener(warehouseListener);
+                .addValueEventListener(statusListener);
         //add to list here
 
     }
