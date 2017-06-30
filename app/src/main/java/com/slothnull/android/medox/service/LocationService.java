@@ -186,10 +186,12 @@ public class LocationService extends Service implements LocationListener {
             if (distance > maxDistance && !emergencyState){ //!emergencyState to avoid resend emergency
                 Log.i(TAG, "distance > maxDistance: sending emerg." );
                 emergencyState = true;
+                updateStatus("fail");
                 sendEmergency();
             }
             if(distance < maxDistance && emergencyState){ //returned to home
                 emergencyState = false;
+                updateStatus("ok");
             }
         }
     }
@@ -227,5 +229,19 @@ public class LocationService extends Service implements LocationListener {
                 .setValue(String.valueOf(latitude));
         mDatabase.child("users").child(UID).child("data").child("longitude")
                 .setValue(String.valueOf(longitude));
+    }
+    public void updateStatus(String state){
+        //if user not signed in stop service
+        Log.i(TAG, "updating status: " + state);
+        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+        if(auth == null){
+            stopService(new Intent(this, LocationService.class));
+            return;
+        }
+        //send data to db
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase.child("users").child(UID).child("status").child("location")
+                .setValue(state);
     }
 }
