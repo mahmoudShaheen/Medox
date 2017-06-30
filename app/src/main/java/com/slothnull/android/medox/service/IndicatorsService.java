@@ -49,7 +49,8 @@ public class IndicatorsService extends Service {
 
     private GoogleApiClient mClient = null;
 
-    Timer timer;
+    Timer pedoTimer;
+    Timer heartTimer;
 
     public static int oldHeart = 0;
     public static int oldPedo = 0;
@@ -88,17 +89,21 @@ public class IndicatorsService extends Service {
 
         startForeground(1339/* ID of notification */, notification);
 
-        timer = new Timer();
-
-        timer.scheduleAtFixedRate(new TimerTask() {
-
+        //steps timer every 10 seconds updates firebase
+        pedoTimer = new Timer();
+        pedoTimer.scheduleAtFixedRate(new TimerTask() {
             synchronized public void run() {
-
-                readDataTask();
+                readPedo();
             }
-
         },TimeUnit.SECONDS.toMillis(10), TimeUnit.SECONDS.toMillis(10));
 
+        //heart rate timer every 10 seconds updates firebase
+        heartTimer = new Timer();
+        heartTimer.scheduleAtFixedRate(new TimerTask() {
+            synchronized public void run() {
+                readHeart();
+            }
+        },TimeUnit.SECONDS.toMillis(10), TimeUnit.SECONDS.toMillis(10));
     }
 
     @Override
@@ -149,9 +154,6 @@ public class IndicatorsService extends Service {
         Log.v("STOP_SERVICE", "DONE");
     }
 
-    public void onSensorChanged(int value) {
-
-    }
 
     public void checkHeart(int heartRate){
         Log.i(TAG, "checking Heart Rate" );
@@ -176,30 +178,12 @@ public class IndicatorsService extends Service {
         startActivity(intent);
     }
 
-
-    public void sendIndData(){
-        //if user not signed in stop service
-        Log.i(TAG, "sending data to fb");
-        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
-        if(auth == null){
-            stopService(new Intent(this, IndicatorsService.class));
-            return;
-        }
-        //send data to db
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mDatabase.child("users").child(UID).child("data").child("heartRate")
-                .setValue(String.valueOf(currentHeart));
-        mDatabase.child("users").child(UID).child("data").child("pedo")
-                .setValue(String.valueOf(currentPedo));
-    }
-
     /**
      * Read the current daily step total, computed from midnight of the current day
      * on the device's current timezone.
      */
-    private void readDataTask () {
-        Log.i(TAG, "readDataTask Called");
+    private void readPedo () {
+        Log.i(TAG, "readPedo Called");
         //[START_GET_STEPS_COUNT]
         int total = 0;
 
@@ -219,18 +203,75 @@ public class IndicatorsService extends Service {
         //[END_GET_STEPS_COUNT]
 
         //[START_CHECK_SEND_PROCESS]
-        Log.i(TAG, "new sensor value");
+        //to avoid sending data if not too much change
+        boolean pedoDiff = Math.abs(currentPedo - oldPedo) > 5;
+        if(pedoDiff){
+            //if user not signed in stop service
+            Log.i(TAG, "sending pedo rate to fb");
+            FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+            if(auth == null){
+                stopService(new Intent(this, IndicatorsService.class));
+                return;
+            }
+            //send data to db
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            mDatabase.child("users").child(UID).child("data").child("pedo")
+                    .setValue(String.valueOf(currentPedo));
+        }
+
+        Log.d(TAG, "Pedo Rate: " + Integer.toString(currentPedo));
+        oldPedo = currentPedo;
+        //[END_CHECK_SEND_PROCESS]
+
+    }
+
+    /**
+     * Read the current heart rate and sends it to fb,
+     *  also checks if heart rate is in the safe region
+     */
+    public void readHeart(){
+        Log.i(TAG, "readHeart Called");
+
+
+        //[START_GET_HEART_RATE]
+        int total = 0;
+
+        PendingResult<DailyTotalResult> result = Fitness.HistoryApi.readDailyTotal(mClient, DataType.TYPE_STEP_COUNT_DELTA);
+        DailyTotalResult totalResult = result.await(5, TimeUnit.SECONDS);
+        if (totalResult.getStatus().isSuccess()) {
+            DataSet totalSet = totalResult.getTotal();
+            total = totalSet.isEmpty()
+                    ? 0
+                    : totalSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
+        } else {
+            Log.w(TAG, "There was a problem getting the step count.");
+        }
+
+        Log.i(TAG, "Total steps: " + total);
+        currentHeart = total;
+        //[END_GET_HEART_RATE]
+
+
+        //[START_CHECK_SEND_PROCESS]
         //to avoid sending Location if not too much change
         boolean heartDiff = Math.abs(currentHeart - oldHeart) > 1;
-        boolean pedoDiff = Math.abs(currentPedo - oldPedo) > 1;
-        if(heartDiff || pedoDiff)
-            sendIndData();
-
+        if(heartDiff){
+            //if user not signed in stop service
+            Log.i(TAG, "sending heart rate to fb");
+            FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+            if(auth == null){
+                stopService(new Intent(this, IndicatorsService.class));
+                return;
+            }
+            //send data to db
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            mDatabase.child("users").child(UID).child("data").child("heartRate")
+                    .setValue(String.valueOf(currentHeart));
+        }
         Log.d(TAG, "Heart Rate: " + Integer.toString(currentHeart));
-        Log.d(TAG, "Pedo Rate: " + Integer.toString(currentPedo));
         oldHeart = currentHeart;
-        oldPedo = currentPedo;
-
         checkHeart(currentHeart);
         //[END_CHECK_SEND_PROCESS]
 
