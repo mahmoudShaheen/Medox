@@ -18,6 +18,16 @@
         android:textSize="20sp" />
 
     <TextView
+        android:id="@+id/textCalories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:text="Please Wait... "
+        android:textAlignment="center"
+        android:textSize="20sp" />
+
+    <TextView
         android:id="@+id/textPedo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,6 +41,15 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/textCalories"
+        android:layout_centerHorizontal="true"
+        android:text="Calories"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:text="Heart Rate "
@@ -42,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Pedo Rate"
+        android:text="Steps"
         android:textSize="20sp" />
 
 </android.widget.RelativeLayout>

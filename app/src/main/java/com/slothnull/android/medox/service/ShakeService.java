@@ -58,8 +58,8 @@ public class ShakeService extends Service implements SensorEventListener {
                 .setSmallIcon(R.drawable.notification)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),
                         R.mipmap.logo))
-                .setContentTitle("Medox Service Running")
-                .setContentText("Shake service running")
+                .setContentTitle("Shake Service Running")
+                .setContentText("Medox Shake service running")
                 .setContentIntent(pendingIntent).build();
 
         startForeground(1337/* ID of notification */, notification);

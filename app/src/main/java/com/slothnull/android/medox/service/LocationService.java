@@ -203,14 +203,14 @@ public class LocationService extends Service implements LocationListener {
     }
 
     public void onProviderDisabled(String provider) {
-        Toast.makeText( getApplicationContext(), "Gps Disabled", Toast.LENGTH_SHORT ).show();
+        //Toast.makeText( getApplicationContext(), "Gps Disabled", Toast.LENGTH_SHORT ).show();
     }
 
     public void onProviderEnabled(String provider) {
-        Toast.makeText( getApplicationContext(), "Gps Enabled", Toast.LENGTH_SHORT).show();
+        //Toast.makeText( getApplicationContext(), "Gps Enabled", Toast.LENGTH_SHORT).show();
     }
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        Toast.makeText( getApplicationContext(), "Gps status changed", Toast.LENGTH_SHORT).show();
+        //Toast.makeText( getApplicationContext(), "Gps status changed", Toast.LENGTH_SHORT).show();
     }
     public void sendLocData(){
         //if user not signed in stop service

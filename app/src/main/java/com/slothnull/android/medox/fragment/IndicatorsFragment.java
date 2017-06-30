@@ -24,6 +24,7 @@ public class IndicatorsFragment extends Fragment {
 
     public TextView pedo;
     public TextView heartRate;
+    public TextView calories;
 
     View view;
     public IndicatorsFragment() {
@@ -40,6 +41,7 @@ public class IndicatorsFragment extends Fragment {
 
         pedo = (TextView) view.findViewById(R.id.textPedo);
         heartRate = (TextView) view.findViewById(R.id.textHeartRate);
+        calories = (TextView) view.findViewById(R.id.textCalories);
 
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -52,9 +54,11 @@ public class IndicatorsFragment extends Fragment {
                 AbstractData data = dataSnapshot.getValue(AbstractData.class);
                 if (data != null) {
                     if (data.pedo != null)
-                        pedo.setText(data.pedo);
+                        pedo.setText(data.pedo + " Steps");
                     if (data.heartRate != null)
-                        heartRate.setText(data.heartRate);
+                        heartRate.setText(data.heartRate + " BPM");
+                    if (data.calories != null)
+                        calories.setText(data.calories + " Cal");
                 }
             }
 
