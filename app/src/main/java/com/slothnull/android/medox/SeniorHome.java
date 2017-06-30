@@ -3,6 +3,7 @@ package com.slothnull.android.medox;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -17,6 +18,11 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.fitness.Fitness;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,10 +37,10 @@ import com.slothnull.android.medox.fragment.ScheduleFragment;
 import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 import com.slothnull.android.medox.fragment.StatusFragment;
 import com.slothnull.android.medox.fragment.WarehouseFragment;
-import com.slothnull.android.medox.service.IndicatorsService;
-import com.slothnull.android.medox.service.LocationService;
 
-public class SeniorHome extends AppCompatActivity {
+public class SeniorHome extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "SeniorHomeActivity";
 
@@ -43,6 +49,12 @@ public class SeniorHome extends AppCompatActivity {
     private int position;
     private AbstractConfig oldConfig;
     private boolean settingsEnable;
+
+    //Google Fit
+    private static final int REQUEST_OAUTH = 1;
+    private static final String AUTH_PENDING = "auth_state_pending";
+    private boolean authInProgress = false;
+    private GoogleApiClient mApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +66,8 @@ public class SeniorHome extends AppCompatActivity {
         showProgressDialog();
 
         getConfig(); //for settings enabled state
+
+        callFitAuth(savedInstanceState); //Authenticate App for google fit
 
         Intent intent = getIntent();
         position = intent.getIntExtra("position", -1);
@@ -199,4 +213,74 @@ public class SeniorHome extends AppCompatActivity {
             builder.show();
         }
     }
+
+
+    //[START_FITNESS_FUNCTIONS]
+    public void callFitAuth(Bundle savedInstanceState){
+
+        Log.i(TAG, "callFitAuth");
+        if (savedInstanceState != null) {
+            authInProgress = savedInstanceState.getBoolean(AUTH_PENDING);
+        }
+
+        mApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Fitness.SENSORS_API)
+                .addScope(new Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
+        Log.i(TAG, "Connecting...");
+        mApiClient.connect();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "onSaveInstanceState");
+        outState.putBoolean(AUTH_PENDING, authInProgress);
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.i(TAG, "onConnected");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "onConnectionSuspended");
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i(TAG, "onConnectionFailed");
+        if( !authInProgress ) {
+            try {
+                authInProgress = true;
+                connectionResult.startResolutionForResult( SeniorHome.this, REQUEST_OAUTH );
+            } catch(IntentSender.SendIntentException e ) {
+
+            }
+        } else {
+            Log.e( "GoogleFit", "authInProgress" );
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(TAG, "onActivityResult");
+        if( requestCode == REQUEST_OAUTH ) {
+            authInProgress = false;
+            if( resultCode == RESULT_OK ) {
+                if( !mApiClient.isConnecting() && !mApiClient.isConnected() ) {
+                    mApiClient.connect();
+                }
+            } else if( resultCode == RESULT_CANCELED ) {
+                Log.e( "GoogleFit", "RESULT_CANCELED" );
+            }
+        } else {
+            Log.e(TAG, "requestCode NOT request_oauth");
+        }
+    }
+    //[END_FITNESS_FUNCTIONS]
 }
