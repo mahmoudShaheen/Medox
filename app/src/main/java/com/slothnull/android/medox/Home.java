@@ -61,7 +61,7 @@ public class Home extends AppCompatActivity {
             };
 
             private final String[] mFragmentNames = new String[] {
-                    "Home",
+                    "Status",
                     "Indicators",
                     "Notifications",
                     "Schedule",

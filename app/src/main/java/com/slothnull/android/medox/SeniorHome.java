@@ -82,7 +82,7 @@ public class SeniorHome extends AppCompatActivity {
             };
 
             private final String[] mFragmentNames = new String[] {
-                    "Home",
+                    "Status",
                     "Indicators",
                     "Notifications",
                     "Schedule",
