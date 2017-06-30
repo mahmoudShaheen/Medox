@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.slothnull.android.medox"
     android:installLocation="internalOnly">
+
     <!-- internal only for Broadcast receiver -->
 
 
@@ -45,13 +46,17 @@
         <activity android:name=".Home" />
         <activity android:name=".SeniorHome" />
         <activity android:name=".AddSchedule" />
-        <activity android:name=".EmergencyNotification"/>
+        <activity android:name=".EmergencyNotification" />
         <activity
             android:name=".Authentication"
             android:noHistory="true" />
         <activity
             android:name=".Settings"
             android:label="Settings" />
+        <activity android:name=".EditMedicalProfile"
+            android:label="Edit Medical Profile" />
+        <activity android:name=".MedicalProfile"
+            android:label="Medical Profile" />
 
         <!-- Services -->
         <service
