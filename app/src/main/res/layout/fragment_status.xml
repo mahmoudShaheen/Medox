@@ -180,7 +180,7 @@
                 android:orientation="horizontal">
 
                 <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/floatingActionButton2"
+                    android:id="@+id/buttonNotification"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -190,7 +190,7 @@
                     app:srcCompat="@android:drawable/ic_menu_info_details" />
 
                 <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/floatingActionButton3"
+                    android:id="@+id/buttonEmergency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
