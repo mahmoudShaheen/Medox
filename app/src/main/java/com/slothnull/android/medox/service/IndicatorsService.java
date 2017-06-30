@@ -5,12 +5,20 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.fitness.data.DataPoint;
+import com.google.android.gms.fitness.data.DataSource;
+import com.google.android.gms.fitness.data.Value;
+import com.google.android.gms.fitness.request.DataSourcesRequest;
+import com.google.android.gms.fitness.request.OnDataPointListener;
+import com.google.android.gms.fitness.request.SensorRequest;
+import com.google.android.gms.fitness.result.DataSourcesResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,26 +44,27 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 
-/**
- * Created by Shaheen on 17-Mar-17
- * Project: seniormedox
- * Package: com.slothnull.android.seniormedox
- */
-
 public class IndicatorsService extends Service {
     private static final String TAG = "IndicatorsService";
+
+    private static final int HEART_REQUEST_INTERVAL = 5;
+    private static final int PEDO_REQUEST_INTERVAL = 10;
+    private static final int CAL_REQUEST_INTERVAL = 10;
 
     private boolean emergencyState = false;
 
     private GoogleApiClient mClient = null;
+    private OnDataPointListener mListener;
 
     Timer pedoTimer;
-    Timer heartTimer;
+    Timer calTimer;
 
     public static int oldHeart = 0;
     public static int oldPedo = 0;
+    public static int oldCal = 0;
     int currentHeart = 0;
     int currentPedo = 0;
+    int currentCal = 0;
 
     //initially set values to avoid database delay errors
     public int minHeart = -1;
@@ -95,15 +104,19 @@ public class IndicatorsService extends Service {
             synchronized public void run() {
                 readPedo();
             }
-        },TimeUnit.SECONDS.toMillis(10), TimeUnit.SECONDS.toMillis(10));
+        },TimeUnit.SECONDS.toMillis(PEDO_REQUEST_INTERVAL)
+                , TimeUnit.SECONDS.toMillis(PEDO_REQUEST_INTERVAL));
 
-        //heart rate timer every 10 seconds updates firebase
-        heartTimer = new Timer();
-        heartTimer.scheduleAtFixedRate(new TimerTask() {
+        //calories timer every 10 seconds updates firebase
+        calTimer = new Timer();
+        calTimer.scheduleAtFixedRate(new TimerTask() {
             synchronized public void run() {
-                readHeart();
+                readCal();
             }
-        },TimeUnit.SECONDS.toMillis(10), TimeUnit.SECONDS.toMillis(10));
+        },TimeUnit.SECONDS.toMillis(CAL_REQUEST_INTERVAL)
+                , TimeUnit.SECONDS.toMillis(CAL_REQUEST_INTERVAL));
+
+        registerHeart();
     }
 
     @Override
@@ -227,31 +240,106 @@ public class IndicatorsService extends Service {
     }
 
     /**
+     * Read the current daily step total, computed from midnight of the current day
+     * on the device's current timezone.
+     */
+    private void readCal () {
+        Log.i(TAG, "readCal Called");
+        //[START_GET_STEPS_COUNT]
+        int total = 0;
+
+        PendingResult<DailyTotalResult> result = Fitness.HistoryApi.readDailyTotal(mClient, DataType.AGGREGATE_CALORIES_EXPENDED);
+        DailyTotalResult totalResult = result.await(5, TimeUnit.SECONDS);
+        if (totalResult.getStatus().isSuccess()) {
+            DataSet totalSet = totalResult.getTotal();
+            total = Math.round(totalSet.isEmpty()
+                    ? 0
+                    : totalSet.getDataPoints().get(0).getValue(Field.FIELD_CALORIES).asFloat());
+        } else {
+            Log.w(TAG, "There was a problem getting the Calories");
+        }
+
+        Log.i(TAG, "Total Calories: " + total);
+        currentCal = total;
+        //[END_GET_STEPS_COUNT]
+
+        //[START_CHECK_SEND_PROCESS]
+        //to avoid sending data if not too much change
+        boolean calDiff = Math.abs(currentCal - oldCal) > 5;
+        if(calDiff){
+            //if user not signed in stop service
+            Log.i(TAG, "sending Calories to fb");
+            FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+            if(auth == null){
+                stopService(new Intent(this, IndicatorsService.class));
+                return;
+            }
+            //send data to db
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            mDatabase.child("users").child(UID).child("data").child("calories")
+                    .setValue(String.valueOf(currentCal));
+        }
+
+        Log.d(TAG, "Calories: " + Integer.toString(currentCal));
+        oldCal = currentCal;
+        //[END_CHECK_SEND_PROCESS]
+
+    }
+
+    /**
      * Read the current heart rate and sends it to fb,
      *  also checks if heart rate is in the safe region
      */
-    public void readHeart(){
+    public void registerHeart(){
         Log.i(TAG, "readHeart Called");
 
 
         //[START_GET_HEART_RATE]
-        int total = 0;
+        mListener = new OnDataPointListener() {
+            @Override
+            public void onDataPoint(DataPoint dataPoint) {
+                for (Field field : dataPoint.getDataType().getFields()) {
+                    Value val = dataPoint.getValue(field);
+                    Log.i(TAG, "Detected DataPoint field: " + field.getName());
+                    Log.i(TAG, "Detected DataPoint value: " + val);
+                    currentHeart = val.asInt();
+                }
+            }
+        };
 
-        PendingResult<DailyTotalResult> result = Fitness.HistoryApi.readDailyTotal(mClient, DataType.TYPE_STEP_COUNT_DELTA);
-        DailyTotalResult totalResult = result.await(5, TimeUnit.SECONDS);
-        if (totalResult.getStatus().isSuccess()) {
-            DataSet totalSet = totalResult.getTotal();
-            total = totalSet.isEmpty()
-                    ? 0
-                    : totalSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
-        } else {
-            Log.w(TAG, "There was a problem getting the step count.");
-        }
+        Fitness.SensorsApi.findDataSources(mClient, new DataSourcesRequest.Builder()
+                .setDataTypes(DataType.TYPE_HEART_RATE_BPM)
+                .setDataSourceTypes(DataSource.TYPE_RAW, DataSource.TYPE_DERIVED)
+                .build())
+                .setResultCallback(new ResultCallback<DataSourcesResult>() {
+                    @Override
+                    public void onResult(DataSourcesResult dataSourcesResult) {
 
-        Log.i(TAG, "Total steps: " + total);
-        currentHeart = total;
+                        for (DataSource dataSource : dataSourcesResult.getDataSources()) {
+                            // There isn't heart rate source here
+                            final DataType dataType = dataSource.getDataType();
+                            Fitness.SensorsApi.add(mClient,
+                                    new SensorRequest.Builder()
+                                            .setDataSource(dataSource)
+                                            .setDataType(dataType)
+                                            .setSamplingRate(HEART_REQUEST_INTERVAL, TimeUnit.SECONDS)
+                                            .build(),
+                                    mListener)
+                                    .setResultCallback(new ResultCallback<Status>() {
+                                        @Override
+                                        public void onResult(Status status) {
+                                            if (status.isSuccess()) {
+                                                Log.i(TAG, "Listener registered!");
+                                            } else {
+                                                Log.i(TAG, "Listener not registered.");
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                });
         //[END_GET_HEART_RATE]
-
 
         //[START_CHECK_SEND_PROCESS]
         //to avoid sending Location if not too much change
@@ -274,6 +362,5 @@ public class IndicatorsService extends Service {
         oldHeart = currentHeart;
         checkHeart(currentHeart);
         //[END_CHECK_SEND_PROCESS]
-
     }
 }
