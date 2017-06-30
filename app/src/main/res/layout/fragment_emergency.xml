@@ -107,7 +107,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Drug 1:"
-                android:textSize="18sp"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
         </TableRow>
@@ -123,7 +125,9 @@
                 android:ems="2"
                 android:hint="0"
                 android:inputType="number"
-                android:textSize="18sp"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
                 android:textStyle="bold" />
         </TableRow>
 
@@ -136,7 +140,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Drug 2:"
-                android:textSize="18sp"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
         </TableRow>
@@ -152,7 +158,9 @@
                 android:ems="2"
                 android:hint="0"
                 android:inputType="number"
-                android:textSize="18sp"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
                 android:textStyle="bold" />
         </TableRow>
 
@@ -165,7 +173,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Drug 3:"
-                android:textSize="18sp"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
         </TableRow>
@@ -181,7 +191,9 @@
                 android:ems="2"
                 android:hint="0"
                 android:inputType="number"
-                android:textSize="18sp"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
                 android:textStyle="bold" />
         </TableRow>
 
@@ -194,7 +206,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Drug 4:"
-                android:textSize="18sp"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
         </TableRow>
@@ -210,7 +224,9 @@
                 android:ems="2"
                 android:hint="0"
                 android:inputType="number"
-                android:textSize="18sp"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
                 android:textStyle="bold" />
         </TableRow>
 
