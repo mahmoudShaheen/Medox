@@ -43,6 +43,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * please note that google fitness api & OAuth2 client should be enabled for your app
+ * can be found here: https://console.developers.google.com/
+ * also don't forget to add dependencies to app level gradle file
+ */
 
 public class IndicatorsService extends Service {
     private static final String TAG = "IndicatorsService";
