@@ -137,6 +137,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent intent = new Intent(this, Home.class);
         if (level == 1){
             intent = new Intent(this, EmergencyNotification.class);
+            updateStatus("fail");
         }else{
             intent.putExtra("position", 3);
         }
@@ -207,5 +208,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(level /* ID of notification */, notificationBuilder.build());
+    }
+
+
+    public void updateStatus(String state){
+        //if user not signed in stop service
+        Log.i(TAG, "updating status: " + state);
+        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+        if(auth == null){
+            return;
+        }
+        //send data to db
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase.child("users").child(UID).child("status").child("emergency")
+                .setValue(state);
     }
 }
