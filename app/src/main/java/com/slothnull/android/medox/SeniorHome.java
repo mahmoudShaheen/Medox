@@ -114,6 +114,13 @@ public class SeniorHome extends AppCompatActivity {
             mViewPager.setCurrentItem(position);
         }
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        buildFitnessClient();
+    }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
