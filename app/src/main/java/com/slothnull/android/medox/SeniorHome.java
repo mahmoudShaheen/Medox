@@ -3,6 +3,7 @@ package com.slothnull.android.medox;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -17,6 +18,11 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.fitness.Fitness;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,6 +50,9 @@ public class SeniorHome extends AppCompatActivity {
     private AbstractConfig oldConfig;
     private boolean settingsEnable;
 
+    private boolean authInProgress = false;
+    private GoogleApiClient mApiClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +64,7 @@ public class SeniorHome extends AppCompatActivity {
 
         getConfig(); //for settings enabled state
 
+        buildFitnessClient();
         Intent intent = getIntent();
         position = intent.getIntExtra("position", -1);
         Log.i(TAG, Integer.toString(position));
@@ -198,5 +208,55 @@ public class SeniorHome extends AppCompatActivity {
             builder.setMessage(message).setPositiveButton("OK", null);
             builder.show();
         }
+    }
+
+    private void buildFitnessClient() {
+        // Create the Google API Client
+        mApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Fitness.HISTORY_API)
+                .addScope(new Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
+                .addScope(new Scope(Scopes.FITNESS_BODY_READ))  //for height and weight
+                .addScope(new Scope(Scopes.FITNESS_BODY_READ_WRITE))//for height and weight
+                .addConnectionCallbacks(
+                        new GoogleApiClient.ConnectionCallbacks() {
+                            @Override
+                            public void onConnected(Bundle bundle) {
+                                android.util.Log.i(TAG, "Connected!!!");
+                                // Now you can make calls to the Fitness APIs.  What to do?
+                                // Look at some data!!
+
+                                //isGoogleFitConnected = true;
+                                //new read_google_fit_data_task(MainActivity.this, client).execute();
+                            }
+
+                            @Override
+                            public void onConnectionSuspended(int i) {
+                                // If your connection to the sensor gets lost at some point,
+                                // you'll be able to determine the reason and react to it here.
+                                if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_NETWORK_LOST) {
+                                    android.util.Log.i(TAG, "Connection lost.  Cause: Network Lost.");
+                                } else if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_SERVICE_DISCONNECTED) {
+                                    android.util.Log.i(TAG, "Connection lost.  Reason: Service Disconnected");
+                                }
+                            }
+                        }
+                )
+                .enableAutoManage(this, 0, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult result) {
+
+                        if (!authInProgress) {
+                            try {
+                                authInProgress = true;
+                                result.startResolutionForResult(SeniorHome.this, ConnectionResult.CANCELED);
+                            } catch (IntentSender.SendIntentException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Log.e("GoogleFit", "authInProgress");
+                        }
+                    }
+                })
+                .build();
     }
 }
