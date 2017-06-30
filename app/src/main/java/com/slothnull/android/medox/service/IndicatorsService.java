@@ -5,10 +5,12 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -19,7 +21,20 @@ import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.EmergencyNotification;
 import com.slothnull.android.medox.R;
 import com.slothnull.android.medox.Splash;
+import com.slothnull.android.medox.helper.medox;
 import com.slothnull.android.medox.model.AbstractConfig;
+
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.fitness.Fitness;
+import com.google.android.gms.fitness.data.DataSet;
+import com.google.android.gms.fitness.data.DataType;
+import com.google.android.gms.fitness.data.Field;
+import com.google.android.gms.fitness.result.DailyTotalResult;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * Created by Shaheen on 17-Mar-17
@@ -31,6 +46,10 @@ public class IndicatorsService extends Service {
     private static final String TAG = "IndicatorsService";
 
     private boolean emergencyState = false;
+
+    private GoogleApiClient mClient = null;
+
+    Timer timer;
 
     public static int oldHeart = 0;
     public static int oldPedo = 0;
@@ -49,6 +68,10 @@ public class IndicatorsService extends Service {
 
         setData();
 
+        //get Google Api client
+        mClient = medox.getGoogleApiHelper().getGoogleApiClient();
+
+
         //foreground service
         Intent notificationIntent = new Intent(this, Splash.class);
 
@@ -63,7 +86,19 @@ public class IndicatorsService extends Service {
                 .setContentText("Medox Indicators service running")
                 .setContentIntent(pendingIntent).build();
 
-        startForeground(1338/* ID of notification */, notification);
+        startForeground(1339/* ID of notification */, notification);
+
+        timer = new Timer();
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+
+            synchronized public void run() {
+
+                readDataTask();
+            }
+
+        },TimeUnit.SECONDS.toMillis(10), TimeUnit.SECONDS.toMillis(10));
+
     }
 
     @Override
@@ -115,22 +150,7 @@ public class IndicatorsService extends Service {
     }
 
     public void onSensorChanged(int value) {
-        Log.i(TAG, "new sensor value");
-        int currentHeart = value;
-        int currentPedo = value;
 
-        //to avoid sending Location if not too much change
-        boolean heartDiff = Math.abs(currentHeart - oldHeart) > 1;
-        boolean pedoDiff = Math.abs(currentPedo - oldPedo) > 10;
-        if(heartDiff || pedoDiff)
-            sendIndData();
-
-        Log.d(TAG, "Heart Rate: " + Integer.toString(currentHeart));
-        Log.d(TAG, "Pedo Rate: " + Integer.toString(currentPedo));
-        oldHeart = currentHeart;
-        oldPedo = currentPedo;
-
-        checkHeart(currentHeart);
     }
 
     public void checkHeart(int heartRate){
@@ -162,7 +182,7 @@ public class IndicatorsService extends Service {
         Log.i(TAG, "sending data to fb");
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
         if(auth == null){
-            stopService(new Intent(this, LocationService.class));
+            stopService(new Intent(this, IndicatorsService.class));
             return;
         }
         //send data to db
@@ -172,5 +192,47 @@ public class IndicatorsService extends Service {
                 .setValue(String.valueOf(currentHeart));
         mDatabase.child("users").child(UID).child("data").child("pedo")
                 .setValue(String.valueOf(currentPedo));
+    }
+
+    /**
+     * Read the current daily step total, computed from midnight of the current day
+     * on the device's current timezone.
+     */
+    private void readDataTask () {
+        Log.i(TAG, "readDataTask Called");
+        //[START_GET_STEPS_COUNT]
+        int total = 0;
+
+        PendingResult<DailyTotalResult> result = Fitness.HistoryApi.readDailyTotal(mClient, DataType.TYPE_STEP_COUNT_DELTA);
+        DailyTotalResult totalResult = result.await(5, TimeUnit.SECONDS);
+        if (totalResult.getStatus().isSuccess()) {
+            DataSet totalSet = totalResult.getTotal();
+            total = totalSet.isEmpty()
+                    ? 0
+                    : totalSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
+        } else {
+            Log.w(TAG, "There was a problem getting the step count.");
+        }
+
+        Log.i(TAG, "Total steps: " + total);
+        currentPedo = total;
+        //[END_GET_STEPS_COUNT]
+
+        //[START_CHECK_SEND_PROCESS]
+        Log.i(TAG, "new sensor value");
+        //to avoid sending Location if not too much change
+        boolean heartDiff = Math.abs(currentHeart - oldHeart) > 1;
+        boolean pedoDiff = Math.abs(currentPedo - oldPedo) > 1;
+        if(heartDiff || pedoDiff)
+            sendIndData();
+
+        Log.d(TAG, "Heart Rate: " + Integer.toString(currentHeart));
+        Log.d(TAG, "Pedo Rate: " + Integer.toString(currentPedo));
+        oldHeart = currentHeart;
+        oldPedo = currentPedo;
+
+        checkHeart(currentHeart);
+        //[END_CHECK_SEND_PROCESS]
+
     }
 }
