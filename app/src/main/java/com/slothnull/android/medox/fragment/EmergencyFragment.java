@@ -18,6 +18,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -63,6 +64,8 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
         drug4 = (TextView) view.findViewById(R.id.drug4View);
         getConfig();
         getNames();
+
+        updateStatus("ok");
 
         sendButton = (FloatingActionButton) view.findViewById(R.id.sendCommand);
         sendButton.setOnClickListener(this);
@@ -266,5 +269,19 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
         };
         mDatabase.child("users").child(UID).child("config")
                 .addValueEventListener(configListener);
+    }
+
+    public void updateStatus(String state){
+        //if user not signed in stop service
+        Log.i(TAG, "updating status: " + state);
+        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+        if(auth == null){
+            return;
+        }
+        //send data to db
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase.child("users").child(UID).child("status").child("emergency")
+                .setValue(state);
     }
 }

@@ -47,7 +47,6 @@ public class EmergencyNotification extends AppCompatActivity {
             finish();
         }
 
-        Toast.makeText(this,"Emergency Sent!", Toast.LENGTH_LONG).show();
 
         // Get post key from intent
         String shakeKey = getIntent().getStringExtra(SHAKE_KEY);
@@ -87,6 +86,7 @@ public class EmergencyNotification extends AppCompatActivity {
                 }
             };
         } else if (appType.equals("senior")) {
+            Toast.makeText(this,"Emergency Sent!", Toast.LENGTH_LONG).show();
             // Create the adapter that will return a fragment for each section
             mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
                 private final Fragment[] mFragments = new Fragment[] { new SeniorEmergencyFragment() };

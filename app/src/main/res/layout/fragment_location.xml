@@ -21,8 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Distance: "
-        android:textColor="@android:color/holo_red_dark"
-        android:textSize="24sp"
+        android:textColor="@color/colorAccent"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
     <TextView
@@ -32,7 +32,7 @@
         android:layout_alignBottom="@+id/textView9"
         android:layout_toEndOf="@+id/textView9"
         android:text="Please Wait..."
-        android:textColor="@android:color/holo_red_light"
+        android:textColor="@color/colorPrimary"
         android:textSize="20sp"
         android:textStyle="bold" />
 

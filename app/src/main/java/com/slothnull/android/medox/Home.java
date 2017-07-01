@@ -61,7 +61,7 @@ public class Home extends AppCompatActivity {
             };
 
             private final String[] mFragmentNames = new String[] {
-                    "Home",
+                    "Status",
                     "Indicators",
                     "Notifications",
                     "Schedule",
@@ -109,6 +109,14 @@ public class Home extends AppCompatActivity {
             return true;
         }if (i == R.id.settings) {
             settings();
+            return true;
+        }if(i == R.id.profile){
+            Intent intent = new Intent(this, MedicalProfile.class);
+            startActivity(intent);
+            return true;
+        }if(i == R.id.editProfile){
+            Intent intent = new Intent(this, EditMedicalProfile.class);
+            startActivity(intent);
             return true;
         } else {
             return super.onOptionsItemSelected(item);

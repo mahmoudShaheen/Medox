@@ -180,10 +180,12 @@ public class IndicatorsService extends Service {
             if ((heartRate > maxHeart || heartRate < minHeart) &&  !emergencyState){ //!emergencyState to avoid resend emergency
                 Log.i(TAG, "HeartRate not safe: sending emerg." );
                 emergencyState = true;
+                updateStatus("fail");
                 sendEmergency();
             }
             if(heartRate < maxHeart && heartRate > minHeart && emergencyState){ //returned to normal
                 emergencyState = false;
+                updateStatus("ok");
             }
         }
     }
@@ -367,5 +369,20 @@ public class IndicatorsService extends Service {
         oldHeart = currentHeart;
         checkHeart(currentHeart);
         //[END_CHECK_SEND_PROCESS]
+    }
+
+    public void updateStatus(String state){
+        //if user not signed in stop service
+        Log.i(TAG, "updating status: " + state);
+        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+        if(auth == null){
+            stopService(new Intent(this, IndicatorsService.class));
+            return;
+        }
+        //send data to db
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase.child("users").child(UID).child("status").child("heart")
+                .setValue(state);
     }
 }
