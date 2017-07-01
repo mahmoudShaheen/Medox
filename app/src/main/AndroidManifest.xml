@@ -36,27 +36,45 @@
         <!-- Activities -->
         <activity
             android:name=".Splash"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Home" />
-        <activity android:name=".SeniorHome" />
-        <activity android:name=".AddSchedule" />
-        <activity android:name=".EmergencyNotification" />
+        <activity
+            android:name=".Home"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".SeniorHome"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".AddSchedule"
+            android:label="Add Schedule"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmergencyNotification"
+            android:label="Emergency"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Authentication"
-            android:noHistory="true" />
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Settings"
-            android:label="Settings" />
+            android:label="Settings"
+            android:screenOrientation="portrait"/>
         <activity android:name=".EditMedicalProfile"
-            android:label="Edit Medical Profile" />
+            android:label="Edit Medical Profile"
+            android:screenOrientation="portrait"/>
         <activity android:name=".MedicalProfile"
-            android:label="Medical Profile" />
+            android:label="Medical Profile"
+            android:screenOrientation="portrait"/>
 
         <!-- Services -->
         <service
