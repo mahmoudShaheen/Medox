@@ -118,7 +118,7 @@ public class SeniorHome extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+        inflater.inflate(R.menu.menu_senior, menu);
         return true;
     }
     @Override
@@ -130,6 +130,10 @@ public class SeniorHome extends AppCompatActivity {
             return true;
         }if (i == R.id.settings) {
             settings();
+            return true;
+        }if(i == R.id.profile){
+            Intent intent = new Intent(this, MedicalProfile.class);
+            startActivity(intent);
             return true;
         } else {
             return super.onOptionsItemSelected(item);
