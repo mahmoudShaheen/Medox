@@ -37,8 +37,6 @@ public class ControlFragment extends Fragment {
     public Switch switch7;
     public Switch switch8;
 
-    private boolean atStart = true; //to avoid updating db onStart "when first receive data"
-
     View view;
     public ControlFragment() {
         // Required empty public constructor
@@ -146,7 +144,6 @@ public class ControlFragment extends Fragment {
                                 switch8.setChecked(true);
                         }
                     }
-                    atStart = false;
                 }
             }
 
@@ -162,50 +159,42 @@ public class ControlFragment extends Fragment {
         //switches on checked change listener
         switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!atStart)
-                    updateChecked();
+                updateChecked();
             }
         });
         switch2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!atStart)
-                    updateChecked();
+                updateChecked();
             }
         });
         switch3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!atStart)
-                    updateChecked();
+                updateChecked();
             }
         });
         switch4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!atStart)
-                    updateChecked();
+                updateChecked();
             }
         });
         switch5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!atStart)
-                    updateChecked();
+                updateChecked();
             }
         });
         switch6.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!atStart)
-                    updateChecked();
+                updateChecked();
             }
         });
         switch7.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!atStart)
-                    updateChecked();
+                updateChecked();
             }
         });
         switch8.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!atStart)
-                    updateChecked();
+                updateChecked();
             }
         });
 
