@@ -43,10 +43,12 @@ public class AddSchedule extends AppCompatActivity {
         String billArray ="";
         String bills;
         String hour = timePicker.getCurrentHour().toString();
-        String minute = timePicker.getCurrentMinute().toString();
-        if(minute.equals("0")){
-            minute += "0";
+        int min = timePicker.getCurrentMinute();
+        String minute = String.valueOf(min);
+        if(min < 10){ //convert 5:6:00 to 5:06:00
+            minute = "0" + minute;
         }
+
         String time = hour + ":" + minute + ":00";
         bills = "";
         bills += ((TextView)findViewById(R.id.drug1Picker)).getText();
