@@ -7,13 +7,27 @@
     tools:context="com.slothnull.android.medox.fragment.WarehouseFragment">
 
 
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:text="Add Pills:"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/relativeLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/textView11"
+        android:layout_centerHorizontal="true">
 
         <TextView
             android:id="@+id/drug1View"
@@ -144,23 +158,21 @@
         android:id="@+id/editDrugNamesView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="14dp"
-        android:text="Edit Drugs Names':"
         android:layout_below="@+id/gridLayout"
         android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:text="Edit Drugs Names':"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
         android:textSize="22sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editDrugNamesView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="23dp">
+        android:layout_margin="10dp">
 
         <EditText
             android:id="@+id/drug1Edit"
@@ -170,13 +182,13 @@
             android:layout_margin="5dp"
             android:layout_row="0"
             android:ems="10"
+            android:hint="Drug 1"
             android:inputType="textPersonName"
             android:padding="5dp"
-            android:hint="Drug 1"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/drug2Edit"
@@ -186,13 +198,13 @@
             android:layout_margin="5dp"
             android:layout_row="1"
             android:ems="10"
+            android:hint="Drug 2"
             android:inputType="textPersonName"
             android:padding="5dp"
-            android:hint="Drug 2"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/drug3Edit"
@@ -202,13 +214,13 @@
             android:layout_margin="5dp"
             android:layout_row="2"
             android:ems="10"
+            android:hint="Drug 3"
             android:inputType="textPersonName"
             android:padding="5dp"
-            android:hint="Drug 3"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/drug4Edit"
@@ -218,13 +230,13 @@
             android:layout_margin="5dp"
             android:layout_row="3"
             android:ems="10"
+            android:hint="Drug 4"
             android:inputType="textPersonName"
             android:padding="5dp"
-            android:hint="Drug 4"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </GridLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -232,9 +244,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
         android:layout_marginBottom="15dp"
-        android:layout_marginEnd="14dp"
+        android:layout_marginLeft="15dp"
         android:clickable="true"
         app:elevation="24dp"
         app:fabSize="normal"
@@ -245,9 +257,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginBottom="15dp"
-        android:layout_marginLeft="15dp"
+        android:layout_marginEnd="14dp"
         android:clickable="true"
         app:elevation="24dp"
         app:fabSize="normal"
