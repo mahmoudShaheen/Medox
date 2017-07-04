@@ -200,14 +200,20 @@
                 android:id="@+id/locationButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="40dp"
+                android:layout_toEndOf="@+id/textView20"
                 android:clickable="true"
                 android:onClick="locate"
-                app:elevation="24dp"
+                app:elevation="0dp"
                 app:fabSize="normal"
-                app:srcCompat="@android:drawable/ic_menu_mylocation"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/textView20"
-                android:layout_marginStart="40dp" />
+                app:srcCompat="@android:drawable/ic_menu_mylocation" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/saveButton"
@@ -218,7 +224,7 @@
                 android:layout_marginEnd="21dp"
                 android:clickable="true"
                 android:onClick="save"
-                app:elevation="24dp"
+                app:elevation="0dp"
                 app:fabSize="normal"
                 app:srcCompat="@android:drawable/ic_menu_send" />
         </RelativeLayout>
