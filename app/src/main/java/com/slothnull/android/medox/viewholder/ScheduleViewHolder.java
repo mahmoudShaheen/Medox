@@ -42,7 +42,7 @@ public class ScheduleViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindToSchedule(AbstractSchedule schedule) {
-        titleView.setText("Bills: ");
+        titleView.setText("Pills: ");
         timeView.setText(schedule.time);
         String[] billArray = schedule.billArray.split(",");
         String message ="";
