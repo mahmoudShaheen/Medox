@@ -161,7 +161,7 @@
         android:layout_below="@+id/gridLayout"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
-        android:text="Edit Drugs Names':"
+        android:text="Edit Drugs' Names:"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
         android:textSize="22sp"
