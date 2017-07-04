@@ -124,7 +124,8 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener  
 
         Query scheduleQuery = databaseReference.child("users").child(getUid())
                 .child("timetable")
-                .limitToFirst(100);
+                .limitToFirst(100)
+                .orderByChild("time");
         return scheduleQuery;
     }
 
