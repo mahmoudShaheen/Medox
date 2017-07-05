@@ -239,29 +239,31 @@ public class Settings extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 oldConfig = dataSnapshot.getValue(AbstractConfig.class);
-                if(oldConfig.maxHeartRate != null)
-                    maxHeart.setHint(maxHeart.getHint() + oldConfig.maxHeartRate);
-                if(oldConfig.minHeartRate != null)
-                    minHeart.setHint(minHeart.getHint() + oldConfig.minHeartRate);
-                if(oldConfig.maxDistance != null)
-                    maxDistance.setHint(maxDistance.getHint() + oldConfig.maxDistance);
-                if(oldConfig.homeLatitude != null)
-                    latitude = oldConfig.homeLatitude;
-                if(oldConfig.homeLongitude != null)
-                    longitude = oldConfig.homeLongitude;
-                if(oldConfig.mobileNumber != null)
-                    mobileNumber.setHint(mobileNumber.getHint() + oldConfig.mobileNumber);
-                if(oldConfig.mobileNumber2 != null)
-                    mobileNumber2.setHint(mobileNumber2.getHint() + oldConfig.mobileNumber2);
-                if(oldConfig.careSkype != null)
-                    careSkype.setHint(careSkype.getHint() + oldConfig.careSkype);
-                if(oldConfig.seniorSkype != null)
-                    seniorSkype.setHint(seniorSkype.getHint() + oldConfig.seniorSkype);
-                if(oldConfig.enabled != null){
-                    checkArray = oldConfig.enabled.split(",");
-                    settingsEnable.setChecked(checkArray[0].equals("1"));
-                    warehouseEnable.setChecked(checkArray[1].equals("1"));
-                    scheduleEnable.setChecked(checkArray[2].equals("1"));
+                if(oldConfig != null){
+                    if(oldConfig.maxHeartRate != null)
+                        maxHeart.setHint(maxHeart.getHint() + oldConfig.maxHeartRate);
+                    if(oldConfig.minHeartRate != null)
+                        minHeart.setHint(minHeart.getHint() + oldConfig.minHeartRate);
+                    if(oldConfig.maxDistance != null)
+                        maxDistance.setHint(maxDistance.getHint() + oldConfig.maxDistance);
+                    if(oldConfig.homeLatitude != null)
+                        latitude = oldConfig.homeLatitude;
+                    if(oldConfig.homeLongitude != null)
+                        longitude = oldConfig.homeLongitude;
+                    if(oldConfig.mobileNumber != null)
+                        mobileNumber.setHint(mobileNumber.getHint() + oldConfig.mobileNumber);
+                    if(oldConfig.mobileNumber2 != null)
+                        mobileNumber2.setHint(mobileNumber2.getHint() + oldConfig.mobileNumber2);
+                    if(oldConfig.careSkype != null)
+                        careSkype.setHint(careSkype.getHint() + oldConfig.careSkype);
+                    if(oldConfig.seniorSkype != null)
+                        seniorSkype.setHint(seniorSkype.getHint() + oldConfig.seniorSkype);
+                    if(oldConfig.enabled != null){
+                        checkArray = oldConfig.enabled.split(",");
+                        settingsEnable.setChecked(checkArray[0].equals("1"));
+                        warehouseEnable.setChecked(checkArray[1].equals("1"));
+                        scheduleEnable.setChecked(checkArray[2].equals("1"));
+                    }
                 }
                 hideProgressDialog();
             }
