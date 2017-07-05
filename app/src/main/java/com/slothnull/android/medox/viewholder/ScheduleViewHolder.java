@@ -1,19 +1,11 @@
 package com.slothnull.android.medox.viewholder;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.fragment.ScheduleFragment;
 import com.slothnull.android.medox.model.AbstractSchedule;
-import com.slothnull.android.medox.model.AbstractWarehouse;
 import com.slothnull.android.medox.R;
 
 /**
