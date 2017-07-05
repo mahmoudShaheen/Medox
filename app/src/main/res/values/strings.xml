@@ -1,3 +1,9 @@
+<!--
+ - Created by Mahmoud Shaheen
+ - Project: Medox
+ - Licence: MIT
+-->
+
 <resources>
     <string name="app_name">Medox</string>
 </resources>
