@@ -1,5 +1,11 @@
 package com.slothnull.android.medox;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;

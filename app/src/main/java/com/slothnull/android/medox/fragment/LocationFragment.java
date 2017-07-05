@@ -1,5 +1,11 @@
 package com.slothnull.android.medox.fragment;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;

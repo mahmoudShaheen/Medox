@@ -1,5 +1,11 @@
 package com.slothnull.android.medox.service;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;

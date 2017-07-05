@@ -1,5 +1,11 @@
 package com.slothnull.android.medox.helper;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;

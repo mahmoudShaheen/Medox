@@ -1,5 +1,11 @@
 package com.slothnull.android.medox;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -26,8 +32,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.model.AbstractConfig;
 
-
-
 public class Settings extends AppCompatActivity {
 
     private static final String TAG = "SettingsActivity";
@@ -51,7 +55,7 @@ public class Settings extends AppCompatActivity {
     private EditText seniorSkype;
     private EditText maxDistance;
 
-    private boolean conf = false; //as not to close app if first time run 
+    private boolean conf = false; //as not to close app if first time run
 
     AbstractConfig oldConfig;
 

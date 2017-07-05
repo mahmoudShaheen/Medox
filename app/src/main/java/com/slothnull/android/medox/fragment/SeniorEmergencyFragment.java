@@ -1,5 +1,10 @@
 package com.slothnull.android.medox.fragment;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
 
 import android.app.AlertDialog;
 import android.app.NotificationManager;
@@ -41,9 +46,6 @@ import com.slothnull.android.medox.R;
 import java.text.DateFormat;
 import java.util.Date;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SeniorEmergencyFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "SeniorEmergencyFragment";

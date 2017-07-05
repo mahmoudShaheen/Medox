@@ -1,9 +1,9 @@
 package com.slothnull.android.medox.model;
 
 /**
- * Created by Shaheen on 12-Mar-17
+ * Created by Mahmoud Shaheen
  * Project: Medox
- * Package: com.slothnull.android.medox
+ * Licence: MIT
  */
 
 import com.google.firebase.database.IgnoreExtraProperties;

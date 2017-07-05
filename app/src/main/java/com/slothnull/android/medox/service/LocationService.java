@@ -1,5 +1,11 @@
 package com.slothnull.android.medox.service;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -29,12 +35,6 @@ import com.slothnull.android.medox.SeniorHome;
 import com.slothnull.android.medox.Splash;
 import com.slothnull.android.medox.model.AbstractConfig;
 import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
-
-/**
- * Created by Shaheen on 17-Mar-17
- * Project: seniormedox
- * Package: com.slothnull.android.seniormedox
- */
 
 public class LocationService extends Service implements LocationListener {
 

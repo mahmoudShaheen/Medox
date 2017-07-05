@@ -1,5 +1,11 @@
 package com.slothnull.android.medox.broadcastreceiver;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
