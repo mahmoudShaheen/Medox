@@ -43,8 +43,6 @@ import com.slothnull.android.medox.fragment.ScheduleFragment;
 import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 import com.slothnull.android.medox.fragment.StatusFragment;
 import com.slothnull.android.medox.fragment.WarehouseFragment;
-import com.slothnull.android.medox.service.IndicatorsService;
-import com.slothnull.android.medox.service.LocationService;
 
 public class SeniorHome extends AppCompatActivity {
 

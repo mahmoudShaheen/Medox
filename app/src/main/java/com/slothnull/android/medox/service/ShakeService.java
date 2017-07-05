@@ -21,9 +21,7 @@ import android.util.Log;
 
 import com.slothnull.android.medox.EmergencyNotification;
 import com.slothnull.android.medox.R;
-import com.slothnull.android.medox.SeniorHome;
 import com.slothnull.android.medox.Splash;
-import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 
 public class ShakeService extends Service implements SensorEventListener {
 

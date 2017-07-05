@@ -24,13 +24,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.slothnull.android.medox.EmergencyNotification;
-import com.slothnull.android.medox.model.AbstractNotification;
 import com.slothnull.android.medox.Home;
 import com.slothnull.android.medox.R;
-import com.slothnull.android.medox.SeniorHome;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 

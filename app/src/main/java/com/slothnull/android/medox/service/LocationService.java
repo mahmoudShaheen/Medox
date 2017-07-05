@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,10 +30,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.EmergencyNotification;
 import com.slothnull.android.medox.R;
-import com.slothnull.android.medox.SeniorHome;
 import com.slothnull.android.medox.Splash;
 import com.slothnull.android.medox.model.AbstractConfig;
-import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 
 public class LocationService extends Service implements LocationListener {
 
