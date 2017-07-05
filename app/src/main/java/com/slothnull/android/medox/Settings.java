@@ -51,6 +51,8 @@ public class Settings extends AppCompatActivity {
     private EditText seniorSkype;
     private EditText maxDistance;
 
+    private boolean conf = false; //as not to close app if first time run 
+
     AbstractConfig oldConfig;
 
     @Override
@@ -207,6 +209,7 @@ public class Settings extends AppCompatActivity {
                 ){
                 DatabaseReference configured = FirebaseDatabase.getInstance().getReference();
                 configured.child("users").child(UID).child("user").child("configured").setValue("true");
+                conf = true;
             }
         }
 
@@ -227,6 +230,10 @@ public class Settings extends AppCompatActivity {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("users").child(UID).child("config");
         mDatabase.setValue(config);
+        if(conf){ //as not to close app if first time run
+            Intent intent = new Intent(this, Splash.class);
+            startActivity(intent);
+        }
         finish();
     }
 
