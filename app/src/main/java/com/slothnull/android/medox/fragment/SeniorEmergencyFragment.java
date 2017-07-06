@@ -348,26 +348,28 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 oldConfig = dataSnapshot.getValue(AbstractConfig.class);
-                if (oldConfig.careSkype != null)
-                    careSkype = oldConfig.careSkype;
-                if (oldConfig.mobileNumber != null)
-                    mobileNumber = oldConfig.mobileNumber;
-                if (oldConfig.mobileNumber2 != null)
-                    mobileNumber2 = oldConfig.mobileNumber2;
-                if(oldConfig.enabled != null){
-                    String[] checkArray = new String[3];
-                    checkArray= oldConfig.enabled.split(",");
-                    if(checkArray[0].equals("0")){ //settings
-                        view.findViewById(R.id.restartRPI).setEnabled(false);
-                        view.findViewById(R.id.openDoor).setEnabled(false);
-                    }
-                    if(checkArray[1].equals("0")){ //warehouse
-                        view.findViewById(R.id.openWarehouse).setEnabled(false);
-                        view.findViewById(R.id.clearBills).setEnabled(false);
-                    }
-                    if(checkArray[2].equals("0")){ //schedule
-                        view.findViewById(R.id.clearTimetable).setEnabled(false);
-                        view.findViewById(R.id.forceUpdateTimetable).setEnabled(false);
+                if(oldConfig != null) {
+                    if (oldConfig.careSkype != null)
+                        careSkype = oldConfig.careSkype;
+                    if (oldConfig.mobileNumber != null)
+                        mobileNumber = oldConfig.mobileNumber;
+                    if (oldConfig.mobileNumber2 != null)
+                        mobileNumber2 = oldConfig.mobileNumber2;
+                    if (oldConfig.enabled != null) {
+                        String[] checkArray = new String[3];
+                        checkArray = oldConfig.enabled.split(",");
+                        if (checkArray[0].equals("0")) { //settings
+                            view.findViewById(R.id.restartRPI).setEnabled(false);
+                            view.findViewById(R.id.openDoor).setEnabled(false);
+                        }
+                        if (checkArray[1].equals("0")) { //warehouse
+                            view.findViewById(R.id.openWarehouse).setEnabled(false);
+                            view.findViewById(R.id.clearBills).setEnabled(false);
+                        }
+                        if (checkArray[2].equals("0")) { //schedule
+                            view.findViewById(R.id.clearTimetable).setEnabled(false);
+                            view.findViewById(R.id.forceUpdateTimetable).setEnabled(false);
+                        }
                     }
                 }
             }

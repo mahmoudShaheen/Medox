@@ -103,20 +103,21 @@ public class LocationService extends Service implements LocationListener {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 AbstractConfig config = dataSnapshot.getValue(AbstractConfig.class);
-                if (config.maxDistance != null) {
-                    maxDistance = Double.parseDouble(config.maxDistance);
-                    Log.i(TAG, "maxDistance" + maxDistance);
+                if(config != null) {
+                    if (config.maxDistance != null) {
+                        maxDistance = Double.parseDouble(config.maxDistance);
+                        Log.i(TAG, "maxDistance" + maxDistance);
+                    }
+                    if (config.homeLatitude != null) {
+                        homeLatitude = Double.parseDouble(config.homeLatitude);
+                        Log.i(TAG, "homeLatitude" + homeLatitude);
+                    }
+                    if (config.homeLongitude != null) {
+                        homeLongitude = Double.parseDouble(config.homeLongitude);
+                        Log.i(TAG, "homeLongitude" + homeLongitude);
+                    }
+                    // ...
                 }
-                if (config.homeLatitude != null) {
-                    homeLatitude = Double.parseDouble(config.homeLatitude);
-                    Log.i(TAG, "homeLatitude" + homeLatitude);
-                }
-                if (config.homeLongitude != null) {
-                    homeLongitude = Double.parseDouble(config.homeLongitude);
-                    Log.i(TAG, "homeLongitude" + homeLongitude);
-                }
-                // ...
-
             }
 
             @Override

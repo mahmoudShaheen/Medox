@@ -191,11 +191,13 @@ public class SeniorHome extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 oldConfig = dataSnapshot.getValue(AbstractConfig.class);
-                if(oldConfig.enabled != null){
-                    String enabled[]= oldConfig.enabled.split(",");
-                    settingsEnable = (enabled[0].equals("1"));
+                if(oldConfig != null) {
+                    if (oldConfig.enabled != null) {
+                        String enabled[] = oldConfig.enabled.split(",");
+                        settingsEnable = (enabled[0].equals("1"));
+                    }
+                    hideProgressDialog();
                 }
-                hideProgressDialog();
             }
 
             @Override

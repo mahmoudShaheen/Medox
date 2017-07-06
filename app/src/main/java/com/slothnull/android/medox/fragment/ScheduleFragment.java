@@ -209,16 +209,18 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener  
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 AbstractConfig oldConfig = dataSnapshot.getValue(AbstractConfig.class);
-                if(oldConfig.enabled != null){
-                    String[] checkArray = new String[3];
-                    checkArray= oldConfig.enabled.split(",");
-                    if(checkArray[2].equals("0")){ //schedule
-                        addButton.setEnabled(false);
-                        deleteEnable = false;
-                    }
-                    if(checkArray[2].equals("1")){ //schedule
-                        addButton.setEnabled(true);
-                        deleteEnable = true;
+                if(oldConfig != null) {
+                    if (oldConfig.enabled != null) {
+                        String[] checkArray = new String[3];
+                        checkArray = oldConfig.enabled.split(",");
+                        if (checkArray[2].equals("0")) { //schedule
+                            addButton.setEnabled(false);
+                            deleteEnable = false;
+                        }
+                        if (checkArray[2].equals("1")) { //schedule
+                            addButton.setEnabled(true);
+                            deleteEnable = true;
+                        }
                     }
                 }
             }

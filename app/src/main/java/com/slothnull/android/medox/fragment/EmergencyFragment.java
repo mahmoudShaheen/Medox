@@ -263,8 +263,10 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 oldConfig = dataSnapshot.getValue(AbstractConfig.class);
-                if (oldConfig.seniorSkype != null)
-                    seniorSkype = oldConfig.seniorSkype;
+                if(oldConfig != null) {
+                    if (oldConfig.seniorSkype != null)
+                        seniorSkype = oldConfig.seniorSkype;
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

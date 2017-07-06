@@ -144,16 +144,17 @@ public class IndicatorsService extends Service {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 AbstractConfig config = dataSnapshot.getValue(AbstractConfig.class);
-                if (config.maxHeartRate != null) {
-                    maxHeart = Integer.parseInt(config.maxHeartRate);
-                    Log.i(TAG, "maxHeart: " + maxHeart);
+                if(config != null) {
+                    if (config.maxHeartRate != null) {
+                        maxHeart = Integer.parseInt(config.maxHeartRate);
+                        Log.i(TAG, "maxHeart: " + maxHeart);
+                    }
+                    if (config.minHeartRate != null) {
+                        minHeart = Integer.parseInt(config.minHeartRate);
+                        Log.i(TAG, "minHeart: " + minHeart);
+                    }
+                    // ...
                 }
-                if (config.minHeartRate != null) {
-                    minHeart = Integer.parseInt(config.minHeartRate);
-                    Log.i(TAG, "minHeart: " + minHeart);
-                }
-                // ...
-
             }
 
             @Override
