@@ -36,18 +36,20 @@ public class ScheduleViewHolder extends RecyclerView.ViewHolder {
     public void bindToSchedule(AbstractSchedule schedule) {
         titleView.setText("Pills: ");
         timeView.setText(schedule.time);
-        String[] billArray = schedule.billArray.split(",");
-        String message ="";
-        if (!billArray[0].equals("0"))
-            message += "\n" + ScheduleFragment.drug1 + ":  " + billArray[0] ;
-        if (!billArray[1].equals("0"))
-            message += "\n" + ScheduleFragment.drug2 + ":  " + billArray[1] ;
-        if (!billArray[2].equals("0"))
-            message += "\n" + ScheduleFragment.drug3 + ":  " + billArray[2] ;
-        if (!billArray[3].equals("0"))
-            message += "\n" + ScheduleFragment.drug4 + ":  " + billArray[3] ;
-        levelView.setText("");
-        messageView.setText(message);
+        if(schedule.billArray != null) {
+            String[] billArray = schedule.billArray.split(",");
+            String message = "";
+            if (!billArray[0].equals("0"))
+                message += "\n" + ScheduleFragment.drug1 + ":  " + billArray[0];
+            if (!billArray[1].equals("0"))
+                message += "\n" + ScheduleFragment.drug2 + ":  " + billArray[1];
+            if (!billArray[2].equals("0"))
+                message += "\n" + ScheduleFragment.drug3 + ":  " + billArray[2];
+            if (!billArray[3].equals("0"))
+                message += "\n" + ScheduleFragment.drug4 + ":  " + billArray[3];
+            levelView.setText("");
+            messageView.setText(message);
+        }
     }
 
 }

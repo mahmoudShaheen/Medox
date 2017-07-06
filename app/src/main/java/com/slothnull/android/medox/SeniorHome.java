@@ -196,8 +196,8 @@ public class SeniorHome extends AppCompatActivity {
                         String enabled[] = oldConfig.enabled.split(",");
                         settingsEnable = (enabled[0].equals("1"));
                     }
-                    hideProgressDialog();
                 }
+                hideProgressDialog();
             }
 
             @Override
