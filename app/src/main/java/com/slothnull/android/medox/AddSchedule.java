@@ -48,11 +48,15 @@ public class AddSchedule extends AppCompatActivity {
         TimePicker timePicker =  (TimePicker) findViewById(R.id.timePicker);
         String billArray ="";
         String bills;
-        String hour = timePicker.getCurrentHour().toString();
+        int hr = timePicker.getCurrentHour();
+        String hour = String.valueOf(hr);
         int min = timePicker.getCurrentMinute();
         String minute = String.valueOf(min);
         if(min < 10){ //convert 5:6:00 to 5:06:00
             minute = "0" + minute;
+        }
+        if(hr < 10){//converts 5:06:00 to 05:06:00
+            hour = "0" + hour;
         }
 
         String time = hour + ":" + minute + ":00";
