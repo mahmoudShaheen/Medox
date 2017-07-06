@@ -22,6 +22,7 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.slothnull.android.medox.EmergencyNotification;
 import com.slothnull.android.medox.Home;
 import com.slothnull.android.medox.R;
 
@@ -63,27 +64,10 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
         }
     }
     public void sendNotification(Context context){
-        Intent intent = new Intent(context, Home.class);
-        intent.putExtra("position", 5);
-
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 1 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.notification)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
-                        R.mipmap.logo))
-                .setContentTitle("Emergency From Senior!")
-                .setContentText("Action Required IMMEDIATELY !!!!")
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
+        // Launch Emergency Activity
+        Intent intent = new Intent(context, EmergencyNotification.class);
+        intent.putExtra(EmergencyNotification.SMS_KEY, "true");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }
