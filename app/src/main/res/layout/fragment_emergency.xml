@@ -35,6 +35,13 @@
             android:text="Open Warehouse" />
 
         <RadioButton
+            android:id="@+id/closeWarehouse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Close Warehouse" />
+
+        <RadioButton
             android:id="@+id/dispenseNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

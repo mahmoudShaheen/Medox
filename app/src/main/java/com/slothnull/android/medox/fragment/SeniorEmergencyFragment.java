@@ -192,6 +192,9 @@ public class SeniorEmergencyFragment extends Fragment implements View.OnClickLis
             case (R.id.openWarehouse):
                 cmd = "openWarehouse";
                 break;
+            case (R.id.closeWarehouse):
+                cmd = "closeWarehouse";
+                break;
             case (R.id.dispenseNext):
                 cmd = "dispenseNext";
                 break;
