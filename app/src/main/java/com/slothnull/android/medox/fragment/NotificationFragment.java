@@ -97,7 +97,7 @@ public class NotificationFragment extends Fragment {
     public Query getQuery(DatabaseReference databaseReference){
         return databaseReference.child("users").child(getUid())
                     .child("notification")
-                    .limitToFirst(100)
-                    .orderByChild("time");
+                    .limitToFirst(100);
+                    //.orderByChild("time");
     }
 }
