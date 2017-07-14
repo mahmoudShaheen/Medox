@@ -26,145 +26,151 @@
         android:textSize="22sp"
         android:textStyle="bold" />
 
-    <GridLayout
-        android:id="@+id/gridLayout"
-        android:layout_width="wrap_content"
+    <HorizontalScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_below="@+id/textView11"
         android:layout_centerHorizontal="true">
 
-        <TextView
-            android:id="@+id/drug1View"
+        <GridLayout
+            android:id="@+id/gridLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_margin="5dp"
-            android:layout_row="0"
-            android:padding="5dp"
-            android:text="Drug 1:"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
-        <EditText
-            android:id="@+id/drug1Picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_margin="5dp"
-            android:layout_row="1"
-            android:ems="2"
-            android:hint="0"
-            android:inputType="number|numberSigned"
-            android:nextFocusDown="@+id/drug2Picker"
-            android:padding="5dp"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/drug1View"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_margin="5dp"
+                android:layout_row="0"
+                android:padding="5dp"
+                android:text="Drug 1:"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/drug2View"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_margin="5dp"
-            android:layout_row="0"
-            android:padding="5dp"
-            android:text="Drug 2:"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <EditText
+                android:id="@+id/drug1Picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_margin="5dp"
+                android:layout_row="1"
+                android:ems="2"
+                android:hint="0"
+                android:inputType="number|numberSigned"
+                android:nextFocusDown="@+id/drug2Picker"
+                android:padding="5dp"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/drug2Picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_margin="5dp"
-            android:layout_row="1"
-            android:ems="2"
-            android:hint="0"
-            android:inputType="number|numberSigned"
-            android:nextFocusDown="@+id/drug3Picker"
-            android:padding="5dp"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/drug2View"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_margin="5dp"
+                android:layout_row="0"
+                android:padding="5dp"
+                android:text="Drug 2:"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/drug3View"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_margin="5dp"
-            android:layout_row="0"
-            android:padding="5dp"
-            android:text="Drug 3:"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <EditText
+                android:id="@+id/drug2Picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_margin="5dp"
+                android:layout_row="1"
+                android:ems="2"
+                android:hint="0"
+                android:inputType="number|numberSigned"
+                android:nextFocusDown="@+id/drug3Picker"
+                android:padding="5dp"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/drug3Picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_margin="5dp"
-            android:layout_row="1"
-            android:ems="2"
-            android:hint="0"
-            android:inputType="number|numberSigned"
-            android:nextFocusDown="@+id/drug4Picker"
-            android:padding="5dp"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/drug3View"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_margin="5dp"
+                android:layout_row="0"
+                android:padding="5dp"
+                android:text="Drug 3:"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/drug4View"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="3"
-            android:layout_margin="5dp"
-            android:layout_row="0"
-            android:padding="5dp"
-            android:text="Drug 4:"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <EditText
+                android:id="@+id/drug3Picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_margin="5dp"
+                android:layout_row="1"
+                android:ems="2"
+                android:hint="0"
+                android:inputType="number|numberSigned"
+                android:nextFocusDown="@+id/drug4Picker"
+                android:padding="5dp"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/drug4Picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="3"
-            android:layout_margin="5dp"
-            android:layout_row="1"
-            android:ems="2"
-            android:hint="0"
-            android:inputType="number|numberSigned"
-            android:padding="5dp"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-    </GridLayout>
+            <TextView
+                android:id="@+id/drug4View"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_margin="5dp"
+                android:layout_row="0"
+                android:padding="5dp"
+                android:text="Drug 4:"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/drug4Picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_margin="5dp"
+                android:layout_row="1"
+                android:ems="2"
+                android:hint="0"
+                android:inputType="number|numberSigned"
+                android:padding="5dp"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </GridLayout>
+    </HorizontalScrollView>
 
 
     <TextView
         android:id="@+id/editDrugNamesView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/gridLayout"
+        android:layout_below="@+id/scroll"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
         android:text="Edit Drugs' Names:"
