@@ -35,7 +35,7 @@ public class NotificationViewHolder extends RecyclerView.ViewHolder {
         titleView.setText(notification.title);
         timeView.setText(notification.time);
         if(notification.level.equals("1"))
-            levelView.setText("Emergency");
+            levelView.setText("E");
         messageView.setText(notification.message);
     }
 }
