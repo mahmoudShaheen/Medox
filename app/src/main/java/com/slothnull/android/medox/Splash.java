@@ -97,6 +97,18 @@ public class Splash extends Activity {
                                 Log.i(TAG, "2");
                             }
                         }
+                    } else {
+                        //go to Settings or toast a message according to user type
+                        if (appType.equals("care")) {
+                            callSettings();
+                        } else if (appType.equals("senior")) {
+                            Toast.makeText(getApplicationContext(),
+                                    "Sign in as Care Giver to edit settings First!",
+                                    Toast.LENGTH_LONG).show();
+                        } else { //user signed but undefined app type
+                            callAuth();
+                            Log.i(TAG, "2");
+                        }
                     }
                 }
                 @Override
