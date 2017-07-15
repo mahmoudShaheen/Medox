@@ -1,5 +1,11 @@
 package com.slothnull.android.medox;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -124,19 +130,19 @@ public class EmergencyNotification extends AppCompatActivity {
     }
 
     public void sendShakeEmergency(){
-        String title = "Emergency Shake From Watch!";
+        String title = "Emergency Shake From Senior!";
         String message = "Action Required IMMEDIATELY !!!!";
         emergencyNotification(title, message);
     }
 
     public void sendLocationEmergency(){
-        String title = "Location Emergency from watch";
+        String title = "Location Emergency from Senior";
         String message = "Mobile location is out of safe distance ";
         emergencyNotification(title, message);
     }
 
     public void sendIndicatorsEmergency(){
-        String title = "Indicators Emergency from watch";
+        String title = "Indicators Emergency from Senior";
         String message = "Indicators are out of safe value ";
         emergencyNotification(title, message);
     }

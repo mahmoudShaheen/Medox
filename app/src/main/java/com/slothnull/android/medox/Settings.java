@@ -1,11 +1,16 @@
 package com.slothnull.android.medox;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,7 +22,6 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,8 +29,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.slothnull.android.medox.model.AbstractConfig;
-
-
 
 public class Settings extends AppCompatActivity {
 
@@ -50,6 +52,8 @@ public class Settings extends AppCompatActivity {
     private EditText careSkype;
     private EditText seniorSkype;
     private EditText maxDistance;
+
+    private boolean conf = false; //as not to close app if first time run
 
     AbstractConfig oldConfig;
 
@@ -207,6 +211,7 @@ public class Settings extends AppCompatActivity {
                 ){
                 DatabaseReference configured = FirebaseDatabase.getInstance().getReference();
                 configured.child("users").child(UID).child("user").child("configured").setValue("true");
+                conf = true;
             }
         }
 
@@ -227,6 +232,10 @@ public class Settings extends AppCompatActivity {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("users").child(UID).child("config");
         mDatabase.setValue(config);
+        if(conf){ //as not to close app if first time run
+            Intent intent = new Intent(this, Splash.class);
+            startActivity(intent);
+        }
         finish();
     }
 
@@ -239,29 +248,31 @@ public class Settings extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 oldConfig = dataSnapshot.getValue(AbstractConfig.class);
-                if(oldConfig.maxHeartRate != null)
-                    maxHeart.setHint(maxHeart.getHint() + oldConfig.maxHeartRate);
-                if(oldConfig.minHeartRate != null)
-                    minHeart.setHint(minHeart.getHint() + oldConfig.minHeartRate);
-                if(oldConfig.maxDistance != null)
-                    maxDistance.setHint(maxDistance.getHint() + oldConfig.maxDistance);
-                if(oldConfig.homeLatitude != null)
-                    latitude = oldConfig.homeLatitude;
-                if(oldConfig.homeLongitude != null)
-                    longitude = oldConfig.homeLongitude;
-                if(oldConfig.mobileNumber != null)
-                    mobileNumber.setHint(mobileNumber.getHint() + oldConfig.mobileNumber);
-                if(oldConfig.mobileNumber2 != null)
-                    mobileNumber2.setHint(mobileNumber2.getHint() + oldConfig.mobileNumber2);
-                if(oldConfig.careSkype != null)
-                    careSkype.setHint(careSkype.getHint() + oldConfig.careSkype);
-                if(oldConfig.seniorSkype != null)
-                    seniorSkype.setHint(seniorSkype.getHint() + oldConfig.seniorSkype);
-                if(oldConfig.enabled != null){
-                    checkArray = oldConfig.enabled.split(",");
-                    settingsEnable.setChecked(checkArray[0].equals("1"));
-                    warehouseEnable.setChecked(checkArray[1].equals("1"));
-                    scheduleEnable.setChecked(checkArray[2].equals("1"));
+                if(oldConfig != null){
+                    if(oldConfig.maxHeartRate != null)
+                        maxHeart.setHint(maxHeart.getHint() + oldConfig.maxHeartRate);
+                    if(oldConfig.minHeartRate != null)
+                        minHeart.setHint(minHeart.getHint() + oldConfig.minHeartRate);
+                    if(oldConfig.maxDistance != null)
+                        maxDistance.setHint(maxDistance.getHint() + oldConfig.maxDistance);
+                    if(oldConfig.homeLatitude != null)
+                        latitude = oldConfig.homeLatitude;
+                    if(oldConfig.homeLongitude != null)
+                        longitude = oldConfig.homeLongitude;
+                    if(oldConfig.mobileNumber != null)
+                        mobileNumber.setHint(mobileNumber.getHint() + oldConfig.mobileNumber);
+                    if(oldConfig.mobileNumber2 != null)
+                        mobileNumber2.setHint(mobileNumber2.getHint() + oldConfig.mobileNumber2);
+                    if(oldConfig.careSkype != null)
+                        careSkype.setHint(careSkype.getHint() + oldConfig.careSkype);
+                    if(oldConfig.seniorSkype != null)
+                        seniorSkype.setHint(seniorSkype.getHint() + oldConfig.seniorSkype);
+                    if(oldConfig.enabled != null){
+                        checkArray = oldConfig.enabled.split(",");
+                        settingsEnable.setChecked(checkArray[0].equals("1"));
+                        warehouseEnable.setChecked(checkArray[1].equals("1"));
+                        scheduleEnable.setChecked(checkArray[2].equals("1"));
+                    }
                 }
                 hideProgressDialog();
             }

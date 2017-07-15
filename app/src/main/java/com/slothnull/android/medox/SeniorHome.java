@@ -1,5 +1,11 @@
 package com.slothnull.android.medox;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -37,8 +43,6 @@ import com.slothnull.android.medox.fragment.ScheduleFragment;
 import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 import com.slothnull.android.medox.fragment.StatusFragment;
 import com.slothnull.android.medox.fragment.WarehouseFragment;
-import com.slothnull.android.medox.service.IndicatorsService;
-import com.slothnull.android.medox.service.LocationService;
 
 public class SeniorHome extends AppCompatActivity {
 
@@ -187,9 +191,11 @@ public class SeniorHome extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 oldConfig = dataSnapshot.getValue(AbstractConfig.class);
-                if(oldConfig.enabled != null){
-                    String enabled[]= oldConfig.enabled.split(",");
-                    settingsEnable = (enabled[0].equals("1"));
+                if(oldConfig != null) {
+                    if (oldConfig.enabled != null) {
+                        String enabled[] = oldConfig.enabled.split(",");
+                        settingsEnable = (enabled[0].equals("1"));
+                    }
                 }
                 hideProgressDialog();
             }

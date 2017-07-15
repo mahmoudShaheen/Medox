@@ -1,12 +1,12 @@
 package com.slothnull.android.medox.helper;
 
-import com.google.firebase.database.FirebaseDatabase;
-
 /**
- * Created by Shaheen on 07-May-17
+ * Created by Mahmoud Shaheen
  * Project: Medox
- * Package: com.slothnull.android.medox
+ * Licence: MIT
  */
+
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Description:

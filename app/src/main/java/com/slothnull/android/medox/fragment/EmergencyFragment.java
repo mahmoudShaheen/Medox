@@ -1,5 +1,11 @@
 package com.slothnull.android.medox.fragment;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -156,6 +162,9 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
             case (R.id.openWarehouse):
                 cmd = "openWarehouse";
                 break;
+            case (R.id.closeWarehouse):
+                cmd = "closeWarehouse";
+                break;
             case (R.id.dispenseNext):
                 cmd = "dispenseNext";
                 break;
@@ -257,8 +266,10 @@ public class EmergencyFragment extends Fragment implements View.OnClickListener 
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 oldConfig = dataSnapshot.getValue(AbstractConfig.class);
-                if (oldConfig.seniorSkype != null)
-                    seniorSkype = oldConfig.seniorSkype;
+                if(oldConfig != null) {
+                    if (oldConfig.seniorSkype != null)
+                        seniorSkype = oldConfig.seniorSkype;
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

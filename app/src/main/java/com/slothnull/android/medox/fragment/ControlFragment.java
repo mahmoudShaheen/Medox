@@ -1,5 +1,10 @@
 package com.slothnull.android.medox.fragment;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -159,77 +164,89 @@ public class ControlFragment extends Fragment {
         //switches on checked change listener
         switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateChecked();
+                updateChecked("switch1");
             }
         });
         switch2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateChecked();
+                updateChecked("switch2");
             }
         });
         switch3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateChecked();
+                updateChecked("switch3");
             }
         });
         switch4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateChecked();
+                updateChecked("switch4");
             }
         });
         switch5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateChecked();
+                updateChecked("switch5");
             }
         });
         switch6.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateChecked();
+                updateChecked("switch6");
             }
         });
         switch7.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateChecked();
+                updateChecked("switch7");
             }
         });
         switch8.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateChecked();
+                updateChecked("switch8");
             }
         });
 
         return view;
     }
-    public void updateChecked(){
-        String state1 = "off";
-        String state2 = "off";
-        String state3 = "off";
-        String state4 = "off";
-        String state5 = "off";
-        String state6 = "off";
-        String state7 = "off";
-        String state8 = "off";
-        if(switch1.isChecked())
-            state1 = "on";
-        if(switch2.isChecked())
-            state2 = "on";
-        if(switch3.isChecked())
-            state3 = "on";
-        if(switch4.isChecked())
-            state4 = "on";
-        if(switch5.isChecked())
-            state5 = "on";
-        if(switch6.isChecked())
-            state6 = "on";
-        if(switch7.isChecked())
-            state7 = "on";
-        if(switch8.isChecked())
-            state8 = "on";
+
+    public void updateChecked(String switchNumber){
+        String state = "off";
+        switch (switchNumber){
+            case "switch1":
+                if(switch1.isChecked())
+                    state = "on";
+                break;
+            case "switch2":
+                if(switch2.isChecked())
+                    state = "on";
+                break;
+            case "switch3":
+                if(switch3.isChecked())
+                    state = "on";
+                break;
+            case "switch4":
+                if(switch4.isChecked())
+                    state = "on";
+                break;
+            case "switch5":
+                if(switch5.isChecked())
+                    state = "on";
+                break;
+            case "switch6":
+                if(switch6.isChecked())
+                    state = "on";
+                break;
+            case "switch7":
+                if(switch7.isChecked())
+                    state = "on";
+                break;
+            case "switch8":
+                if(switch8.isChecked())
+                    state = "on";
+                break;
+        }
         //send to db
-        AbstractSwitch abstractSwitch = new AbstractSwitch(state1, state2, state3, state4, state5, state6, state7, state8);
         String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(UID).child("iot").child("switch");
-        mDatabase.setValue(abstractSwitch);
+                .child("users").child(UID).child("iot").child("switch").child(switchNumber);
+        mDatabase.setValue(state);
+
     }
 }

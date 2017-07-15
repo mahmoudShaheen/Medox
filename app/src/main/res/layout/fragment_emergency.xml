@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+ - Created by Mahmoud Shaheen
+ - Project: Medox
+ - Licence: MIT
+-->
+
 <android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -29,6 +35,13 @@
             android:text="Open Warehouse" />
 
         <RadioButton
+            android:id="@+id/closeWarehouse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Close Warehouse" />
+
+        <RadioButton
             android:id="@+id/dispenseNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Clear Bills"
+            android:text="Clear Pills"
             android:textColor="@android:color/holo_red_dark"
             android:textStyle="bold" />
 

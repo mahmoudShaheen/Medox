@@ -1,5 +1,10 @@
 package com.slothnull.android.medox.fragment;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -106,13 +111,15 @@ public class WarehouseFragment extends Fragment implements View.OnClickListener 
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 AbstractData data = dataSnapshot.getValue(AbstractData.class);
-                if (data != null) {
-                    String[] billArray = data.billCount.split(",");
-                    drug1Picker.setHint(billArray[0]);
-                    drug2Picker.setHint(billArray[1]);
-                    drug3Picker.setHint(billArray[2]);
-                    drug4Picker.setHint(billArray[3]);
-                    // ...
+                if(data != null) {
+                    if (data.billCount != null) {
+                        String[] billArray = data.billCount.split(",");
+                        drug1Picker.setHint(billArray[0]);
+                        drug2Picker.setHint(billArray[1]);
+                        drug3Picker.setHint(billArray[2]);
+                        drug4Picker.setHint(billArray[3]);
+                        // ...
+                    }
                 }
             }
 
@@ -308,32 +315,34 @@ public class WarehouseFragment extends Fragment implements View.OnClickListener 
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 AbstractConfig oldConfig = dataSnapshot.getValue(AbstractConfig.class);
-                if(oldConfig.enabled != null){
-                    String[] checkArray = new String[3];
-                    checkArray= oldConfig.enabled.split(",");
-                    if(checkArray[1].equals("0")){ //warehouse
-                        drug1Picker.setEnabled(false);
-                        drug2Picker.setEnabled(false);
-                        drug3Picker.setEnabled(false);
-                        drug4Picker.setEnabled(false);
-                        drug1Edit.setEnabled(false);
-                        drug2Edit.setEnabled(false);
-                        drug3Edit.setEnabled(false);
-                        drug4Edit.setEnabled(false);
-                        addData.setEnabled(false);
-                        updateNames.setEnabled(false);
-                    }
-                    if(checkArray[1].equals("1")){ //warehouse
-                        drug1Picker.setEnabled(true);
-                        drug2Picker.setEnabled(true);
-                        drug3Picker.setEnabled(true);
-                        drug4Picker.setEnabled(true);
-                        drug1Edit.setEnabled(true);
-                        drug2Edit.setEnabled(true);
-                        drug3Edit.setEnabled(true);
-                        drug4Edit.setEnabled(true);
-                        addData.setEnabled(true);
-                        updateNames.setEnabled(true);
+                if(oldConfig != null) {
+                    if (oldConfig.enabled != null) {
+                        String[] checkArray = new String[3];
+                        checkArray = oldConfig.enabled.split(",");
+                        if (checkArray[1].equals("0")) { //warehouse
+                            drug1Picker.setEnabled(false);
+                            drug2Picker.setEnabled(false);
+                            drug3Picker.setEnabled(false);
+                            drug4Picker.setEnabled(false);
+                            drug1Edit.setEnabled(false);
+                            drug2Edit.setEnabled(false);
+                            drug3Edit.setEnabled(false);
+                            drug4Edit.setEnabled(false);
+                            addData.setEnabled(false);
+                            updateNames.setEnabled(false);
+                        }
+                        if (checkArray[1].equals("1")) { //warehouse
+                            drug1Picker.setEnabled(true);
+                            drug2Picker.setEnabled(true);
+                            drug3Picker.setEnabled(true);
+                            drug4Picker.setEnabled(true);
+                            drug1Edit.setEnabled(true);
+                            drug2Edit.setEnabled(true);
+                            drug3Edit.setEnabled(true);
+                            drug4Edit.setEnabled(true);
+                            addData.setEnabled(true);
+                            updateNames.setEnabled(true);
+                        }
                     }
                 }
             }

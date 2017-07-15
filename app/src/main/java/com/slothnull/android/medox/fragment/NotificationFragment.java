@@ -1,5 +1,10 @@
 package com.slothnull.android.medox.fragment;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -93,5 +98,6 @@ public class NotificationFragment extends Fragment {
         return databaseReference.child("users").child(getUid())
                     .child("notification")
                     .limitToFirst(100);
+                    //.orderByChild("time");
     }
 }

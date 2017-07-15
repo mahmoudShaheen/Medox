@@ -1,7 +1,12 @@
 package com.slothnull.android.medox;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -25,8 +30,6 @@ import com.slothnull.android.medox.fragment.NotificationFragment;
 import com.slothnull.android.medox.fragment.ScheduleFragment;
 import com.slothnull.android.medox.fragment.StatusFragment;
 import com.slothnull.android.medox.fragment.WarehouseFragment;
-import com.slothnull.android.medox.service.IndicatorsService;
-import com.slothnull.android.medox.service.LocationService;
 
 public class Home extends AppCompatActivity {
 

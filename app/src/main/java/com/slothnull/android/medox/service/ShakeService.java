@@ -1,5 +1,11 @@
 package com.slothnull.android.medox.service;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -15,9 +21,7 @@ import android.util.Log;
 
 import com.slothnull.android.medox.EmergencyNotification;
 import com.slothnull.android.medox.R;
-import com.slothnull.android.medox.SeniorHome;
 import com.slothnull.android.medox.Splash;
-import com.slothnull.android.medox.fragment.SeniorEmergencyFragment;
 
 public class ShakeService extends Service implements SensorEventListener {
 

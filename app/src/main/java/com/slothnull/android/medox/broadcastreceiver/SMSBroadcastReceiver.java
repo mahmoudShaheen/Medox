@@ -1,5 +1,11 @@
 package com.slothnull.android.medox.broadcastreceiver;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -7,7 +13,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -16,7 +21,9 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.slothnull.android.medox.Home;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.slothnull.android.medox.EmergencyNotification;
 import com.slothnull.android.medox.R;
 
 public class SMSBroadcastReceiver extends BroadcastReceiver {
@@ -57,14 +64,17 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
         }
     }
     public void sendNotification(Context context){
-        Intent intent = new Intent(context, Home.class);
-        intent.putExtra("position", 5);
+        Intent intent = new Intent(context, EmergencyNotification.class);
+        updateStatus("fail");
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 1 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 1444 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri =
+                Uri.parse("android.resource://"+context.getApplicationContext().getPackageName()
+                        +"/"+R.raw.emergency);//Here is FILE_NAME is the name of file that you want to play
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.notification)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
@@ -78,6 +88,19 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(1 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(1444 /* ID of notification */, notificationBuilder.build());
+    }
+    public void updateStatus(String state){
+        //if user not signed in stop service
+        Log.i(TAG, "updating status: " + state);
+        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+        if(auth == null){
+            return;
+        }
+        //send data to db
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase.child("users").child(UID).child("status").child("emergency")
+                .setValue(state);
     }
 }

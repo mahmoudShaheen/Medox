@@ -1,16 +1,11 @@
 package com.slothnull.android.medox.model;
 
 /**
- * Created by Shaheen on 20-Apr-17
+ * Created by Mahmoud Shaheen
  * Project: Medox
- * Package: com.slothnull.android.medox.model
+ * Licence: MIT
  */
 
-/**
- * Created by Shaheen on 17-Mar-17
- * Project: seniormedox
- * Package: com.slothnull.android.seniormedox
- */
 import com.google.firebase.database.IgnoreExtraProperties;
 
 // [START user_class]

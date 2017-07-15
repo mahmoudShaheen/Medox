@@ -1,5 +1,11 @@
 package com.slothnull.android.medox.fragment;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,11 +34,17 @@ import com.slothnull.android.medox.model.AbstractConfig;
 import com.slothnull.android.medox.model.AbstractSchedule;
 import com.slothnull.android.medox.AddSchedule;
 import com.slothnull.android.medox.R;
+import com.slothnull.android.medox.model.AbstractWarehouse;
 import com.slothnull.android.medox.viewholder.ScheduleViewHolder;
 
 public class ScheduleFragment extends Fragment implements View.OnClickListener  {
 
     private static final String TAG = "ScheduleFragment";
+
+    public static String drug1;
+    public static String drug2;
+    public static String drug3;
+    public static String drug4;
 
     private AlertDialog.Builder builder ;
 
@@ -69,6 +81,13 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener  
 
         addButton = (FloatingActionButton) rootView.findViewById(R.id.addEntry);
         addButton.setOnClickListener(this);
+
+        drug1 = "Drug[1]";
+        drug2 = "Drug[2]";
+        drug3 = "Drug[3]";
+        drug4 = "Drug[4]";
+
+        getNames(); //used in view holder to display each drug by its name
 
         return rootView;
     }
@@ -124,7 +143,8 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener  
 
         Query scheduleQuery = databaseReference.child("users").child(getUid())
                 .child("timetable")
-                .limitToFirst(100);
+                .limitToFirst(100)
+                .orderByChild("time");
         return scheduleQuery;
     }
 
@@ -189,16 +209,18 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener  
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 AbstractConfig oldConfig = dataSnapshot.getValue(AbstractConfig.class);
-                if(oldConfig.enabled != null){
-                    String[] checkArray = new String[3];
-                    checkArray= oldConfig.enabled.split(",");
-                    if(checkArray[2].equals("0")){ //schedule
-                        addButton.setEnabled(false);
-                        deleteEnable = false;
-                    }
-                    if(checkArray[2].equals("1")){ //schedule
-                        addButton.setEnabled(true);
-                        deleteEnable = true;
+                if(oldConfig != null) {
+                    if (oldConfig.enabled != null) {
+                        String[] checkArray = new String[3];
+                        checkArray = oldConfig.enabled.split(",");
+                        if (checkArray[2].equals("0")) { //schedule
+                            addButton.setEnabled(false);
+                            deleteEnable = false;
+                        }
+                        if (checkArray[2].equals("1")) { //schedule
+                            addButton.setEnabled(true);
+                            deleteEnable = true;
+                        }
                     }
                 }
             }
@@ -211,6 +233,51 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener  
         };
         mDatabase.child("users").child(UID).child("config")
                 .addValueEventListener(configListener);
+    }
+
+
+    public void getNames(){
+        String UID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        ValueEventListener warehouseListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                    AbstractWarehouse warehouse = child.getValue(AbstractWarehouse.class);
+                    if (warehouse.id != null) {
+                        switch (warehouse.id) {
+                            case "1":
+                                drug1 = (warehouse.name);
+                                break;
+                            case "2":
+                                drug2 = (warehouse.name);
+                                break;
+                            case "3":
+                                drug3 = (warehouse.name);
+                                break;
+                            case "4":
+                                drug4 = (warehouse.name);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        mDatabase.child("users").child(UID).child("warehouse")
+                .addValueEventListener(warehouseListener);
+        //add to list here
+
     }
 
 }

@@ -1,5 +1,11 @@
 package com.slothnull.android.medox.fragment;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,9 +30,6 @@ import com.slothnull.android.medox.R;
 import com.slothnull.android.medox.SeniorHome;
 import com.slothnull.android.medox.model.AbstractStatus;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class StatusFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "StatusFragment";

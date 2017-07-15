@@ -1,5 +1,11 @@
 package com.slothnull.android.medox;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -134,31 +140,32 @@ public class EditMedicalProfile extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 oldProfile = dataSnapshot.getValue(AbstractProfile.class);
-                if(oldProfile.name != null)
-                    name.setHint(name.getHint() + oldProfile.name);
-                if(oldProfile.sex != null)
-                    sex.setHint(sex.getHint() + oldProfile.sex);
-                if(oldProfile.birth != null)
-                    birth.setHint(birth.getHint() + oldProfile.birth);
-                if(oldProfile.height != null)
-                    height.setHint(height.getHint() + oldProfile.height);
-                if(oldProfile.weight != null)
-                    weight.setHint(weight.getHint() + oldProfile.weight);
-                if(oldProfile.blood != null)
-                    blood.setHint(blood.getHint() + oldProfile.blood);
-                if(oldProfile.address != null)
-                    address.setHint(address.getHint() + oldProfile.address);
-                if(oldProfile.phone != null)
-                    phone.setHint(phone.getHint() + oldProfile.phone);
-                if(oldProfile.emergency != null)
-                    emergency.setHint(emergency.getHint() + oldProfile.emergency);
-                if(oldProfile.martial != null)
-                    martial.setHint(martial.getHint() + oldProfile.martial);
-                if(oldProfile.diseases != null)
-                    diseases.setHint(diseases.getHint() + oldProfile.diseases);
-                if(oldProfile.allergic != null)
-                    allergic.setHint(allergic.getHint() + oldProfile.allergic);
-
+                if(oldProfile != null){
+                    if(oldProfile.name != null)
+                        name.setHint(name.getHint() + oldProfile.name);
+                    if(oldProfile.sex != null)
+                        sex.setHint(sex.getHint() + oldProfile.sex);
+                    if(oldProfile.birth != null)
+                        birth.setHint(birth.getHint() + oldProfile.birth);
+                    if(oldProfile.height != null)
+                        height.setHint(height.getHint() + oldProfile.height);
+                    if(oldProfile.weight != null)
+                        weight.setHint(weight.getHint() + oldProfile.weight);
+                    if(oldProfile.blood != null)
+                        blood.setHint(blood.getHint() + oldProfile.blood);
+                    if(oldProfile.address != null)
+                        address.setHint(address.getHint() + oldProfile.address);
+                    if(oldProfile.phone != null)
+                        phone.setHint(phone.getHint() + oldProfile.phone);
+                    if(oldProfile.emergency != null)
+                        emergency.setHint(emergency.getHint() + oldProfile.emergency);
+                    if(oldProfile.martial != null)
+                        martial.setHint(martial.getHint() + oldProfile.martial);
+                    if(oldProfile.diseases != null)
+                        diseases.setHint(diseases.getHint() + oldProfile.diseases);
+                    if(oldProfile.allergic != null)
+                        allergic.setHint(allergic.getHint() + oldProfile.allergic);
+                }
                 hideProgressDialog();
             }
 

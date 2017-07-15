@@ -1,5 +1,11 @@
 package com.slothnull.android.medox.fragment;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
@@ -99,8 +105,10 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback,Loc
                 // Get Post object and use the values to update the UI
                 AbstractData data = dataSnapshot.getValue(AbstractData.class);
                 if (data != null) {
-                    longitude = Double.parseDouble(data.longitude);
-                    latitude = Double.parseDouble(data.latitude);
+                    if(data.longitude != null)
+                        longitude = Double.parseDouble(data.longitude);
+                    if(data.latitude != null)
+                        latitude = Double.parseDouble(data.latitude);
                     updateMarker();
                 }
             }

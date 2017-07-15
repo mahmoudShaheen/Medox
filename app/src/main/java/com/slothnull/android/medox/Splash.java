@@ -1,5 +1,11 @@
 package com.slothnull.android.medox;
 
+/**
+ * Created by Mahmoud Shaheen
+ * Project: Medox
+ * Licence: MIT
+ */
+
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -67,27 +73,29 @@ public class Splash extends Activity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     // Get Post object and use the values to update the UI
                     String configured = dataSnapshot.getValue(String.class);
-                    if(configured != null && configured.equals("true")){
-                        //go to Home Activity according to user type
-                        if (appType.equals("care")) {
-                            callCare();
-                        } else if (appType.equals("senior")) {
-                            callSenior();
-                        } else { //user signed but undefined app type
-                            callAuth();
-                            Log.i(TAG, "2");
-                        }
-                    } else {
-                        //go to Settings or toast a message according to user type
-                        if (appType.equals("care")) {
-                            callSettings();
-                        } else if (appType.equals("senior")) {
-                            Toast.makeText(getApplicationContext(),
-                                    "Sign in as Care Giver to edit settings First!",
-                                    Toast.LENGTH_LONG).show();
-                        } else { //user signed but undefined app type
-                            callAuth();
-                            Log.i(TAG, "2");
+                    if (configured != null) {
+                        if (configured.equals("true")) {
+                            //go to Home Activity according to user type
+                            if (appType.equals("care")) {
+                                callCare();
+                            } else if (appType.equals("senior")) {
+                                callSenior();
+                            } else { //user signed but undefined app type
+                                callAuth();
+                                Log.i(TAG, "2");
+                            }
+                        } else {
+                            //go to Settings or toast a message according to user type
+                            if (appType.equals("care")) {
+                                callSettings();
+                            } else if (appType.equals("senior")) {
+                                Toast.makeText(getApplicationContext(),
+                                        "Sign in as Care Giver to edit settings First!",
+                                        Toast.LENGTH_LONG).show();
+                            } else { //user signed but undefined app type
+                                callAuth();
+                                Log.i(TAG, "2");
+                            }
                         }
                     }
                 }
